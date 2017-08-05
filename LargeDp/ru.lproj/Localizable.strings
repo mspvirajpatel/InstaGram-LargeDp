@@ -1,0 +1,81 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Исследовать";
+settings  = " Настройки и связь";
+home  = " Поиск";
+search  = " Поиск";
+profile  = " Профиль";
+login  = " Авторизоваться";
+logout  = " Выйти";
+rateUs  = " Оцените нас";
+feedback  = " Обратная связь";
+aboutUs  = " О нас";
+myCollection  = " Мой любимый";
+followers  = " Мои фавориты";
+followings  = " Мои Подписки";
+aboutus  = " О нас";
+
+
+profileTitle  = " Профиль";
+hometitle  = " Поиск пользователя IG?";
+homesubtitle  = " Написать Instagram Имя пользователя, коснитесь Поиск и вид DP.";
+homesearch  = " Поиск";
+homerecent  = " Последние Поиск";
+searchplacehlder  = " ПОИСК";
+searchValidation  = " Написать имя пользователя вы хотите большой DP.";
+homeClearAll  = " Очистить все";
+
+removeimage  = " Успешно удалены из вашей коллекции";
+successimage  = " Успешно добавлено в коллекцию";
+
+
+pullToRefresh  = " Потяните, чтобы обновить";
+
+alertConfirmation  = " бдительный";
+alertDescription  = " Ваш заголовок является capied в буфер обмена. \ NВ может мимо него в Anyware.";
+NO  = " нет";
+YES  = " да";
+OK  = " ОК";
+Cancel  = " Отмена";
+
+noFound  = " Не найден";
+
+somethingWrong  = " Опять что-то хочет wrong.Try.";
+unableRemove  = " Невозможно снова удалить it.Try.";
+noMediaFound  = " Не нашли каких-либо средств массовой информации.";
+
+addtoCollectionbtn  = " Успешно добавлено в коллекцию";
+accountprivate  = " Этот счет является частным.";
+
+fbname  = " имя";
+fbemail  = " Эл. адрес";
+fbDesc  = " Что вы думаете о нашем приложении?";
+fbsubmit  = " ОТПРАВИТЬ";
+
+logoutConfirmation  = " подтверждение";
+logoutDescription  = " \ NВы уверены, что хотите выйти?";
+repostDescription  = " \ NВы сообщить об этой фотографии в Instagram Справочный центр?";
+
+ok  = " ОК";
+loading  = " Loading ...";
+entername  = " Пожалуйста, введите имя";
+enterText  = " Все поля обязательны для заполнения";
+enteremail  = " Пожалуйста, введите адрес электронной почты";
+validEmail  = " Пожалуйста, введите действительный адрес электронной почты";
+enterdesc  = " Пожалуйста, введите описание";
+sendsccuess  = " Отправить успешно";
+errorapi  = " Что-то пошло не так";
+
+noimagecolection  = " Начните создавать свою коллекцию изображений, выбрав и нажмите";
+logoutConfirm  = " \ NВы уверены, что хотите выйти?";
+confirm  = " подтверждение";
+yes  = " да";
+no  = " нет";
+

@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " menjelajah";
+settings  = " Pengaturan & Feedback";
+home  = " Pencarian";
+search  = " Pencarian";
+profile  = " Profil";
+login  = " Masuk";
+logout  = " Keluar";
+rateUs  = " tingkat Kami";
+feedback  = " Masukan";
+aboutUs  = " Tentang kami";
+myCollection  = " Kesukaan saya";
+followers  = " Pengikut saya";
+followings  = " Berikut saya";
+aboutus  = " Tentang kami";
+
+
+profileTitle  = " Profil";
+hometitle  = " Mencari IG pengguna?";
+homesubtitle  = " Menulis Instagram User Name, Tekan Cari dan Lihat Besar DP.";
+homesearch  = " Pencarian";
+homerecent  = " Pencarian Terbaru";
+searchplacehlder  = " PENCARIAN";
+searchValidation  = " Menulis nama pengguna Anda ingin DP besar.";
+homeClearAll  = " Bersihkan semua";
+
+removeimage  = " Berhasil dihapus dari koleksi Anda";
+successimage  = " Berhasil ditambahkan ke koleksi Anda";
+
+
+pullToRefresh  = " Tarik untuk menyegarkan";
+
+alertConfirmation  = " Waspada";
+alertDescription  = " caption Anda capied di clipboard. \ nAnda bisa melewatinya di anyware.";
+NO  = " Tidak";
+YES  = " iya nih";
+OK  = " Baik";
+Cancel  = " Membatalkan";
+
+noFound  = " Tidak ditemukan";
+
+somethingWrong  = " Sesuatu ingin wrong.Try lagi.";
+unableRemove  = " Tidak dapat menghapus it.Try lagi.";
+noMediaFound  = " Tidak ditemukan media apapun.";
+
+addtoCollectionbtn  = " Berhasil ditambahkan ke koleksi Anda";
+accountprivate  = " Akun ini bersifat pribadi.";
+
+fbname  = " Nama";
+fbemail  = " E-mail";
+fbDesc  = " Apa pendapat Anda tentang aplikasi kita?";
+fbsubmit  = " MENYERAHKAN";
+
+logoutConfirmation  = " Konfirmasi";
+logoutDescription  = " \ NApakah Anda yakin bahwa Anda ingin logout?";
+repostDescription  = " \ NApakah Anda yakin akan melaporkan tentang gambar ini ke Pusat Bantuan Instagram?";
+
+ok  = " baik";
+loading  = " Pemuatan...";
+entername  = " Masukkan nama";
+enterText  = " Semua bidang yang diperlukan";
+enteremail  = " Masukkan email";
+validEmail  = " Masukkan email yang valid";
+enterdesc  = " Masukkan Keterangan";
+sendsccuess  = " Kirim berhasil";
+errorapi  = " Ada yang salah";
+
+noimagecolection  = " Mulai menciptakan koleksi gambar dengan memilih dan tekan";
+logoutConfirm  = " \ NApakah Anda yakin bahwa Anda ingin logout?";
+confirm  = " Konfirmasi";
+yes  = " iya nih";
+no  = " Tidak";

@@ -1,0 +1,79 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+explore  = " สำรวจ";
+settings  = " การตั้งค่าและความคิดเห็น";
+home  = " ค้นหา";
+search  = " ค้นหา";
+profile  = " ข้อมูลส่วนตัว";
+login  = " เข้าสู่ระบบ";
+logout  = " ออกจากระบบ";
+rateUs  = " คะแนนเรา";
+feedback  = " ผลตอบรับ";
+aboutUs  = " เกี่ยวกับเรา";
+myCollection  = " ของโปรด";
+followers  = " ผู้ติดตามของฉัน";
+followings  = " ดังต่อไปนี้ของฉัน";
+aboutus  = " เกี่ยวกับเรา";
+
+
+profileTitle  = " ข้อมูลส่วนตัว";
+hometitle  = " กำลังมองหาผู้ใช้ IG?";
+homesubtitle  = " เขียน Instagram ชื่อผู้ใช้แตะค้นหาและดู DP ขนาดใหญ่";
+homesearch  = " ค้นหา";
+homerecent  = " การค้นหาล่าสุด";
+searchplacehlder  = " ค้นหา";
+searchValidation  = " เขียนชื่อผู้ใช้ที่คุณต้องการ DP ขนาดใหญ่";
+homeClearAll  = " ลบทั้งหมด";
+
+removeimage  = " ถอดออกจากคอลเลกชันของคุณ";
+successimage  = " ประสบความสำเร็จในการเพิ่มการเก็บของคุณ";
+
+
+pullToRefresh  = " ดึงเพื่อฟื้นฟู";
+
+alertConfirmation  = " เตือนภัย";
+alertDescription  = " คำบรรยายภาพของคุณจะถูก capied ในคลิปบอร์ด. \ n คุณสามารถผ่านมาได้ที่ Anyware";
+NO  = " ไม่";
+YES  = " ใช่";
+OK  = " ตกลง";
+Cancel  = " ยกเลิก";
+
+noFound  = " ไม่เจอ";
+
+somethingWrong  = " สิ่งที่ต้องการ wrong.Try อีกครั้ง";
+unableRemove  = " ไม่สามารถลบ it.Try อีกครั้ง";
+noMediaFound  = " ไม่พบสื่อใด ๆ";
+
+addtoCollectionbtn  = " ประสบความสำเร็จในการเพิ่มการเก็บของคุณ";
+accountprivate  = " บัญชีนี้มีความเป็นส่วนตัว";
+
+fbname  = " ชื่อ";
+fbemail  = " อีเมล์";
+fbDesc  = " คุณคิดอย่างไรเกี่ยวกับ app ของเราหรือไม่";
+fbsubmit  = " SUBMIT";
+
+logoutConfirmation  = " การยืนยัน";
+logoutDescription  = " \ n คุณแน่ใจหรือว่าต้องการออกจากระบบ?";
+repostDescription  = " \ n คุณแน่ใจที่จะรายงานเกี่ยวกับภาพนี้ไปยังศูนย์ช่วยเหลือ Instagram?";
+
+ok  = " ตกลง";
+loading  = " กำลังโหลด ...";
+entername  = " กรุณากรอกชื่อ";
+enterText  = " ต้องระบุทุกช่อง";
+enteremail  = " กรุณากรอกอีเมล";
+validEmail  = " กรุณากรอกอีเมลที่ถูกต้อง";
+enterdesc  = " กรุณากรอกรายละเอียด";
+sendsccuess  = " ส่งสำเร็จ";
+errorapi  = " บางอย่างผิดพลาด";
+
+noimagecolection  = " เริ่มต้นสร้างคอลเลกชันของคุณของภาพโดยการเลือกและกด";
+logoutConfirm  = " \ n คุณแน่ใจหรือว่าต้องการออกจากระบบ?";
+confirm  = " การยืนยัน";
+yes  = " ใช่";
+no  = " ไม่";

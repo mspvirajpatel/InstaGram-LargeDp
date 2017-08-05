@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Explorer";
+settings  = " Paramètres et commentaires";
+home  = " Chercher";
+search  = " Chercher";
+profile  = " Profil";
+login  = " S'identifier";
+logout  = " Connectez - Out";
+rateUs  = " Évaluez nous";
+feedback  = " Retour d'information";
+aboutUs  = " À propos de nous";
+myCollection  = " Mon favori";
+followers  = " Mes suiveurs";
+followings  = " Mes Suivants";
+aboutus  = " À propos de nous";
+
+
+profileTitle  = " Profil";
+hometitle  = " Vous recherchez utilisateur IG?";
+homesubtitle  = " Ecrire Instagram Nom d'utilisateur, Appuyez sur la recherche et Grand Voir DP.";
+homesearch  = " Chercher";
+homerecent  = " Recherche récente";
+searchplacehlder  = " CHERCHER";
+searchValidation  = " Écrire le nom d'utilisateur que vous voulez grand DP.";
+homeClearAll  = " Tout effacer";
+
+removeimage  = " Avec succès supprimé de votre collection";
+successimage  = " Vous avez joint à votre collection";
+
+
+pullToRefresh  = " Tirer pour rafraîchir";
+
+alertConfirmation  = " Alerte";
+alertDescription  = " Votre légende est capied dans le presse-papiers. \ NVous pouvez passé au moment Anyware.";
+NO  = " Non";
+YES  = " Oui";
+OK  = " D'accord";
+Cancel  = " Annuler";
+
+noFound  = " Pas trouvé";
+
+somethingWrong  = " Quelque chose veulent wrong.Try à nouveau.";
+unableRemove  = " Impossible de supprimer it.Try à nouveau.";
+noMediaFound  = " Pas trouvé aucun média.";
+
+addtoCollectionbtn  = " Vous avez joint à votre collection";
+accountprivate  = " Ce compte est privé.";
+
+fbname  = " prénom";
+fbemail  = " Email";
+fbDesc  = " Que pensez-vous de notre application?";
+fbsubmit  = " SOUMETTRE";
+
+logoutConfirmation  = " Confirmation";
+logoutDescription  = " \ NEtes-vous sûr que vous voulez dconnecter?";
+repostDescription  = " \ NEtes-vous sûr de signaler sur cette image pour Instagram Centre d'aide?";
+
+ok  = " D'accord";
+loading  = " Chargement...";
+entername  = " S'il vous plaît entrez le nom";
+enterText  = " Tous les champs sont requis";
+enteremail  = " S'il vous plaît entrer email";
+validEmail  = " S'il vous plaît entrer email valide";
+enterdesc  = " S'il vous plaît entrer Description de";
+sendsccuess  = " Envoyer sucessfully";
+errorapi  = " Quelque chose a mal tourné";
+
+noimagecolection  = " Commencez à créer votre collection d'images en sélectionnant et appuyez sur";
+logoutConfirm  = " \ NEtes-vous sûr que vous voulez dconnecter?";
+confirm  = " Confirmation";
+yes  = " Oui";
+no  = " Non";

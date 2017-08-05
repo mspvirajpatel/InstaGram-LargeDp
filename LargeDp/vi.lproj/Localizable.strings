@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Khám phá";
+settings  = " Cài đặt & Phản hồi";
+home  = " Tìm kiếm";
+search  = " Tìm kiếm";
+profile  = " Hồ sơ";
+login  = " Đăng nhập";
+logout  = " Đăng xuất";
+rateUs  = " Đánh giá chúng tôi";
+feedback  = " Phản hồi";
+aboutUs  = " Về chúng tôi";
+myCollection  = " Yêu thích của tôi";
+followers  = " Người theo dõi của tôi";
+followings  = " sau của tôi";
+aboutus  = " Về chúng tôi";
+
+
+profileTitle  = " Hồ sơ";
+hometitle  = " Looking for IG sử dụng?";
+homesubtitle  = " Viết Instagram User Name, Tap tìm kiếm và Xem DP lớn.";
+homesearch  = " Tìm kiếm";
+homerecent  = " Tìm kiếm gần đây";
+searchplacehlder  = " TÌM KIẾM";
+searchValidation  = " Viết tên bạn muốn lớn DP.";
+homeClearAll  = " Làm sạch tất cả";
+
+removeimage  = " gỡ bỏ thành công từ bộ sưu tập của bạn";
+successimage  = " thêm thành công vào bộ sưu tập của bạn";
+
+
+pullToRefresh  = " Kéo để làm mới";
+
+alertConfirmation  = " báo động";
+alertDescription  = " caption của bạn được capied trong clipboard. \ nBạn có thể qua nó ở anyware.";
+NO  = " Không";
+YES  = " Vâng";
+OK  = " Được";
+Cancel  = " hủy bỏ";
+
+noFound  = " Không tìm thấy";
+
+somethingWrong  = " Một cái gì đó muốn wrong.Try một lần nữa.";
+unableRemove  = " Không thể gỡ bỏ it.Try một lần nữa.";
+noMediaFound  = " Không tìm thấy phương tiện truyền thông nào.";
+
+addtoCollectionbtn  = " thêm thành công vào bộ sưu tập của bạn";
+accountprivate  = " Tài khoản này là tư nhân.";
+
+fbname  = " Tên";
+fbemail  = " E-mail";
+fbDesc  = " Bạn nghĩ gì về ứng dụng của chúng tôi?";
+fbsubmit  = " ĐỆ TRÌNH";
+
+logoutConfirmation  = " sự xác nhận";
+logoutDescription  = " \ NBạn có chắc chắn rằng bạn muốn thoát?";
+repostDescription  = " \ NBạn có chắc để báo cáo về hình ảnh này để Trung tâm trợ giúp Instagram?";
+
+ok  = " được";
+loading  = " Tải...";
+entername  = " Vui lòng nhập tên";
+enterText  = " Tất cả các trường được yêu cầu";
+enteremail  = " Vui lòng nhập email";
+validEmail  = " Vui lòng nhập email hợp lệ";
+enterdesc  = " Vui lòng nhập Mô tả";
+sendsccuess  = " Gửi thành công";
+errorapi  = " Một cái gì đó đã đi sai";
+
+noimagecolection  = " Bắt đầu tạo bộ sưu tập các hình ảnh bằng cách chọn và nhấn";
+logoutConfirm  = " \ NBạn có chắc chắn rằng bạn muốn thoát?";
+confirm  = " sự xác nhận";
+yes  = " Vâng";
+no  = " Không";

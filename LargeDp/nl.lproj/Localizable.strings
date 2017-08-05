@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " onderzoeken";
+settings  = " Instellingen & feedback";
+home  = " Zoeken";
+search  = " Zoeken";
+profile  = " Profiel";
+login  = " Log in";
+logout  = " Uitloggen";
+rateUs  = " Beoordeel ons";
+feedback  = " terugkoppeling";
+aboutUs  = " Over ons";
+myCollection  = " Mijn favoriet";
+followers  = " Mijn volgers";
+followings  = " mijn volgende uitrusting";
+aboutus  = " Over ons";
+
+
+profileTitle  = " Profiel";
+hometitle  = " Op zoek naar een IG gebruiker?";
+homesubtitle  = " Schrijf Instagram gebruikersnaam, Tik op het zoeken en bekijken Grote DP.";
+homesearch  = " Zoeken";
+homerecent  = " recente Zoeken";
+searchplacehlder  = " ZOEKEN";
+searchValidation  = " Schrijf gebruikersnaam die je wilt grote DP.";
+homeClearAll  = " Wis alles";
+
+removeimage  = " Succesvol verwijderd uit uw verzameling";
+successimage  = " Succesvol toegevoegd aan uw collectie";
+
+
+pullToRefresh  = " Trek op te frissen";
+
+alertConfirmation  = " alarm";
+alertDescription  = " Uw bijschrift wordt capied in klembord. \ NU kunt verleden bij anyware.";
+NO  = " Nee";
+YES  = " Ja";
+OK  = " OK";
+Cancel  = " Annuleer";
+
+noFound  = " geen gevonden";
+
+somethingWrong  = " Iets willen wrong.Try opnieuw.";
+unableRemove  = " Kan it.Try weer te verwijderen.";
+noMediaFound  = " Niet gevonden alle media.";
+
+addtoCollectionbtn  = " Succesvol toegevoegd aan uw collectie";
+accountprivate  = " Dit account is privé.";
+
+fbname  = " Naam";
+fbemail  = " E-mail";
+fbDesc  = " Wat vind je van onze app?";
+fbsubmit  = " SUBMIT";
+
+logoutConfirmation  = " Bevestiging";
+logoutDescription  = " \ NWeet u zeker dat u wilt uitloggen?";
+repostDescription  = " \ NWeet u zeker te melden over deze afbeelding naar Instagram Help Center?";
+
+ok  = " OK";
+loading  = " Loading ...";
+entername  = " Vul de naam";
+enterText  = " alle velden zijn verplicht";
+enteremail  = " Vul e-mail";
+validEmail  = " Voer een geldig emailadres in";
+enterdesc  = " Vul Beschrijving";
+sendsccuess  = " Stuur met succes";
+errorapi  = " Er is iets fout gegaan";
+
+noimagecolection  = " Start het maken van uw verzameling afbeeldingen door het selecteren en druk op";
+logoutConfirm  = " \ NWeet u zeker dat u wilt uitloggen?";
+confirm  = " Bevestiging";
+yes  = " Ja";
+no  = " Nee";

@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Udforske";
+settings  = " Indstillinger og tilbagemelding";
+home  = " Søg";
+search  = " Søg";
+profile  = " Profil";
+login  = " Log på";
+logout  = " Log ud";
+rateUs  = " Bedøm os";
+feedback  = " Feedback";
+aboutUs  = " Om os";
+myCollection  = " Min favorit";
+followers  = " Mine Abonnenter";
+followings  = " Mine Followings";
+aboutus  = " Om os";
+
+
+profileTitle  = " Profil";
+hometitle  = " Leder du efter IG bruger?";
+homesubtitle  = " Skriv Instagram brugernavn, Tryk på Search and View Stor DP.";
+homesearch  = " Søg";
+homerecent  = " nylige Søg";
+searchplacehlder  = " SØG";
+searchValidation  = " Skriv brugernavn du ønsker at store DP.";
+homeClearAll  = " Slet alt";
+
+removeimage  = " Succesfuld fjernet fra din samling";
+successimage  = " Succesfuld føjet til din samling";
+
+
+pullToRefresh  = " Træk for at opdatere";
+
+alertConfirmation  = " Alert";
+alertDescription  = " Din billedtekst er capied i udklipsholderen. \ NDu kan forbi det på anyware.";
+NO  = " Ingen";
+YES  = " Ja";
+OK  = " Okay";
+Cancel  = " Afbestille";
+
+noFound  = " Der er ikke fundet";
+
+somethingWrong  = " Noget ønsker wrong.Try igen.";
+unableRemove  = " Kan ikke fjerne it.Try igen.";
+noMediaFound  = " Ikke fundet nogen medier.";
+
+addtoCollectionbtn  = " Succesfuld føjet til din samling";
+accountprivate  = " Denne konto er privat.";
+
+fbname  = " Navn";
+fbemail  = " E-mail";
+fbDesc  = " Hvad synes du om vores app?";
+fbsubmit  = " INDSEND";
+
+logoutConfirmation  = " Bekræftelse";
+logoutDescription  = " \ NEr du sikker på, at du vil logge ud?";
+repostDescription  = " \ NEr du sikker på at rapportere om dette billede til Instagram Hjælp?";
+
+ok  = " Okay";
+loading  = " Indlæser...";
+entername  = " Indtast venligst navn";
+enterText  = " Alle felter skal udfyldes";
+enteremail  = " Indtast e-mail";
+validEmail  = " Indtast venligst gyldig e-mail";
+enterdesc  = " Indtast venligst Beskrivelse";
+sendsccuess  = " Send held";
+errorapi  = " Noget gik galt";
+
+noimagecolection  = " Start oprette din samling af billeder ved at vælge, og tryk på";
+logoutConfirm  = " \ NEr du sikker på, at du vil logge ud?";
+confirm  = " Bekræftelse";
+yes  = " Ja";
+no  = " Ingen";

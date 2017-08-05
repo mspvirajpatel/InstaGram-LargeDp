@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Jelajahi";
+settings  = " Tetapan & Maklumbalas";
+home  = " carian";
+search  = " carian";
+profile  = " profil";
+login  = " Log masuk";
+logout  = " Log keluar";
+rateUs  = " Kadar Kami";
+feedback  = " maklum balas";
+aboutUs  = " Tentang kita";
+myCollection  = " Kegemaran saya";
+followers  = " Pengikut saya";
+followings  = " Berikut saya";
+aboutus  = " Tentang kita";
+
+
+profileTitle  = " profil";
+hometitle  = " Mencari IG pengguna?";
+homesubtitle  = " Tulis Instagram Nama Pengguna, Ketik Cari dan Lihat DP besar.";
+homesearch  = " carian";
+homerecent  = " Cari baru-baru ini";
+searchplacehlder  = " CARIAN";
+searchValidation  = " Tulis nama pengguna anda ingin besar DP.";
+homeClearAll  = " Kosongkan semua";
+
+removeimage  = " Berjaya dikeluarkan daripada koleksi anda";
+successimage  = " Berjaya diletakkan di dalam koleksi anda";
+
+
+pullToRefresh  = " Tarik untuk menyegarkan";
+
+alertConfirmation  = " Amaran";
+alertDescription  = " Kapsyen anda capied dalam clipboard. \ nAnda boleh lalu ia di anyware.";
+NO  = " Tiada";
+YES  = " Ya";
+OK  = " Okey";
+Cancel  = " Batal";
+
+noFound  = " Tidak dijumpai";
+
+somethingWrong  = " Sesuatu yang mahu wrong.Try lagi.";
+unableRemove  = " Tidak dapat membuang it.Try lagi.";
+noMediaFound  = " Tidak dijumpai di mana-mana media.";
+
+addtoCollectionbtn  = " Berjaya diletakkan di dalam koleksi anda";
+accountprivate  = " Akaun ini adalah peribadi.";
+
+fbname  = " nama";
+fbemail  = " e-mel";
+fbDesc  = " Apakah pendapat anda mengenai aplikasi kami?";
+fbsubmit  = " SUBMIT";
+
+logoutConfirmation  = " pengesahan";
+logoutDescription  = " \ NAdakah anda pasti bahawa anda mahu log keluar?";
+repostDescription  = " \ NAdakah anda pasti melaporkan mengenai imej ini kepada Instagram Bantuan Center?";
+
+ok  = " okey";
+loading  = " Loading ...";
+entername  = " Sila masukkan nama";
+enterText  = " Semua medan yang diperlukan";
+enteremail  = " Sila masukkan e-mel";
+validEmail  = " Sila masukkan email yang sah";
+enterdesc  = " Sila masukkan Penerangan";
+sendsccuess  = " menghantar Berjaya";
+errorapi  = " Ada sesuatu yang tidak salah";
+
+noimagecolection  = " Mula mewujudkan hak-imej dengan memilih dan tekan";
+logoutConfirm  = " \ NAdakah anda pasti bahawa anda mahu log keluar?";
+confirm  = " pengesahan";
+yes  = " Ya";
+no  = " Tiada";

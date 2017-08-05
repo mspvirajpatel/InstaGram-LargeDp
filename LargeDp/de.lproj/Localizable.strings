@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Erforschen";
+settings  = " Einstellungen und Feedback";
+home  = " Suche";
+search  = " Suche";
+profile  = " Profil";
+login  = " Anmeldung";
+logout  = " Ausloggen";
+rateUs  = " Bewerten Sie uns";
+feedback  = " Feedback";
+aboutUs  = " Über uns";
+myCollection  = " Mein liebstes";
+followers  = " Meine Abonnenten";
+followings  = " Mein Istas";
+aboutus  = " Über uns";
+
+
+profileTitle  = " Profil";
+hometitle  = " Suche nach IG Benutzer?";
+homesubtitle  = " Schreiben Instagram Benutzernamen, ein Tippen Sie auf das Suchen und anzeigen Große DP.";
+homesearch  = " Suche";
+homerecent  = " Aktuelle Suche";
+searchplacehlder  = " SUCHE";
+searchValidation  = " Schreiben Sie Benutzername, den Sie zu großen DP wollen.";
+homeClearAll  = " Alles löschen";
+
+removeimage  = " Erfolgreich aus der Sammlung entfernt";
+successimage  = " Erfolgreich in Ihrer Sammlung";
+
+
+pullToRefresh  = " Ziehen auffrischen";
+
+alertConfirmation  = " Aufmerksam";
+alertDescription  = " Ihre Beschriftung ist capied in Zwischenablage. \ NSie können vorbei an anyware.";
+NO  = " Nein";
+YES  = " Ja";
+OK  = " OK";
+Cancel  = " Stornieren";
+
+noFound  = " Nicht gefunden";
+
+somethingWrong  = " Etwas wollen wrong.Try wieder.";
+unableRemove  = " Unfähig it.Try wieder zu entfernen.";
+noMediaFound  = " Nicht alle Medien gefunden.";
+
+addtoCollectionbtn  = " Erfolgreich in Ihrer Sammlung";
+accountprivate  = " Dieses Konto ist privat.";
+
+fbname  = " Name";
+fbemail  = " Email";
+fbDesc  = " Was denken Sie über unsere App?";
+fbsubmit  = " EINREICHEN";
+
+logoutConfirmation  = " Bestätigung";
+logoutDescription  = " \ NSind Sie sicher, dass Sie sich ausloggen?";
+repostDescription  = " \ NSoll zu diesem Bild zu Instagram-Hilfe zu berichten?";
+
+ok  = " OK";
+loading  = " Laden...";
+entername  = " Bitte geben Sie den Namen";
+enterText  = " alle Felder sind erforderlich";
+enteremail  = " Bitte geben Sie E-Mail";
+validEmail  = " Bitte eine gültige Email eingeben";
+enterdesc  = " Bitte geben Sie Beschreibung";
+sendsccuess  = " senden erfolgreich";
+errorapi  = " Etwas ist schief gelaufen";
+
+noimagecolection  = " Starten Sie Ihre Sammlung von Bildern durch die Auswahl und drücken Sie die Schaffung";
+logoutConfirm  = " \ NSind Sie sicher, dass Sie sich ausloggen?";
+confirm  = " Bestätigung";
+yes  = " Ja";
+no  = " Nein";

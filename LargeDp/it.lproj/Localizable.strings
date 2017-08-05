@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Esplorare";
+settings  = " Impostazioni & risposte";
+home  = " Ricerca";
+search  = " Ricerca";
+profile  = " Profilo";
+login  = " Accesso";
+logout  = " Logout";
+rateUs  = " tasso degli Stati Uniti";
+feedback  = " Risposta";
+aboutUs  = " Riguardo a noi";
+myCollection  = " Il mio preferito";
+followers  = " I miei seguaci";
+followings  = " Le mie chi segue";
+aboutus  = " Riguardo a noi";
+
+
+profileTitle  = " Profilo";
+hometitle  = " Cerchi utente IG?";
+homesubtitle  = " Scrivi Instagram User Name, Toccare la ricerca e vedere foto ingrandite DP.";
+homesearch  = " Ricerca";
+homerecent  = " recenti Ricerca";
+searchplacehlder  = " RICERCA";
+searchValidation  = " Scrivi il nome utente che si desidera grandi DP.";
+homeClearAll  = " Cancella tutto";
+
+removeimage  = " rimosso con successo dalla tua collezione";
+successimage  = " aggiunto con successo alla tua collezione";
+
+
+pullToRefresh  = " Pull per aggiornare";
+
+alertConfirmation  = " Mettere in guardia";
+alertDescription  = " La vostra voce è capied nella clipboard. \ NPuoi passato a anyware.";
+NO  = " No";
+YES  = " sì";
+OK  = " Ok";
+Cancel  = " Annulla";
+
+noFound  = " Non trovato";
+
+somethingWrong  = " Qualcosa di nuovo voglia wrong.Try.";
+unableRemove  = " Impossibile rimuovere di nuovo it.Try.";
+noMediaFound  = " Non trovato qualsiasi supporto.";
+
+addtoCollectionbtn  = " aggiunto con successo alla tua collezione";
+accountprivate  = " Questo account è privato.";
+
+fbname  = " Nome";
+fbemail  = " E-mail";
+fbDesc  = " Cosa ne pensi la nostra applicazione?";
+fbsubmit  = " SOTTOSCRIVI";
+
+logoutConfirmation  = " Conferma";
+logoutDescription  = " \ NSei sicuro di voler uscire?";
+repostDescription  = " \ NSei sicuro da segnalare su questa immagine per Instagram Centro assistenza?";
+
+ok  = " ok";
+loading  = " Caricamento in corso...";
+entername  = " Si prega di inserire il nome";
+enterText  = " tutti i campi sono obbligatori";
+enteremail  = " Inserisci e-mail";
+validEmail  = " Inserisci e-mail valido";
+enterdesc  = " Inserisci Descrizione";
+sendsccuess  = " Invia con successo";
+errorapi  = " Qualcosa è andato storto";
+
+noimagecolection  = " Iniziare a creare la vostra collezione di immagini selezionando e premere";
+logoutConfirm  = " \ NSei sicuro di voler uscire?";
+confirm  = " Conferma";
+yes  = " sì";
+no  = " No";

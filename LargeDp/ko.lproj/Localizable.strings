@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " 탐색";
+settings  = " 설정 및 피드백";
+home  = " 수색";
+search  = " 수색";
+profile  = " 윤곽";
+login  = " 로그인";
+logout  = " 로그 아웃";
+rateUs  = " 요금 소개";
+feedback  = " 피드백";
+aboutUs  = " 회사 소개";
+myCollection  = " 즐겨 찾기";
+followers  = " 내 팔로워";
+followings  = " 내 다음";
+aboutus  = " 회사 소개";
+
+
+profileTitle  = " 윤곽";
+hometitle  = " IG 사용자를 찾고 계십니까?";
+homesubtitle  = " , 인스 타 그램 사용자 이름을 쓰기 검색을 누르고 대형 DP를 볼 수 있습니다.";
+homesearch  = " 수색";
+homerecent  = " 최근 검색";
+searchplacehlder  = " 수색";
+searchValidation  = " 당신이 큰 DP에 원하는 이름을 작성합니다.";
+homeClearAll  = " 모두 지우기";
+
+removeimage  = " 성공적으로 컬렉션에서 제거";
+successimage  = " 성공적으로 컬렉션에 추가";
+
+
+pullToRefresh  = " 새로 고침 당겨";
+
+alertConfirmation  = " 경보";
+alertDescription  = " 자막 클립 보드에 capied됩니다. \ n 삭제가 Anyware를 그것을 과거 수 있습니다.";
+NO  = " 아니";
+YES  = " 예";
+OK  = " 승인";
+Cancel  = " 취소";
+
+noFound  = " 없음 찾을 수 없음";
+
+somethingWrong  = " 뭔가 다시 wrong.Try를 원한다.";
+unableRemove  = " 다시 해보는를 제거 할 수 없습니다.";
+noMediaFound  = " 모든 미디어를 찾을 수 없습니다.";
+
+addtoCollectionbtn  = " 성공적으로 컬렉션에 추가";
+accountprivate  = " 이 계정은 비공개입니다.";
+
+fbname  = " 이름";
+fbemail  = " 이메일";
+fbDesc  = " 당신은 우리의 응용 프로그램에 대해 어떻게 생각하십니까?";
+fbsubmit  = " 제출";
+
+logoutConfirmation  = " 확인";
+logoutDescription  = " \ 당신이 로그 아웃 하시겠습니까 n 정말로?";
+repostDescription  = " \ 확인 n 정말로 당신은 인스 타 그램 도움말 센터에이 이미지에 대해보고 할?";
+
+ok  = " 승인";
+loading  = " 로드 중 ...";
+entername  = " 이름을 입력하세요";
+enterText  = " 모든 분야가 요구됩니다";
+enteremail  = " 이메일 주소를 입력하세요";
+validEmail  = " 유효한 이메일 주소를 입력하세요";
+enterdesc  = " 설명을 입력하십시오";
+sendsccuess  = " 성공적으로 보내기";
+errorapi  = " 문제가 발생했습니다";
+
+noimagecolection  = " 선택하고 언론 이미지의 컬렉션을 만드는 시작";
+logoutConfirm  = " \ 당신이 로그 아웃 하시겠습니까 n 정말로?";
+confirm  = " 확인";
+yes  = " 예";
+no  = " 아니";

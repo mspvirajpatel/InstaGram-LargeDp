@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " 探ります";
+settings  = " 設定＆フィードバック";
+home  = " サーチ";
+search  = " サーチ";
+profile  = " プロフィール";
+login  = " ログイン";
+logout  = " ログアウト";
+rateUs  = " 私たちを評価してください";
+feedback  = " フィードバック";
+aboutUs  = " 私たちに関しては";
+myCollection  = " 私のお気に入り";
+followers  = " 私のフォロワー";
+followings  = " マイ以下";
+aboutus  = " 私たちに関しては";
+
+
+profileTitle  = " プロフィール";
+hometitle  = " IGのユーザーをお探しですか？";
+homesubtitle  = " Instagramのユーザー名を書く、[検索]をタップして、大規模なDPを表示​​します。";
+homesearch  = " サーチ";
+homerecent  = " 最近の検索";
+searchplacehlder  = " サーチ";
+searchValidation  = " あなたが大規模なDPにしたいユーザ名を書きます。";
+homeClearAll  = " すべてクリア";
+
+removeimage  = " 首尾よくあなたのコレクションから削除";
+successimage  = " 首尾よくあなたのコレクションに追加";
+
+
+pullToRefresh  = " リフレッシュするためにプル";
+
+alertConfirmation  = " 警報";
+alertDescription  = " あなたのキャプションはクリップボードにcapiedされています。\ nあなたができることを過ぎてanywareで。";
+NO  = " ノー";
+YES  = " はい";
+OK  = " OK";
+Cancel  = " キャンセル";
+
+noFound  = " 見つかりません";
+
+somethingWrong  = " 何かが再びwrong.Tryをしたいです。";
+unableRemove  = " 再びit.Tryを削除することができません。";
+noMediaFound  = " 任意のメディアが見つかりません。";
+
+addtoCollectionbtn  = " 首尾よくあなたのコレクションに追加";
+accountprivate  = " このアカウントはプライベートです。";
+
+fbname  = " 名";
+fbemail  = " Eメール";
+fbDesc  = " あなたは我々のアプリについてどう思いますか？";
+fbsubmit  = " SUBMIT";
+
+logoutConfirmation  = " 確認";
+logoutDescription  = " \ n本当にあなたがログアウトしたいことをあなたは確認してください？";
+repostDescription  = " \ n本当にInstagramのヘルプセンターには、この画像について報告してよろしいですか？";
+
+ok  = " [OK]";
+loading  = " 読み込んでいます...";
+entername  = " 名前を入力してください";
+enterText  = " 全て必須項目です";
+enteremail  = " メールアドレスを入力してください";
+validEmail  = " 有効なメールアドレスを入力してください";
+enterdesc  = " 説明を入力してください。";
+sendsccuess  = " sucessfully送ります";
+errorapi  = " 何かが間違っていました";
+
+noimagecolection  = " 選択した画像のコレクションの作成を開始し、プレス";
+logoutConfirm  = " \ n本当にあなたがログアウトしたいことをあなたは確認してください？";
+confirm  = " 確認";
+yes  = " はい";
+no  = " ノー";

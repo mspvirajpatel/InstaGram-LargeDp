@@ -1,0 +1,81 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore = "Explore";
+settings = "Settings & Feedback";
+
+home = "Search";
+search = "Search";
+profile = "Profile";
+login = "Login";
+logout = "Logout";
+rateUs = "Rate Us";
+feedback = "Feedback";
+aboutUs = "About Us";
+myCollection = "My Favourite";
+followers = "My Followers";
+followings = "My Followings";
+aboutus = "About Us";
+
+//Navigation Titles
+profileTitle = "Profile";
+hometitle = "Looking for IG user?";
+homesubtitle = "Write Instagram User Name, Tap the Search and View Large DP.";
+homesearch = "Search";
+homerecent = "Recent Search";
+searchplacehlder = "SEARCH";
+searchValidation = "Write username you want to large DP.";
+homeClearAll = "Clear All";
+
+removeimage = "Successfully removed from your collection";
+successimage = "Successfully added to your collection";
+
+pullToRefresh = "Pull to refresh";
+
+alertConfirmation = "Alert";
+alertDescription = "Your caption is capied in clipboard.\nYou can past it at anyware.";
+NO = "No";
+YES = "Yes";
+OK = "Ok";
+Cancel = "Cancel";
+
+noFound = "No Found";
+
+somethingWrong = "Something want wrong.Try again.";
+unableRemove = "Unable to remove it.Try again.";
+noMediaFound = "Not found any media.";
+
+addtoCollectionbtn = "Successfully added to your collection";
+accountprivate = "This account is private.";
+
+fbname = "Name";
+fbemail = "Email";
+fbDesc = "What do you think about our app?";
+fbsubmit = "SUBMIT";
+
+logoutConfirmation = "Confirmation";
+logoutDescription = "\nAre you sure that you want to logout?";
+repostDescription = "\nAre you sure to report about this image to Instagram Help Center?";
+
+ok = "OK";
+loading = "Loading...";
+entername = "Please enter name";
+enterText = "All fields are required";
+enteremail = "Please enter email";
+validEmail = "Please enter valid email";
+enterdesc = "Please enter Description";
+sendsccuess = "Send sucessfully";
+errorapi = "Something went wrong";
+
+noimagecolection = "Start creating your collection of images by selecting and press ";
+logoutConfirm = "\nAre you sure that you want to logout?";
+confirm = "Confirmation";
+yes = "Yes";
+no = "No";
+

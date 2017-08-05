@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " 探索";
+settings  = " 設置與反饋";
+home  = " 搜索";
+search  = " 搜索";
+profile  = " 輪廓";
+login  = " 登錄";
+logout  = " 登出";
+rateUs  = " 率我們";
+feedback  = " 反饋";
+aboutUs  = " 關於我們";
+myCollection  = " 我的最愛";
+followers  = " 我的追隨者";
+followings  = " 我的追隨中";
+aboutus  = " 關於我們";
+
+
+profileTitle  = " 輪廓";
+hometitle  = " 尋找IG用戶？";
+homesubtitle  = " 寫Instagram的用戶名，點擊搜索，並查看大DP。";
+homesearch  = " 搜索";
+homerecent  = " 最近的搜索";
+searchplacehlder  = " 搜索";
+searchValidation  = " 寫要大DP的用戶名。";
+homeClearAll  = " 全部清除";
+
+removeimage  = " 從您的收藏成功取出";
+successimage  = " 成功添加到您的收藏";
+
+
+pullToRefresh  = " 拉刷新";
+
+alertConfirmation  = " 警報";
+alertDescription  = " 您的字幕剪貼板capied。\ n您可以過去，它在anyware。";
+NO  = " 沒有";
+YES  = " 是";
+OK  = " 好";
+Cancel  = " 取消";
+
+noFound  = " 沒有找到";
+
+somethingWrong  = " 東西又要wrong.Try。";
+unableRemove  = " 無法再次刪除it.Try。";
+noMediaFound  = " 沒有發現任何媒體。";
+
+addtoCollectionbtn  = " 成功添加到您的收藏";
+accountprivate  = " 此帳戶是私人的。";
+
+fbname  = " 名稱";
+fbemail  = " 電子郵件";
+fbDesc  = " 你覺得我們的應用程序是什麼？";
+fbsubmit  = " 提交";
+
+logoutConfirmation  = " 確認";
+logoutDescription  = " \ n您確定要退出？";
+repostDescription  = " \ n您一定要了解此圖片Instagram的幫助中心報告？";
+
+ok  = " 好";
+loading  = " 載入中...";
+entername  = " 請輸入名稱";
+enterText  = " 各個領域都需要";
+enteremail  = " 請輸入電子郵件";
+validEmail  = " 請輸入有效電子郵件";
+enterdesc  = " 請輸入說明";
+sendsccuess  = " 發送成功地";
+errorapi  = " 出了些問題";
+
+noimagecolection  = " 可通過選擇，然後按創建圖片集";
+logoutConfirm  = " \ n您確定要退出？";
+confirm  = " 確認";
+yes  = " 是";
+no  = " 沒有";

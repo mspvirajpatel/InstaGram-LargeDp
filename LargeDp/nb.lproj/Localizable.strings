@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Utforske";
+settings  = " Innstillinger og tilbakemeldinger";
+home  = " Søke";
+search  = " Søke";
+profile  = " Profil";
+login  = " Logg Inn";
+logout  = " Logg ut";
+rateUs  = " Rangere oss";
+feedback  = " Tilbakemelding";
+aboutUs  = " Om oss";
+myCollection  = " Min favoritt";
+followers  = " Mine følgere";
+followings  = " Mine Follo";
+aboutus  = " Om oss";
+
+
+profileTitle  = " Profil";
+hometitle  = " Leter du etter IG bruker?";
+homesubtitle  = " Skriv Instagram brukernavn, trykker du på søke og se større DP.";
+homesearch  = " Søke";
+homerecent  = " Siste Søk";
+searchplacehlder  = " SØKE";
+searchValidation  = " Skriv brukernavn du vil stort DP.";
+homeClearAll  = " Rydd alt";
+
+removeimage  = " Fjernet fra samlingen";
+successimage  = " Lagt til samlingen din";
+
+
+pullToRefresh  = " Trekk for å oppdatere";
+
+alertConfirmation  = " Varsling";
+alertDescription  = " Bildeteksten er capied i utklippstavlen. \ NDu kan forbi den anyware.";
+NO  = " Nei";
+YES  = " Ja";
+OK  = " ok";
+Cancel  = " Avbryt";
+
+noFound  = " Ikke funnet";
+
+somethingWrong  = " Noe vil wrong.Try igjen.";
+unableRemove  = " Kan ikke fjerne it.Try igjen.";
+noMediaFound  = " Ikke funnet noen medier.";
+
+addtoCollectionbtn  = " Lagt til samlingen din";
+accountprivate  = " Denne kontoen er privat.";
+
+fbname  = " Navn";
+fbemail  = " e-post";
+fbDesc  = " Hva synes du om vår app?";
+fbsubmit  = " SENDE INN";
+
+logoutConfirmation  = " Bekreftelse";
+logoutDescription  = " \ NEr du sikker på at du vil logge ut?";
+repostDescription  = " \ NEr du sikker på å rapportere om dette bildet til Instagram brukerstøtte?";
+
+ok  = " OK";
+loading  = " Laster ...";
+entername  = " Fyll inn navn";
+enterText  = " Alle felt må fylles ut";
+enteremail  = " Fyll inn e-post";
+validEmail  = " Skriv inn en gyldig e-post";
+enterdesc  = " Fyll inn Beskrivelse";
+sendsccuess  = " Send vellykket";
+errorapi  = " Noe gikk galt";
+
+noimagecolection  = " Begynne å lage din samling av bilder ved å velge og trykk";
+logoutConfirm  = " \ NEr du sikker på at du vil logge ut?";
+confirm  = " Bekreftelse";
+yes  = " Ja";
+no  = " Nei";

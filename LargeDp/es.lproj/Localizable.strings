@@ -1,0 +1,79 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+explore = "Explore"; = " Explorar";
+settings = "Settings & Feedback"; = " Programación y Evaluación";
+home = "Search"; = " Buscar";
+search = "Search"; = " Buscar";
+profile = "Profile"; = " Perfil";
+login = "Login"; = " Iniciar sesión";
+logout = "Logout"; = " Cerrar sesión";
+rateUs = "Rate Us"; = " nosotros tasa";
+feedback = "Feedback"; = " Realimentación";
+aboutUs = "About Us"; = " Sobre nosotros";
+myCollection = "My Favourite"; = " Mi favorito";
+followers = "My Followers"; = " Mis seguidores";
+followings = "My Followings"; = " Mis sigo";
+aboutus = "About Us"; = " Sobre nosotros";
+
+
+profileTitle = "Profile"; = " Perfil";
+hometitle = "Looking for IG user?"; = " Buscando usuario IG?";
+homesubtitle = "Write Instagram User Name, Tap the Search and View Large DP."; = " Escribe Instagram Nombre de usuario, toque la búsqueda y View Large DP.";
+homesearch = "Search"; = " Buscar";
+homerecent = "Recent Search"; = " Búsqueda reciente";
+searchplacehlder = "SEARCH"; = " BUSCAR";
+searchValidation = "Write username you want to large DP."; = " Escribir nombre de usuario que desea grande DP.";
+homeClearAll = "Clear All"; = " Limpiar todo";
+
+removeimage = "Successfully removed from your collection"; = " Éxito retirado de su colección";
+successimage = "Successfully added to your collection"; = " Éxito añadido a su colección";
+
+
+pullToRefresh = "Pull to refresh"; = " Tirar para refrescar";
+
+alertConfirmation = "Alert"; = " Alerta";
+alertDescription = "Your caption is capied in clipboard.\nYou can past it at anyware."; = " Su título se capied en el portapapeles. \ NPuede pasado en anyware de.";
+NO = "No"; = " No";
+YES = "Yes"; = " Sí";
+OK = "Ok"; = " De acuerdo";
+Cancel = "Cancel"; = " Cancelar";
+
+noFound = "No Found"; = " No encontrado";
+
+somethingWrong = "Something want wrong.Try again."; = " Algo quiere wrong.Try nuevo.";
+unableRemove = "Unable to remove it.Try again."; = " No se puede eliminar it.Try nuevo.";
+noMediaFound = "Not found any media."; = " No se ha encontrado ningún medio.";
+
+addtoCollectionbtn = "Successfully added to your collection"; = " Éxito añadido a su colección";
+accountprivate = "This account is private."; = " Esta cuenta es privada.";
+
+fbname = "Name"; = " Nombre";
+fbemail = "Email"; = " Email";
+fbDesc = "What do you think about our app?"; = " ¿Qué opinas sobre nuestra aplicación?";
+fbsubmit = "SUBMIT"; = " ENVIAR";
+
+logoutConfirmation = "Confirmation"; = " Confirmación";
+logoutDescription = "\nAre you sure that you want to logout?"; = " \ N ¿Está seguro de que desea salir?";
+repostDescription = "\nAre you sure to report about this image to Instagram Help Center?"; = " \ N ¿Está seguro de que informar sobre esta imagen para Instagram Centro de asistencia?";
+
+ok = "OK"; = " DE ACUERDO";
+loading = "Loading..."; = " Cargando...";
+entername = "Please enter name"; = " Por favor, introduzca el nombre";
+enterText = "All fields are required"; = " Todos los campos son obligatorios";
+enteremail = "Please enter email"; = " Por favor, introduzca correo electrónico";
+validEmail = "Please enter valid email"; = " Por favor introduzca un correo electrónico válido";
+enterdesc = "Please enter Description"; = " Por favor, introduzca Descripción";
+sendsccuess = "Send sucessfully"; = " enviar con éxito";
+errorapi = "Something went wrong"; = " Algo salió mal";
+
+noimagecolection = "Start creating your collection of images by selecting and press "; = " Empezar a crear su colección de imágenes mediante la selección y pulse";
+logoutConfirm = "\nAre you sure that you want to logout?"; = " \ N ¿Está seguro de que desea salir?";
+confirm = "Confirmation"; = " Confirmación";
+yes = "Yes"; = " Sí";
+no = "No"; = " No";

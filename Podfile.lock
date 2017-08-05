@@ -1,0 +1,72 @@
+PODS:
+  - Alamofire (4.5.0)
+  - Crashlytics (3.8.4):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.11)
+  - Firebase/AdMob (4.0.2):
+    - Firebase/Core
+    - Google-Mobile-Ads-SDK (= 7.20.0)
+  - Firebase/Core (4.0.2):
+    - FirebaseAnalytics (= 4.0.1)
+    - FirebaseCore (= 4.0.2)
+  - FirebaseAnalytics (4.0.1):
+    - FirebaseCore (~> 4.0)
+    - FirebaseInstanceID (~> 2.0)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseCore (4.0.2):
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseInstanceID (2.0.0):
+    - FirebaseCore (~> 4.0)
+  - Font-Awesome-Swift (1.6.2)
+  - Google-Mobile-Ads-SDK (7.20.0)
+  - GoogleToolboxForMac/Defines (2.1.1)
+  - GoogleToolboxForMac/NSData+zlib (2.1.1):
+    - GoogleToolboxForMac/Defines (= 2.1.1)
+  - GRDB.swift (0.110.0)
+  - IQKeyboardManagerSwift (4.0.10)
+  - Kingfisher (3.10.2)
+  - ReachabilitySwift (3)
+  - SideMenu (2.3.2)
+  - SwiftEventBus (2.1.2)
+  - Toast-Swift (2.0.0)
+  - Whisper (4.0.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.0)
+  - Crashlytics
+  - Fabric
+  - Firebase/AdMob
+  - Firebase/Core
+  - Font-Awesome-Swift (~> 1.5)
+  - GRDB.swift (~> 0.107)
+  - IQKeyboardManagerSwift
+  - Kingfisher (~> 3.2)
+  - ReachabilitySwift (~> 3)
+  - SideMenu
+  - SwiftEventBus
+  - Toast-Swift (~> 2.0)
+  - Whisper (~> 4.0)
+
+SPEC CHECKSUMS:
+  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
+  Crashlytics: 79e236942ca1e7fc641df1feb9a275360a78ab6a
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  Firebase: c7ad0731eab26d18a3fc547dd048b0f7cd9c63ae
+  FirebaseAnalytics: 4d7040fefc3cd8b291cde35f12cf063d7963f15d
+  FirebaseCore: 1a8bf6c795ad07d2918278657954ffd2552e9c17
+  FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
+  Font-Awesome-Swift: 4dc96df73b5f32aaccdee50a454c3ec253ee4977
+  Google-Mobile-Ads-SDK: 168312cdc167fa22746d4ea8e839fc4825dd2966
+  GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
+  GRDB.swift: d57b4012212a29312812b6461199d132f9f91568
+  IQKeyboardManagerSwift: 75ba21a23794a1e6b6fe6d9a267ea17f80e06771
+  Kingfisher: 7297492bf8cec9b2e2dee3519f2219948580d98e
+  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
+  SideMenu: 3fa07dd05d4bade2b6f9889fb1877e312e1ba319
+  SwiftEventBus: 9e8f6d8cff2826d66536ec367d17a47299478aa0
+  Toast-Swift: 5b2f8f720f7e78e48511f693df1f9c9a6e38a25a
+  Whisper: 08be92623311f8e53201e62e17f6d7b9599a4714
+
+PODFILE CHECKSUM: 9292bf7dc3713b48d3a2c4f71c72c293041cfdca
+
+COCOAPODS: 1.2.1.beta.1

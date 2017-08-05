@@ -1,0 +1,6 @@
+framework module Pods_LargeDp {
+  umbrella header "Pods-LargeDp-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Keşfetmek";
+settings  = " Ayarlar ve Geribildirim";
+home  = " Arama";
+search  = " Arama";
+profile  = " Profil";
+login  = " Oturum aç";
+logout  = " Çıkış Yap";
+rateUs  = " Bizi değerlendirin";
+feedback  = " geri bildirim";
+aboutUs  = " Hakkımızda";
+myCollection  = " Benim favorim";
+followers  = " Benim takipçilerim";
+followings  = " Benim Aşağıdakilerden";
+aboutus  = " Hakkımızda";
+
+
+profileTitle  = " Profil";
+hometitle  = " IG kullanıcı için mi arıyorsunuz?";
+homesubtitle  = " , Instagram Kullanıcı Adı yaz Ara'ya dokunun ve Büyük DP gör.";
+homesearch  = " Arama";
+homerecent  = " Son Arama";
+searchplacehlder  = " ARAMA";
+searchValidation  = " Büyük DP istediğiniz kullanıcı adını yazın.";
+homeClearAll  = " Hepsini temizle";
+
+removeimage  = " Başarıyla Koleksiyonunuzdan kaldırıldı";
+successimage  = " Başarıyla koleksiyonunuza eklenir";
+
+
+pullToRefresh  = " Yenilemek için çekme";
+
+alertConfirmation  = " Alarm";
+alertDescription  = " Altyazı panoya capied edilir. \ NBu anyware de geçmiş olabilir.";
+NO  = " Yok hayır";
+YES  = " Evet";
+OK  = " Tamam";
+Cancel  = " İptal etmek";
+
+noFound  = " Bulunamadı";
+
+somethingWrong  = " Bir şey yine wrong.Try istiyorum.";
+unableRemove  = " Tekrar it.Try kaldırılamıyor.";
+noMediaFound  = " herhangi bir medya bulunamadı.";
+
+addtoCollectionbtn  = " Başarıyla koleksiyonunuza eklenir";
+accountprivate  = " Bu hesap özeldir.";
+
+fbname  = " isim";
+fbemail  = " E-posta";
+fbDesc  = " Bizim uygulamayla ilgili ne düşünüyorsunuz?";
+fbsubmit  = " GÖNDER";
+
+logoutConfirmation  = " Onayla";
+logoutDescription  = " \ Oturumu kapatmak istiyorsanız emin nEmin?";
+repostDescription  = " \ Emin nEmin Instagram Yardım Merkezi'ne Bu resim hakkında rapor?";
+
+ok  = " tamam";
+loading  = " Yükleniyor...";
+entername  = " adını giriniz";
+enterText  = " tüm alanlar zorunludur";
+enteremail  = " e-posta girin";
+validEmail  = " Geçerli e-posta girin";
+enterdesc  = " Açıklama giriniz";
+sendsccuess  = " başarıyla gönder";
+errorapi  = " Bir şeyler yanlış gitti";
+
+noimagecolection  = " seçme ve basın tarafından görüntülerin koleksiyonunuzu oluşturmaya başlayın";
+logoutConfirm  = " \ Oturumu kapatmak istiyorsanız emin nEmin?";
+confirm  = " Onayla";
+yes  = " Evet";
+no  = " Yok hayır";

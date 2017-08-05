@@ -1,0 +1,80 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+
+explore  = " Tutkia";
+settings  = " Asetukset ja palaute";
+home  = " Hae";
+search  = " Hae";
+profile  = " Profiili";
+login  = " Kirjaudu sisään";
+logout  = " Kirjautua ulos";
+rateUs  = " Anna meille arvosana";
+feedback  = " palaute";
+aboutUs  = " Meistä";
+myCollection  = " Suosikkini";
+followers  = " seuraajalleni";
+followings  = " minun Followings";
+aboutus  = " Meistä";
+
+
+profileTitle  = " Profiili";
+hometitle  = " Etsitkö IG käyttäjä?";
+homesubtitle  = " Kirjoita Instagram käyttäjänimi napauttamalla haku- ja Katso ison DP.";
+homesearch  = " Hae";
+homerecent  = " Viimeaikaiset haku";
+searchplacehlder  = " HAE";
+searchValidation  = " Kirjoita käyttäjätunnus haluat suuria DP.";
+homeClearAll  = " Tyhjennä";
+
+removeimage  = " Onnistuneesti poistettu kokoelma";
+successimage  = " Onnistuneesti lisätty kokoelmaan";
+
+
+pullToRefresh  = " Vetää virkistää";
+
+alertConfirmation  = " hälytys";
+alertDescription  = " Kuvatekstin on capied leikepöydälle. \ NVoit ohi sitä anyware.";
+NO  = " Ei";
+YES  = " Joo";
+OK  = " kunnossa";
+Cancel  = " Peruuttaa";
+
+noFound  = " ei löydy";
+
+somethingWrong  = " Jotain haluavat wrong.Try uudelleen.";
+unableRemove  = " Pysty poistamaan it.Try uudelleen.";
+noMediaFound  = " Ei löydy mitään mediaa.";
+
+addtoCollectionbtn  = " Onnistuneesti lisätty kokoelmaan";
+accountprivate  = " Tämä tili on yksityinen.";
+
+fbname  = " Nimi";
+fbemail  = " Sähköposti";
+fbDesc  = " Mitä mieltä olet app?";
+fbsubmit  = " LÄHETÄ";
+
+logoutConfirmation  = " Vahvistus";
+logoutDescription  = " \ NOletko varma, että haluat kirjautua ulos?";
+repostDescription  = " \ NOletko varma ilmoittaa tästä kuva Instagram Ohjekeskukseemme";
+
+ok  = " kunnossa";
+loading  = " Ladataan...";
+entername  = " Anna nimi";
+enterText  = " Kaikki kentät ovat pakollisia";
+enteremail  = " Anna sähköpostiosoite";
+validEmail  = " Anna kelvollinen sähköpostiosoite";
+enterdesc  = " Anna Kuvaus";
+sendsccuess  = " Send onnistuneesti";
+errorapi  = " Jotain meni pieleen";
+
+noimagecolection  = " Alkaa luoda kokoelma kuvia valitsemalla ja paina";
+logoutConfirm  = " \ NOletko varma, että haluat kirjautua ulos?";
+confirm  = " Vahvistus";
+yes  = " Joo";
+no  = " Ei";

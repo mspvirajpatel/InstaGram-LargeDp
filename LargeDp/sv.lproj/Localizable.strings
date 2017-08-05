@@ -1,0 +1,79 @@
+/* 
+  Localizable.strings
+  InstaLargeDp
+
+  Created by MacMini-2 on 27/05/17.
+  Copyright © 2017 WMT. All rights reserved.
+*/
+
+explore  = " Utforska";
+settings  = " Inställningar & Feedback";
+home  = " Sök";
+search  = " Sök";
+profile  = " Profil";
+login  = " Logga in";
+logout  = " Logga ut";
+rateUs  = " Gradera oss";
+feedback  = " Återkoppling";
+aboutUs  = " Om oss";
+myCollection  = " Min favorit";
+followers  = " Mina följare";
+followings  = " Mina Följer";
+aboutus  = " Om oss";
+
+
+profileTitle  = " Profil";
+hometitle  = " Söker IG användare?";
+homesubtitle  = " Skriv Instagram användarnamn, Tryck på Search och Större DP.";
+homesearch  = " Sök";
+homerecent  = " Senaste Sök";
+searchplacehlder  = " SÖK";
+searchValidation  = " Skriv användarnamn du vill stor DP.";
+homeClearAll  = " Rensa alla";
+
+removeimage  = " Tagits bort från din samling";
+successimage  = " Lagts till i samlingen";
+
+
+pullToRefresh  = " Dra för att uppdatera";
+
+alertConfirmation  = " Varna";
+alertDescription  = " Din bildtext är capied i klippbordet. \ NDu kan förbi på AnyWare.";
+NO  = " Nej";
+YES  = " Ja";
+OK  = " Ok";
+Cancel  = " Annullera";
+
+noFound  = " Hittad inga";
+
+somethingWrong  = " Något vill wrong.Try igen.";
+unableRemove  = " Det går inte att ta bort it.Try igen.";
+noMediaFound  = " Inte funnit några media.";
+
+addtoCollectionbtn  = " Lagts till i samlingen";
+accountprivate  = " Detta konto är privat.";
+
+fbname  = " namn";
+fbemail  = " E-post";
+fbDesc  = " Vad tycker du om vår app?";
+fbsubmit  = " LÄMNA";
+
+logoutConfirmation  = " Bekräftelse";
+logoutDescription  = " \ NÄr du säker på att du vill logga ut?";
+repostDescription  = " \ NÄr du säker på att rapportera om detta bilden Instagram hjälpcenter?";
+
+ok  = " ok";
+loading  = " Läser in...";
+entername  = " Ange namn";
+enterText  = " alla fält är obligatoriska";
+enteremail  = " Ange e-post";
+validEmail  = " Ange giltig e";
+enterdesc  = " Ange Beskrivning";
+sendsccuess  = " Skicka framgångsrikt";
+errorapi  = " Något gick fel";
+
+noimagecolection  = " Börja skapa din samling av bilder genom att välja och tryck på";
+logoutConfirm  = " \ NÄr du säker på att du vill logga ut?";
+confirm  = " Bekräftelse";
+yes  = " Ja";
+no  = " Nej";
