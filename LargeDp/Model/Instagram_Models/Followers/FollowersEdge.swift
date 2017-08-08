@@ -1,7 +1,7 @@
 //
 //	FollowersEdge.swift
 //
-//	Create by MacMini-2 on 13/4/2017
+//	Create by VirajPatel on 13/4/2017
 //	Copyright © 2017. All rights reserved.
 
 import Foundation

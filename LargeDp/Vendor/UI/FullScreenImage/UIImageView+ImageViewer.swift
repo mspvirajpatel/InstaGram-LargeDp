@@ -2,8 +2,8 @@
 //  UIImageView+ImageViewer.swift
 //  ImageViewer
 //
-//  Created by MacMini-2 on 25/03/17.
-//  Copyright (c) 2017 WMT All rights reserved.
+//  Created by VirajPatel on 25/03/17.
+//  Copyright (c) 2017 VirajPatel All rights reserved.
 //
 
 import Foundation

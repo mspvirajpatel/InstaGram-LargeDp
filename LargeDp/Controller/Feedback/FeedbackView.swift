@@ -2,8 +2,8 @@
 //  FeedbackView.swift
 //  FlikoMapia
 //
-//  Created by DHRUV DALWADI on 23/02/17.
-//  Copyright © 2017 WebMobTech. All rights reserved.
+//  Created by Viraj Patel on 23/02/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit
@@ -214,7 +214,7 @@ class FeedbackView: BaseView {
             
             let dicParameter2 : NSDictionary = ["mailcontent":jsonString2,"deviceInfo":jsonString]
             
-            BaseAPICall().localAPIspostRequest(URL: "http://appsdata2.cloudapp.net/appmail/appfeedbackmail.php", Parameter: dicParameter2, Type: .FeedBack, Headers: headers, completionHandler: { [weak self] (result) in
+            BaseAPICall().localAPIspostRequest(URL: "Enter URL", Parameter: dicParameter2, Type: .FeedBack, Headers: headers, completionHandler: { [weak self] (result) in
                 if self == nil{
                     return
                 }

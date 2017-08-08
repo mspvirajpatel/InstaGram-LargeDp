@@ -2,8 +2,8 @@
 //  AppTheme.swift
 //  InstaLargerDp
 //
-//  Created by WebMob on 20/01/17.
-//  Copyright © 2017 WMT. All rights reserved.
+//  Created by VirajPatel on 20/01/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 import UIKit
 

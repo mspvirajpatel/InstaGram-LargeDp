@@ -2,8 +2,8 @@
 //  NotificationManager.swift
 //  ViewControllerDemo
 //
-//  Created by SamSol on 09/08/16.
-//  Copyright © 2016 SamSol. All rights reserved.
+//  Created by VirajPatel on 09/08/16.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import Foundation

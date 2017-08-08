@@ -3,7 +3,7 @@
 //  NetworkStatusMonitor
 //
 //  Created by Sauvik Dolui on 18/10/16.
-//  Copyright © 2016 Innofied Solution Pvt. Ltd. All rights reserved.
+//  Copyright © 2017 Innofied Solution Pvt. Ltd. All rights reserved.
 //
 
 import Foundation

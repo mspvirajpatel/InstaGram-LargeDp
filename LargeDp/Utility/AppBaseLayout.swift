@@ -2,8 +2,8 @@
 //  AppBaseLayout
 //  InstaLargerDp
 //
-//  Created by MacMini-2 on 15/11/16.
-//  Copyright © 2016 WMT. All rights reserved.
+//  Created by VirajPatel on 15/11/16.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

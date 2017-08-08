@@ -3,8 +3,8 @@
 //  PhotoCollectionViewcell.swift
 //  InstaLargerDp
 //
-//  Created by WebMobTech-3 on 06/04/17.
-//  Copyright © 2017 WebMobTech-3. All rights reserved.
+//  Created by VirajPatel on 06/04/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

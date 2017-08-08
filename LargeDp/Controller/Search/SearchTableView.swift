@@ -2,8 +2,8 @@
 //  SearchTableView.swift
 //  InstaLargeDp
 //
-//  Created by MacMini-2 on 30/05/17.
-//  Copyright © 2017 WMT. All rights reserved.
+//  Created by VirajPatel on 30/05/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

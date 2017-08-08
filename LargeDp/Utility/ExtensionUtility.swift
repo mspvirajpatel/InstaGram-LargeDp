@@ -1,9 +1,9 @@
 //
 //  ExtensionUtility.swift
-//  WMTSwiftDemo
+//  VirajPatelSwiftDemo
 //
-//  Created by SamSol on 12/09/16.
-//  Copyright © 2016 WMT. All rights reserved.
+//  Created by VirajPatel on 12/09/16.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

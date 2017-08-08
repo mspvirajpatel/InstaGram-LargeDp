@@ -2,8 +2,8 @@
 //  LoginView.swift
 //  InstaLargerDp
 //
-//  Created by DHRUV DALWADI on 09/12/16.
-//  Copyright © 2016 WebMobTech. All rights reserved.
+//  Created by Viraj Patel on 09/12/16.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

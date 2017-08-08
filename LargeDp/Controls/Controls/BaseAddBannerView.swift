@@ -2,8 +2,8 @@
 //  BaseAddBannerView.swift
 //  InstaLargerDp
 //
-//  Created by WebMobTech-3 on 05/04/17.
-//  Copyright © 2017 WebMobTech-3. All rights reserved.
+//  Created by VirajPatel on 05/04/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

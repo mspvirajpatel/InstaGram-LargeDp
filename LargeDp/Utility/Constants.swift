@@ -1,4 +1,10 @@
-
+//
+//  Constants.swift
+//  ViewControllerDemo
+//
+//  Created by VirajPatel on 27/06/16.
+//  Copyright © 2017 VirajPatel. All rights reserved.
+//
 
 import Foundation
 import UIKit
@@ -25,24 +31,12 @@ struct General{
 //  MARK: - Thired Party Constants -
 struct ThiredPartyKey {
     
-    static let adMob : String = ""
+    static let adMob : String = "ca-app-pub-7409730219034199~4604585819"
 }
 
 struct Instagram_data {
-    //static let KApp_Id = ""
-    static let kDialogBaseURL = "https://instagram.com/"
+    
     static let KInstagramLogin = "https://www.instagram.com/accounts/login/"
-    static let kLogin = "oauth/authorize"
-    static let KmainUrl = "https://instagram.com/oauth/authorize"
-    static let kApp_Id = ""
-    static let KRedirect_Uri = ""
-    static let Instagram_AuthUrl = "https://api.instagram.com/oauth/authorize/"
-    static let Instagram_ApiurI = "https://api.instagram.com/v1/users/"
-    static let Instagram_Client_id = ""
-    //static let Instagram_Client_id = ""
-    static let Instagram_Client_Sectret = ""
-    static let Instagram_redirect_Uri = ""
-    //static let Instagram_redirect_Uri = ""
     
     static let Instagram_access_token = "access_token"
     static let Instagram_Scope = "basic"
@@ -53,12 +47,12 @@ struct Instagram_data {
 }
 struct InAddvertise {
     
-    static let KAddBannerKey = ""
-    static let KgoogleaddId = ""
-    static let KAddFullscreen = ""
-    static let kappUrl = ""
-    static let kNativeadd = ""
-    static let kBigNativeadd = ""
+    static let KAddBannerKey = "ca-app-pub-7409730219034199/608135619016"
+    static let KgoogleaddId = "ca-app-pub-7409730219034199~83563895417"
+    static let KAddFullscreen = "ca-app-pub-7409730219034199/755805342213"
+    static let kappUrl = "https://itunes.apple.com/us/app/id1241324345289"
+    static let kNativeadd = "ca-app-pub-7409730219034199/1511518634515"
+    static let kBigNativeadd = "ca-app-pub-7409730219034199/8577123457010"
 }
 
 //  MARK: - Server Constants -
@@ -122,9 +116,9 @@ struct APIConstant {
     static let csrftoken  = "csrftoken"
     static let mid  = "mid"
     
-    static let itunesStorelink = ""
+    static let itunesStorelink = "Enter Link"
     
-    static let GoogleStorelink = ""
+    static let GoogleStorelink = "Enter Link"
 }
 
 

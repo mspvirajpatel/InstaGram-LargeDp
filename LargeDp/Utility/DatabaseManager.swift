@@ -2,8 +2,8 @@
 //  DatabaseManager.swift
 //  CamLive
 //
-//  Created by WebMob on 24/02/17.
-//  Copyright © 2017 WebMobTech. All rights reserved.
+//  Created by VirajPatel on 24/02/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import GRDB

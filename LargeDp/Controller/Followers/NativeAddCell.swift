@@ -2,8 +2,8 @@
 //  NativeAddCell.swift
 //  InstaLargerDp
 //
-//  Created by DHRUV DALWADI on 03/05/17.
-//  Copyright © 2017 WebMobTech. All rights reserved.
+//  Created by Viraj Patel on 03/05/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

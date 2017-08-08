@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  instalargedp
 //
-//  Created by MacMini-2 on 26/05/17.
-//  Copyright © 2017 WMT. All rights reserved.
+//  Created by VirajPatel on 26/05/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

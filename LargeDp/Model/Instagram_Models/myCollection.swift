@@ -2,8 +2,8 @@
 //  myCollection.swift
 //  InstaLargerDp
 //
-//  Created by MacMini-2 on 26/04/17.
-//  Copyright © 2017 WebMobTech-3. All rights reserved.
+//  Created by VirajPatel on 26/04/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

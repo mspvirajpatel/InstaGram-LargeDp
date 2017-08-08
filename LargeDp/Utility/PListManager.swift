@@ -1,8 +1,8 @@
 //
 //  PListManager.swift
 //
-//  Created by SamSol on 01/07/16.
-//  Copyright © 2016 SamSol. All rights reserved.
+//  Created by VirajPatel on 01/07/16.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import UIKit

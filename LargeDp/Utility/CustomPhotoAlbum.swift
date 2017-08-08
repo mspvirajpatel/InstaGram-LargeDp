@@ -2,8 +2,8 @@
 //  CustomPhotoAlbum.swift
 //  Flikopi
 //
-//  Created by DHRUV DALWADI on 12/01/17.
-//  Copyright © 2017 WebMobTech. All rights reserved.
+//  Created by Viraj Patel on 12/01/17.
+//  Copyright © 2017 VirajPatel. All rights reserved.
 //
 
 import Foundation
