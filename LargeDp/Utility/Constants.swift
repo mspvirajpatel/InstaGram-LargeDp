@@ -1,10 +1,4 @@
-//
-//  Constants.swift
-//  ViewControllerDemo
-//
-//  Created by SamSol on 27/06/16.
-//  Copyright © 2016 SamSol. All rights reserved.
-//
+
 
 import Foundation
 import UIKit
@@ -31,24 +25,24 @@ struct General{
 //  MARK: - Thired Party Constants -
 struct ThiredPartyKey {
     
-    static let adMob : String = "ca-app-pub-7409730219034199~4604585819"
+    static let adMob : String = ""
 }
 
 struct Instagram_data {
-    //static let KApp_Id = "4fef19045d624e1aaab112b66ca07938"
+    //static let KApp_Id = ""
     static let kDialogBaseURL = "https://instagram.com/"
     static let KInstagramLogin = "https://www.instagram.com/accounts/login/"
     static let kLogin = "oauth/authorize"
     static let KmainUrl = "https://instagram.com/oauth/authorize"
-    static let kApp_Id = "b8ecfd43c3e34b18a29133e206f51b07"
-    static let KRedirect_Uri = "webmobtech.com"
+    static let kApp_Id = ""
+    static let KRedirect_Uri = ""
     static let Instagram_AuthUrl = "https://api.instagram.com/oauth/authorize/"
     static let Instagram_ApiurI = "https://api.instagram.com/v1/users/"
-    static let Instagram_Client_id = "b8ecfd43c3e34b18a29133e206f51b07"
-    //static let Instagram_Client_id = "c0a94fa83f674942ba7b41d184b8a455"
-    static let Instagram_Client_Sectret = "08668d74dc584187a77dca58cb5e4e44"
-    static let Instagram_redirect_Uri = "http://webmobtech.com"
-    //static let Instagram_redirect_Uri = "https://polar-shelf-32169.herokuapp.com/api/v1/instagram/oauth_redirect"
+    static let Instagram_Client_id = ""
+    //static let Instagram_Client_id = ""
+    static let Instagram_Client_Sectret = ""
+    static let Instagram_redirect_Uri = ""
+    //static let Instagram_redirect_Uri = ""
     
     static let Instagram_access_token = "access_token"
     static let Instagram_Scope = "basic"
@@ -59,12 +53,12 @@ struct Instagram_data {
 }
 struct InAddvertise {
     
-    static let KAddBannerKey = "ca-app-pub-7409730219034199/6081319016"
-    static let KgoogleaddId = "ca-app-pub-7409730219034199~8356389417"
-    static let KAddFullscreen = "ca-app-pub-7409730219034199/7558052213"
-    static let kappUrl = "https://itunes.apple.com/us/app/id1241324289"
-    static let kNativeadd = "ca-app-pub-7409730219034199/1511518615"
-    static let kBigNativeadd = "ca-app-pub-7409730219034199/8577127010"
+    static let KAddBannerKey = ""
+    static let KgoogleaddId = ""
+    static let KAddFullscreen = ""
+    static let kappUrl = ""
+    static let kNativeadd = ""
+    static let kBigNativeadd = ""
 }
 
 //  MARK: - Server Constants -
