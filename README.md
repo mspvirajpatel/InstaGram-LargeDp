@@ -8,4 +8,7 @@
 <li>-List of Favrite List User</li>
 </ol>
 
-![Preview](https://s2.postimg.org/8plzn73ux/Recent_Search_Screen_720_X1280.png)
+<p align="center">
+  <img src="https://s2.postimg.org/8plzn73ux/Recent_Search_Screen_720_X1280.png" width="350"/>
+  <img src="https://s2.postimg.org/8plzn73ux/Recent_Search_Screen_720_X1280.png" width="350"/>
+</p>
