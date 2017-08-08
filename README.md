@@ -10,5 +10,5 @@
 
 <p align="center">
   <img src="https://s2.postimg.org/8plzn73ux/Recent_Search_Screen_720_X1280.png" width="350"/>
-  <img src="https://s2.postimg.org/8plzn73ux/Recent_Search_Screen_720_X1280.png" width="350"/>
+  <img src="https://s2.postimg.org/6ilmwj9m1/screen696x696-1.jpg" width="350"/>
 </p>
