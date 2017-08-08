@@ -122,9 +122,9 @@ struct APIConstant {
     static let csrftoken  = "csrftoken"
     static let mid  = "mid"
     
-    static let itunesStorelink = "https://itunes.apple.com/us/app/id1241324289"
+    static let itunesStorelink = ""
     
-    static let GoogleStorelink = "https://play.google.com/store/apps/details?id=com.wmt.android.instalargedp"
+    static let GoogleStorelink = ""
 }
 
 
