@@ -30,7 +30,7 @@ class PeopleTableViewCell: UITableViewCell {
     
     // MARK: - Lifecycle -
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.loadViewControls()
@@ -193,10 +193,10 @@ class PeopleTableViewCell: UITableViewCell {
         
         
         //InnerView...
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[innerView]-0-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[innerView]-0-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         self.contentView.addConstraints(layout.control_H)
         
-        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-5@251-[innerView]-5@251-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-5@251-[innerView]-5@251-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         self.contentView.addConstraints(layout.control_V)
         
         
@@ -207,30 +207,30 @@ class PeopleTableViewCell: UITableViewCell {
         layout.size_Height = NSLayoutConstraint(item: imgIcon, attribute: .height, relatedBy: .equal, toItem: imgIcon, attribute: .width, multiplier: 1.0, constant: 0)
         innerView.addConstraint(layout.size_Height)
         
-        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-virticalPadding-[imgIcon]-virticalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-virticalPadding-[imgIcon]-virticalPadding-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_V)
         
         layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-horizontalPadding-[imgIcon]-0-[lableContainer]-virticalPadding-|", options: [.alignAllCenterY], metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_H)
        
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[lblTitle]-5@251-[isVarified]->=5@751-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[lblTitle]-5@251-[isVarified]->=5@751-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         lableContainer.addConstraints(layout.control_H)
         
         
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[lblSubTitle]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[lblSubTitle]-5-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         lableContainer.addConstraints(layout.control_H)
         
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[lblfollowers]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[lblfollowers]-5-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         lableContainer.addConstraints(layout.control_H)
         
-        constantAll = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[lblSubTitle]-2-[lblTitle]-2-[lblfollowers]-2-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        constantAll = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[lblSubTitle]-2-[lblTitle]-2-[lblfollowers]-2-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         lableContainer.addConstraints(constantAll)
         
-        constanttitle = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[lblTitle]-2-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        constanttitle = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[lblTitle]-2-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
        
-        constanttitleSubtittle = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[lblSubTitle]-2-[lblTitle]-2-|", options:NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        constanttitleSubtittle = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[lblSubTitle]-2-[lblTitle]-2-|", options:NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         
-        constanttitleFOLLOWERS = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[lblTitle]-2-[lblfollowers]-2-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        constanttitleFOLLOWERS = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[lblTitle]-2-[lblfollowers]-2-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
        
         layout.size_Height = NSLayoutConstraint(item: isVarified, attribute: .height, relatedBy: .equal, toItem: self.contentView, attribute: .height, multiplier: 0.0, constant: 15)
         lableContainer.addConstraint(layout.size_Height)
@@ -238,10 +238,10 @@ class PeopleTableViewCell: UITableViewCell {
         layout.size_Width = NSLayoutConstraint(item: isVarified, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 0.0, constant: 15)
         lableContainer.addConstraint(layout.size_Width)
  
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:[imgIsPrivate]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:[imgIsPrivate]-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         self.contentView.addConstraints(layout.control_H)
         
-        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[imgIsPrivate]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[imgIsPrivate]-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         self.contentView.addConstraints(layout.control_V)
         
         layout.size_Height = NSLayoutConstraint(item: imgIsPrivate, attribute: .height, relatedBy: .equal, toItem: self.contentView, attribute: .height, multiplier: 0.0, constant: 20)
@@ -266,7 +266,7 @@ class PeopleTableViewCell: UITableViewCell {
         layout.position_Top = NSLayoutConstraint(item: isVarified, attribute: .top, relatedBy: .equal, toItem: lblTitle, attribute: .top, multiplier: 1.0, constant: 0)
         lableContainer.addConstraint(layout.position_Top)
         
-        defer {
+        do {
             layout.releaseObject()
             layout = nil
         }
@@ -360,7 +360,7 @@ class PeopleTableViewCell: UITableViewCell {
                         lblTitle.text = "@\(followersEdge.node.username!)"
                         lblSubTitle.text = followersEdge.node.fullName!
                         lblfollowers.text = ""
-                        imgIcon.displayImageFromURLWithPlaceholder(followersEdge.node.profilePicUrl, placeholder: UIImage(named: "postplaceholder"))
+                        imgIcon.displayImageFromURL(followersEdge.node.profilePicUrl, placeholder: UIImage(named: "postplaceholder"))
                        
                         imgIsPrivate.isHidden = true
                         
@@ -394,7 +394,7 @@ class PeopleTableViewCell: UITableViewCell {
                         lblTitle.text = "@\(searchUser.user.username!)"
                         lblSubTitle.text = searchUser.user.fullName!
                         lblfollowers.text =  searchUser.user.byline!
-                        imgIcon.displayImageFromURLWithPlaceholder(searchUser.user.profilePicUrl, placeholder: UIImage(named: "postplaceholder"))
+                        imgIcon.displayImageFromURL(searchUser.user.profilePicUrl, placeholder: UIImage(named: "postplaceholder"))
                         
                         if searchUser.user.isPrivate == true
                         {
@@ -521,7 +521,7 @@ class PeopleTableViewCell: UITableViewCell {
         super.awakeFromNib()
     }
     
-    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
         if(self.btnTouchUpInside != nil)
         {

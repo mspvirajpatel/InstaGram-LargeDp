@@ -5,13 +5,7 @@ Follow me: [@vaberer](https://twitter.com/vaberer)
 
 I like &#9733;. Do not forget to &#9733; this super convenient library.
 
-#There is also a very popular [Google Design Material Icons](https://github.com/Vaberer/Google-Material-Design-Icons-Swift) library which you will love!
-
-
-##Added ```UISegmentedControl``` & ```UITabbarItem``` & ```UISlider``` & ```UIStepper``` & ```UITextField``` support!
-
-
-###Updated to Font Awesome 4.7 - Added 41 new icons!
+## Added ```UISegmentedControl``` & ```UITabbarItem``` & ```UISlider``` & ```UIStepper``` & ```UITextField``` support!
 
 
 Font Awesome swift library for iOS. No image icons any more. Using Font Awesome Swift library is very easy to use. Look at the demo app which shows all icons and their names or just visit [FontAwesome](http://fortawesome.github.io/Font-Awesome/icons/).
@@ -45,7 +39,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 use_frameworks!
 
-pod 'Font-Awesome-Swift', '~> 1.6.2'
+pod 'Font-Awesome-Swift', '~> 1.7.2'
 ```
 
 Then, run the following command:
@@ -58,7 +52,7 @@ Do not forget to import to your swift files where you want to use this library:
 import Font_Awesome_Swift
 ```
 
-Check branches `swift-2.2` and `swift-2.3`
+Check branches `swift-2.2`, `swift-2.3` or `swift-3`
 
 ### Manually
 
@@ -219,9 +213,9 @@ For Stacked images, please refer [Stacked Icons](http://fontawesome.io/examples/
 
 Patrik Vaberer, patrik@toptal.com
 
-- [LinkedIn](https://sk.linkedin.com/in/vaberer)
+- [LinkedIn](https://www.linkedin.com/in/vaberer)
 - [@vaberer](https://twitter.com/vaberer)
-- [Blog](http://vaberer.me)
+- [Blog](http://vaberer.com)
 
 ### Licence
 

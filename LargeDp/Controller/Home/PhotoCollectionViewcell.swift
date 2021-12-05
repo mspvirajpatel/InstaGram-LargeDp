@@ -201,21 +201,21 @@ class PhotoCollectionViewcell : UICollectionViewCell {
                                "secondaryHorizontalPadding" : secondaryHorizontalPadding,
                                "secondaryVerticalPadding" : secondaryVerticalPadding]
        
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[innerView]-2-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[innerView]-2-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         self.contentView.addConstraints(layout.control_H)
         
-        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[innerView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[innerView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         self.contentView.addConstraints(layout.control_V)
 
         
         //imagPhoto
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[userName]-2-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[userName]-2-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_H)
     
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[userDetails]-2-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[userDetails]-2-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_H)
         
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[userLastseen]-2-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-2-[userLastseen]-2-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_H)
         
         innerView.layoutSubviews()
@@ -225,16 +225,16 @@ class PhotoCollectionViewcell : UICollectionViewCell {
         imgPhoto.widthAnchor.constraint(equalToConstant: 120 * 0.70).isActive = true
         imgPhoto.heightAnchor.constraint(equalTo: imgPhoto.widthAnchor).isActive = true
         
-        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-25-[imgPhoto]-5-[userName]-2-[userDetails]-2-[userLastseen]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-25-[imgPhoto]-5-[userName]-2-[userDetails]-2-[userLastseen]-5-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_V)
         
         
         
         //Selected Image
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:[imgSelected]-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:[imgSelected]-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_H)
         
-        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[imgSelected]", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[imgSelected]", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_V)
         
         layout.size_Height = NSLayoutConstraint(item: imgSelected, attribute: .height, relatedBy: .equal, toItem: innerView, attribute: .height, multiplier: 0.10, constant: 0)
@@ -245,10 +245,10 @@ class PhotoCollectionViewcell : UICollectionViewCell {
         
         
         //isVarified Image
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[isVarified]", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-[isVarified]", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_H)
         
-        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[isVarified]", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-[isVarified]", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         innerView.addConstraints(layout.control_V)
         
         layout.size_Height = NSLayoutConstraint(item: isVarified, attribute: .height, relatedBy: .equal, toItem: innerView, attribute: .height, multiplier: 0.10, constant: 0)
@@ -295,7 +295,7 @@ class PhotoCollectionViewcell : UICollectionViewCell {
                         case ImageEditorViewType.follow.rawValue:
                             
                             let followersEdge = FollowersEdge.init(fromDictionary: dicData as! [String : AnyObject])
-                            self.imgPhoto.displayImageFromURLWithPlaceholder(followersEdge.node.profilePicUrl, placeholder: UIImage(named: "postplaceholder"))
+                            self.imgPhoto.displayImageFromURL(followersEdge.node.profilePicUrl, placeholder: UIImage(named: "postplaceholder"))
                             imgSelected.isHidden = true
                             
                             if followersEdge.node.isVerified == true
@@ -324,7 +324,7 @@ class PhotoCollectionViewcell : UICollectionViewCell {
                         case ImageEditorViewType.searchUser.rawValue:
                             
                             let searchUser = SearchUser.init(fromDictionary: dicData as! [String : AnyObject])
-                            self.imgPhoto.displayImageFromURLWithPlaceholder(searchUser.user.profilePicUrl, placeholder: UIImage(named: "postplaceholder"))
+                            self.imgPhoto.displayImageFromURL(searchUser.user.profilePicUrl, placeholder: UIImage(named: "postplaceholder"))
                             if searchUser.user.isPrivate == true
                             {
                                 imgSelected.isHidden = false

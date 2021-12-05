@@ -10,11 +10,11 @@ import UIKit
 
 open class MZUtility: NSObject {
     
-    open static let DownloadCompletedNotif: String = {
+    public static let DownloadCompletedNotif: String = {
         return "com.MZDownloadManager.DownloadCompletedNotif"
     }()
     
-    open static let baseFilePath: String = {
+    public static let baseFilePath: String = {
         return (NSHomeDirectory() as NSString).appendingPathComponent("Documents") as String
     }()
 

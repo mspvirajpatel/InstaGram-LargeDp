@@ -45,19 +45,19 @@ class myCollection: Record {
     }
     
     required init(row: Row) {
-        id = row.value(named: "id")
-        modelType = row.value(named: "modelType")
-        data = row.value(named: "data")
-        loginUserID = row.value(named: "loginUserID")
-        modelID = row.value(named: "modelID")
-        timeStamp = row.value(named: "timeStamp")
-        isFavorite = row.value(named: "isFavorite")
-        isRecent = row.value(named: "isRecent")
+//        id = row.value(named: "id")
+//        modelType = row.value(named: "modelType")
+//        data = row.value(named: "data")
+//        loginUserID = row.value(named: "loginUserID")
+//        modelID = row.value(named: "modelID")
+//        timeStamp = row.value(named: "timeStamp")
+//        isFavorite = row.value(named: "isFavorite")
+//        isRecent = row.value(named: "isRecent")
         
         super.init(row: row)
     }
     
-    override var persistentDictionary: [String : DatabaseValueConvertible?] {
+    var persistentDictionary: [String : DatabaseValueConvertible?] {
         return [
             "id": id,
             "modelType": modelType,

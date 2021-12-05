@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+ platform :ios, '13.0'
 
 target ‘LargeDp' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -12,13 +12,13 @@ target ‘LargeDp' do
     pod 'Firebase/Core'
 
     pod 'IQKeyboardManagerSwift'
-	pod 'Alamofire’, '~> 4.0'
-	pod 'Toast-Swift', '~> 2.0'
-	pod 'Whisper', '~> 4.0'
-	pod 'Font-Awesome-Swift', '~> 1.5'
-	pod 'ReachabilitySwift', '~> 3'
+    pod 'Alamofire', '~> 5.4'
+    pod 'Toast-Swift'
+    pod 'Whisper'
+    pod 'Font-Awesome-Swift', '~> 1.7'
+    pod 'ReachabilitySwift'
     pod 'SwiftEventBus'
-    pod 'GRDB.swift', '~> 0.107'
-    pod 'Kingfisher', '~> 3.2'
+    pod 'GRDB.swift', '~> 5.15'
+    pod 'Kingfisher', '~> 7.0'
     pod 'SideMenu'
 end

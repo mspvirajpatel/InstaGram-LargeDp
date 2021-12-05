@@ -52,7 +52,7 @@ class BaseTextView: UITextView, UITextViewDelegate, UIScrollViewDelegate {
             return
         }
         
-        if(self.placeholder.characters.count > 0){
+        if(self.placeholder.count > 0){
             
             if(placeHolderLabel == nil){
                 
@@ -74,11 +74,11 @@ class BaseTextView: UITextView, UITextViewDelegate, UIScrollViewDelegate {
             placeHolderLabel.text = self.placeholder
             placeHolderLabel.sizeToFit()
             
-            self.sendSubview(toBack: placeHolderLabel)
+            self.sendSubviewToBack(placeHolderLabel)
             
         }
         
-        if(self.text!.characters.count == 0 && self.placeholder.characters.count > 0){
+        if(self.text!.count == 0 && self.placeholder.count > 0){
             self.viewWithTag(999)?.alpha = 1
         }
         
@@ -110,7 +110,7 @@ class BaseTextView: UITextView, UITextViewDelegate, UIScrollViewDelegate {
     func setCommonProperties(){
         
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.textContainerInset = UIEdgeInsetsMake(5.0, 5.0, 5.0, 5.0)
+        self.textContainerInset = UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
         self.autocapitalizationType = .sentences
         self.autocorrectionType = .default
         self.keyboardAppearance = .dark
@@ -191,7 +191,7 @@ class BaseTextView: UITextView, UITextViewDelegate, UIScrollViewDelegate {
             numberToolbar.setTopBorder(Color.textFieldBorder.withAlpha(General.textFieldColorAlpha), width: 1.0)
             numberToolbar.setBottomBorder(Color.textFieldBorder.withAlpha(General.textFieldColorAlpha), width: 1.0)
             
-            defer{
+            do{
                 fixedSpace = nil
                 doneButton = nil
                 flexibleSpace = nil
@@ -233,7 +233,7 @@ class BaseTextView: UITextView, UITextViewDelegate, UIScrollViewDelegate {
             
             numberToolbar.setBottomBorder(Color.textFieldBorder.withAlpha(General.textFieldColorAlpha), width: 1.0)
             
-            defer{
+            do{
                 flexibleSpace = nil
                 doneButton = nil
                 numberToolbar = nil
@@ -256,15 +256,15 @@ class BaseTextView: UITextView, UITextViewDelegate, UIScrollViewDelegate {
     
     // MARK: - User Interaction -
     
-    func leftArrowButtonAction(){
+    @objc func leftArrowButtonAction(){
         self.setResponderToTextControl(.leftResponderDirectionType)
     }
     
-    func rightArrowButtonAction(){
+    @objc func rightArrowButtonAction(){
         self.setResponderToTextControl(.rightResponderDirectionType)
     }
     
-    func doneButtonAction(){
+    @objc func doneButtonAction(){
         AppUtility.executeTaskInMainQueueWithCompletion { [weak self] in
             if self == nil{
                 return
@@ -335,7 +335,7 @@ class BaseTextView: UITextView, UITextViewDelegate, UIScrollViewDelegate {
                 let subViewArrayCount : Int = subViewArray!.count
                 
                 var isNextTextControlAvailable : Bool = false
-                let currentTextFieldIndex : Int = subViewArray.index(of: self!)!
+                let currentTextFieldIndex : Int = subViewArray.firstIndex(of: self!)!
                 
                 var textField : UITextField?
                 var textView : UITextView?
@@ -406,7 +406,7 @@ class BaseTextView: UITextView, UITextViewDelegate, UIScrollViewDelegate {
     // MARK: - UITextView Delegate Methods -
     
     func textViewDidChange(_ textView: UITextView){
-        if(self.placeholder.characters.count == 0){
+        if(self.placeholder.count == 0){
             return
         }
         

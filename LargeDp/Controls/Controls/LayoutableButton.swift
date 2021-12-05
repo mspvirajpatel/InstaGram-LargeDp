@@ -120,7 +120,7 @@ class LayoutableButton: UIButton {
     override func layoutSubviews() {
         if let imageSize = self.imageView?.image?.size,
             let font = self.titleLabel?.font,
-            let textSize = self.titleLabel?.attributedText?.size() ?? self.titleLabel?.text?.size(attributes: [NSFontAttributeName: font]) {
+            let textSize = self.titleLabel?.attributedText?.size() ?? self.titleLabel?.text?.size(withAttributes: [NSAttributedString.Key.font: font]) {
             
             var _imageEdgeInsets = UIEdgeInsets.zero
             var _titleEdgeInsets = UIEdgeInsets.zero

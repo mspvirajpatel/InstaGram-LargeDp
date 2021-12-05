@@ -164,10 +164,10 @@ class ImagePopUp: BaseView {
         self.addConstraint(baseLayout.position_CenterY)
         
       
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[imgProfile]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[imgProfile]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         imageView.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[imgProfile]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[imgProfile]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         imageView.addConstraints(baseLayout.control_V)
         
         self.layoutIfNeeded()
@@ -190,7 +190,7 @@ class ImagePopUp: BaseView {
                 let newString = aString.replacingOccurrences(of: "/s150x150", with: "", options: .literal, range: nil)
                 userprofile.user.profilePicUrlHd = newString
                 
-                self.imgProfile.displayImageFromURLWithPlaceholder(newString, placeholder: self.placeholder)
+                self.imgProfile.displayImageFromURL(newString, placeholder: self.placeholder)
             }
             break
        
@@ -199,7 +199,7 @@ class ImagePopUp: BaseView {
             if self.followersEdge != nil && self.followersEdge.node != nil
             {
                 self.imgProfile.displayImageFromURL(self.followersEdge.node.profilePicUrl)
-                self.imgProfile.displayImageFromURLWithPlaceholder(self.followersEdge.node.profilePicUrl320, placeholder: self.placeholder)
+                self.imgProfile.displayImageFromURL(self.followersEdge.node.profilePicUrl320, placeholder: self.placeholder)
             }
             break
         case ImageEditorViewType.searchUser.rawValue:
@@ -207,7 +207,7 @@ class ImagePopUp: BaseView {
             if self.searchUser != nil && self.searchUser.user != nil
             {
                 self.imgProfile.displayImageFromURL(self.searchUser.user.profilePicUrl)
-                self.imgProfile.displayImageFromURLWithPlaceholder(self.searchUser.user.profilePicUrl320, placeholder: self.placeholder)
+                self.imgProfile.displayImageFromURL(self.searchUser.user.profilePicUrl320, placeholder: self.placeholder)
             }
             break
         default:
@@ -254,12 +254,12 @@ class ImagePopUp: BaseView {
         btnTouchUpInside = event
     }
     
-    func bgTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    @objc func bgTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
         self.removeAnimate()
     }
 
-    func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
+    @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
        
         if(self.btnTouchUpInside != nil)

@@ -58,7 +58,7 @@ class ProfileViewController: BaseViewController {
         DownloadManager.shared.downloadFiles(arrURL: profileView.arrToDownload,isFavorite: 0)
         
         let navigationBarFont: UIFont? = UIFont(name: FontStyle.medium, size: 23.0)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Color.navigationTitle.value,NSFontAttributeName: navigationBarFont!] as [String : Any]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: Color.navigationTitle.value,NSAttributedString.Key.font: navigationBarFont!] as [NSAttributedString.Key : Any]
         
         
         

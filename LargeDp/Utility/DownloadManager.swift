@@ -96,6 +96,7 @@ class DownloadManager: NSObject
                 
                 let status = PHPhotoLibrary.authorizationStatus()
                 switch status {
+
                 case .authorized:
                     
                     CustomPhotoAlbum.sharedInstance.saveImage(image:image)
@@ -129,6 +130,8 @@ class DownloadManager: NSObject
                         }
                         
                     }
+                default:
+                    break
                 }
                 // UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
             }
@@ -166,7 +169,7 @@ class DownloadManager: NSObject
             modelID = ""
             if let follower : FollowersEdge = url as? FollowersEdge {
                 
-                if let dict : NSDictionary = follower.toDictionary() as NSDictionary! {
+                if let dict : NSDictionary = follower.toDictionary() as NSDictionary? {
                     modelType = .follow
                     strJSON = dict.JSONString() as String
                     modelID = follower.node.id
@@ -174,7 +177,7 @@ class DownloadManager: NSObject
             }
             else if let searchUser : SearchUser = url as? SearchUser
             {
-                if let dict : NSDictionary = searchUser.toDictionary() as NSDictionary! {
+                if let dict : NSDictionary = searchUser.toDictionary() as NSDictionary? {
                     modelType = .searchUser
                     strJSON = dict.JSONString() as String
                     modelID = searchUser.user.pk
@@ -329,9 +332,16 @@ class DownloadManager: NSObject
             }
         }
         
-        mzDownloader.addDownloadTask(fileName, fileURL: fileURL.addingPercentEscapes(using: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!, destinationPath: downloadPath as String, username: username)
+        mzDownloader.addDownloadTask(fileName, fileURL: fileURL.urlEncoded!, destinationPath: downloadPath as String, username: username)
     }
     
+}
+
+extension String {
+    var urlEncoded: String? {
+        let allowedCharacterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "~-_."))
+        return self.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet)
+    }
 }
 
 // MARK : MZDownloadManager Delegate Method

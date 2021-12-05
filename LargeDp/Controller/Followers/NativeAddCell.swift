@@ -14,7 +14,7 @@ class NativeAddCell: UITableViewCell {
     var innerView : UIView!
     // MARK: - Lifecycle -
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         self.loadViewControls()
@@ -97,10 +97,10 @@ class NativeAddCell: UITableViewCell {
         
         
         //InnerView...
-        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[innerView]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-5-[innerView]-5-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         self.contentView.addConstraints(layout.control_H)
         
-        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[innerView]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
+        layout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-5-[innerView]-5-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: layout.metrics, views: layout.viewDictionary)
         self.contentView.addConstraints(layout.control_V)
         
         innerView.layoutSubviews()
@@ -108,7 +108,7 @@ class NativeAddCell: UITableViewCell {
         
         self.layoutIfNeeded()
         self.layoutSubviews()
-        defer {
+        do {
             layout.releaseObject()
             layout = nil
         }

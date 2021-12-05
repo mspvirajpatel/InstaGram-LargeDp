@@ -348,7 +348,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
                                    "segmentHeight" : segmentHeight
         ]
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewAdd]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewAdd]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_H)
         
         baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[viewContant]-2-[buttonsContant]-2-[viewAdd]-5-[displayContant]-2-|", options: [.alignAllLeading, .alignAllTrailing], metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
@@ -359,7 +359,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
         
         //TopHeaderView
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[imgProfile]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[imgProfile]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_H)
         
         baseLayout.size_Height = NSLayoutConstraint(item: imgProfile, attribute: .height, relatedBy: .equal, toItem: imgProfile, attribute: .width, multiplier: 0.78, constant: 0)
@@ -373,25 +373,25 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
         baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-2-[btnDownload(30)]-2-|", options: [.alignAllLeading, .alignAllTrailing], metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         buttonsContant.addConstraints(baseLayout.control_V)
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-horizontalPadding-[lblUserName]-horizontalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-horizontalPadding-[lblUserName]-horizontalPadding-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         displayContant.addConstraints(baseLayout.control_H)
         
         baseLayout.position_CenterX = NSLayoutConstraint(item: lblDetail, attribute: .centerX, relatedBy: .equal, toItem: displayContant, attribute: .centerX, multiplier: 1.0, constant: 0)
         displayContant.addConstraint(baseLayout.position_CenterX)
      
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|->=0@100-[lblDetail]-5@251-[isVarified]->=0@100-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|->=0@100-[lblDetail]-5@251-[isVarified]->=0@100-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         displayContant.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-horizontalPadding-[lblLink]-horizontalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-horizontalPadding-[lblLink]-horizontalPadding-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         displayContant.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-horizontalPadding-[privacyView]-horizontalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-horizontalPadding-[privacyView]-horizontalPadding-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         displayContant.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-3-[lblUserName]-3-[lblDetail]-3-[lblLink]", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-3-[lblUserName]-3-[lblDetail]-3-[lblLink]", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         displayContant.addConstraints(baseLayout.control_V)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[lblLink]-3-[privacyView]-30-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[lblLink]-3-[privacyView]-30-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         displayContant.addConstraints(baseLayout.control_V)
         
         // MARK : Privacy View Constraint
@@ -418,7 +418,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
         self.layoutIfNeeded()
         self.layoutSubviews()
         
-        defer {
+        do {
             baseLayout.releaseObject()
         }
     }
@@ -450,7 +450,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
                 
                 if self.userProfileModel.user != nil
                 {
-                    self.imgProfile.displayImageFromURLWithPlaceholder((self.userProfileModel.user.profilePicUrlHd)!, placeholder: UIImage(named: "profileplaceholder"))
+                    self.imgProfile.displayImageFromURL((self.userProfileModel.user.profilePicUrlHd)!, placeholder: UIImage(named: "profileplaceholder"))
                     self.lblUser.text = self.userProfileModel.user.fullName
                     self.lblDetail.text = self.userProfileModel.user.biography
                     self.lblLink.text = self.userProfileModel.user.externalUrl
@@ -465,7 +465,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
                 
                 if self.userProfileModel.user != nil && self.userProfileModel.user.isPrivate == true
                 {
-                    self.viewContant.bringSubview(toFront: self.privacyView)
+                    self.viewContant.bringSubviewToFront(self.privacyView)
                     self.privacyView.isHidden = false
                     self.privacyIcon.isHidden = false
                     self.lblPrivacyMsg.isHidden = false
@@ -489,7 +489,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
             if followersEdge.node != nil
             {
             
-                self.imgProfile.displayImageFromURLWithPlaceholder((followersEdge.node.profilePicUrlHD)!, placeholder: placeholders)
+                self.imgProfile.displayImageFromURL((followersEdge.node.profilePicUrlHD)!, placeholder: placeholders)
                 self.lblUser.text = followersEdge.node.fullName
                 self.lblDetail.text = "@\(followersEdge.node.username!)"
                 
@@ -543,7 +543,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
             
             if searchUserModel.user != nil
             {
-                self.imgProfile.displayImageFromURLWithPlaceholder((searchUserModel.user.profilePicUrlHD)!, placeholder: placeholders)
+                self.imgProfile.displayImageFromURL((searchUserModel.user.profilePicUrlHD)!, placeholder: placeholders)
                 self.lblUser.text = searchUserModel.user.fullName
                 self.lblDetail.text = "@\(searchUserModel.user.username!)"
                 self.lblLink.text = searchUserModel.user.byline
@@ -567,7 +567,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
             
             if searchUserModel.user != nil && searchUserModel.user.isPrivate == true
             {
-                self.viewContant.bringSubview(toFront: self.privacyView)
+                self.viewContant.bringSubviewToFront(self.privacyView)
                 self.privacyView.isHidden = false
                 self.privacyView.alpha = 1.0
                 self.lblPrivacyMsg.isHidden = false

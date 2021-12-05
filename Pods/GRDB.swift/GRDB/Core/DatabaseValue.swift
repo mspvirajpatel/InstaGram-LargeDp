@@ -1,18 +1,20 @@
 import Foundation
 
-#if SWIFT_PACKAGE
-    import CSQLite
-#endif
-
 // MARK: - DatabaseValue
 
 /// DatabaseValue is the intermediate type between SQLite and your values.
 ///
-/// See https://www.sqlite.org/datatype3.html
-public struct DatabaseValue {
+/// See <https://www.sqlite.org/datatype3.html>
+public struct DatabaseValue: Hashable, CustomStringConvertible, DatabaseValueConvertible, SQLSpecificExpressible {
+    /// The SQLite storage
+    public let storage: Storage
+    
+    /// The NULL DatabaseValue.
+    public static let null = DatabaseValue(storage: .null)
     
     /// An SQLite storage (NULL, INTEGER, REAL, TEXT, BLOB).
-    public enum Storage : Equatable {
+    @frozen
+    public enum Storage: Equatable {
         /// The NULL storage class.
         case null
         
@@ -52,20 +54,14 @@ public struct DatabaseValue {
         public static func == (_ lhs: Storage, _ rhs: Storage) -> Bool {
             switch (lhs, rhs) {
             case (.null, .null): return true
-            case (.int64(let lhs), .int64(let rhs)): return lhs == rhs
-            case (.double(let lhs), .double(let rhs)): return lhs == rhs
-            case (.string(let lhs), .string(let rhs)): return lhs == rhs
-            case (.blob(let lhs), .blob(let rhs)): return lhs == rhs
+            case let (.int64(lhs), .int64(rhs)): return lhs == rhs
+            case let (.double(lhs), .double(rhs)): return lhs == rhs
+            case let (.string(lhs), .string(rhs)): return lhs == rhs
+            case let (.blob(lhs), .blob(rhs)): return lhs == rhs
             default: return false
             }
         }
     }
-    
-    /// The SQLite storage
-    public let storage: Storage
-    
-    /// The NULL DatabaseValue.
-    public static let null = DatabaseValue(storage: .null)
     
     /// Creates a DatabaseValue from Any.
     ///
@@ -76,7 +72,6 @@ public struct DatabaseValue {
         }
         self = convertible.databaseValue
     }
-    
     
     // MARK: - Extracting Value
     
@@ -90,13 +85,9 @@ public struct DatabaseValue {
         }
     }
     
-    
     // MARK: - Not Public
     
     init(storage: Storage) {
-        // This initializer is not public because Storage is not a safe type:
-        // one can create a Storage of zero-length Data, which is invalid
-        // because SQLite can't store zero-length blobs.
         self.storage = storage
     }
     
@@ -112,30 +103,36 @@ public struct DatabaseValue {
         case SQLITE_TEXT:
             storage = .string(String(cString: sqlite3_value_text(sqliteValue)!))
         case SQLITE_BLOB:
-            let bytes = unsafeBitCast(sqlite3_value_blob(sqliteValue), to: UnsafePointer<UInt8>.self)
-            let count = Int(sqlite3_value_bytes(sqliteValue))
-            storage = .blob(Data(bytes: bytes, count: count)) // copy bytes
+            if let bytes = sqlite3_value_blob(sqliteValue) {
+                let count = Int(sqlite3_value_bytes(sqliteValue))
+                storage = .blob(Data(bytes: bytes, count: count)) // copy bytes
+            } else {
+                storage = .blob(Data())
+            }
         case let type:
             // Assume a GRDB bug: there is no point throwing any error.
             fatalError("Unexpected SQLite value type: \(type)")
         }
     }
-
+    
     /// Returns a DatabaseValue initialized from a raw SQLite statement pointer.
     init(sqliteStatement: SQLiteStatement, index: Int32) {
-        switch sqlite3_column_type(sqliteStatement, Int32(index)) {
+        switch sqlite3_column_type(sqliteStatement, index) {
         case SQLITE_NULL:
             storage = .null
         case SQLITE_INTEGER:
-            storage = .int64(sqlite3_column_int64(sqliteStatement, Int32(index)))
+            storage = .int64(sqlite3_column_int64(sqliteStatement, index))
         case SQLITE_FLOAT:
-            storage = .double(sqlite3_column_double(sqliteStatement, Int32(index)))
+            storage = .double(sqlite3_column_double(sqliteStatement, index))
         case SQLITE_TEXT:
-            storage = .string(String(cString: sqlite3_column_text(sqliteStatement, Int32(index))))
+            storage = .string(String(cString: sqlite3_column_text(sqliteStatement, index)))
         case SQLITE_BLOB:
-            let bytes = unsafeBitCast(sqlite3_column_blob(sqliteStatement, Int32(index)), to: UnsafePointer<UInt8>.self)
-            let count = Int(sqlite3_column_bytes(sqliteStatement, Int32(index)))
-            storage = .blob(Data(bytes: bytes, count: count)) // copy bytes
+            if let bytes = sqlite3_column_blob(sqliteStatement, index) {
+                let count = Int(sqlite3_column_bytes(sqliteStatement, index))
+                storage = .blob(Data(bytes: bytes, count: count)) // copy bytes
+            } else {
+                storage = .blob(Data())
+            }
         case let type:
             // Assume a GRDB bug: there is no point throwing any error.
             fatalError("Unexpected SQLite column type: \(type)")
@@ -143,26 +140,42 @@ public struct DatabaseValue {
     }
 }
 
+extension DatabaseValue: StatementBinding {
+    public func bind(to sqliteStatement: SQLiteStatement, at index: CInt) -> CInt {
+        switch storage {
+        case .null:
+            return sqlite3_bind_null(sqliteStatement, index)
+        case .int64(let int64):
+            return int64.bind(to: sqliteStatement, at: index)
+        case .double(let double):
+            return double.bind(to: sqliteStatement, at: index)
+        case .string(let string):
+            return string.bind(to: sqliteStatement, at: index)
+        case .blob(let data):
+            return data.bind(to: sqliteStatement, at: index)
+        }
+    }
+}
 
 // MARK: - Hashable & Equatable
 
-/// DatabaseValue adopts Hashable.
-extension DatabaseValue : Hashable {
+// Hashable
+extension DatabaseValue {
     
-    /// The hash value
-    public var hashValue: Int {
+    /// :nodoc:
+    public func hash(into hasher: inout Hasher) {
         switch storage {
         case .null:
-            return 0
+            hasher.combine(0)
         case .int64(let int64):
             // 1 == 1.0, hence 1 and 1.0 must have the same hash:
-            return Double(int64).hashValue
+            hasher.combine(Double(int64))
         case .double(let double):
-            return double.hashValue
+            hasher.combine(double)
         case .string(let string):
-            return string.hashValue
+            hasher.combine(string)
         case .blob(let data):
-            return data.hashValue
+            hasher.combine(data)
         }
     }
     
@@ -185,17 +198,17 @@ extension DatabaseValue : Hashable {
         switch (lhs.storage, rhs.storage) {
         case (.null, .null):
             return true
-        case (.int64(let lhs), .int64(let rhs)):
+        case let (.int64(lhs), .int64(rhs)):
             return lhs == rhs
-        case (.double(let lhs), .double(let rhs)):
+        case let (.double(lhs), .double(rhs)):
             return lhs == rhs
-        case (.int64(let lhs), .double(let rhs)):
-            return int64EqualDouble(lhs, rhs)
-        case (.double(let lhs), .int64(let rhs)):
-            return int64EqualDouble(rhs, lhs)
-        case (.string(let lhs), .string(let rhs)):
+        case let (.int64(lhs), .double(rhs)):
+            return Int64(exactly: rhs) == lhs
+        case let (.double(lhs), .int64(rhs)):
+            return rhs == Int64(exactly: lhs)
+        case let (.string(lhs), .string(rhs)):
             return lhs == rhs
-        case (.blob(let lhs), .blob(let rhs)):
+        case let (.blob(lhs), .blob(rhs)):
             return lhs == rhs
         default:
             return false
@@ -203,174 +216,29 @@ extension DatabaseValue : Hashable {
     }
 }
 
-/// Returns true if i and d hold exactly the same value, and if converting one
-/// type to the other does not lose any information.
-private func int64EqualDouble(_ i: Int64, _ d: Double) -> Bool {
-    // See http://stackoverflow.com/questions/33719132/how-to-test-for-lossless-double-integer-conversion/33784296#33784296
-    return (d >= Double(Int64.min))
-        && (d < Double(Int64.max))
-        && (round(d) == d)
-        && (i == Int64(d))
-}
-
-
-// MARK: - Lossless conversions
-
+// DatabaseValueConvertible
 extension DatabaseValue {
-    /// Converts the database value to the type T.
-    ///
-    ///     let dbv = "foo".databaseValue
-    ///     let string = dbv.losslessConvert() as String // "foo"
-    ///
-    /// Conversion is successful if and only if T.fromDatabaseValue returns a
-    /// non-nil value.
-    ///
-    /// This method crashes with a fatal error when conversion fails.
-    ///
-    ///     let dbv = "foo".databaseValue
-    ///     let int = dbv.losslessConvert() as Int // fatalError
-    ///
-    /// - parameters:
-    ///     - sql: Optional SQL statement that enhances the eventual
-    ///       conversion error
-    ///     - arguments: Optional statement arguments that enhances the eventual
-    ///       conversion error
-    public func losslessConvert<T>(sql: String? = nil, arguments: StatementArguments? = nil) -> T where T : DatabaseValueConvertible {
-        if let value = T.fromDatabaseValue(self) {
-            return value
-        }
-        // Failed conversion: this is data loss, a programmer error.
-        var error = "could not convert database value \(self) to \(T.self)"
-        if let sql = sql {
-            error += " with statement `\(sql)`"
-        }
-        if let arguments = arguments, !arguments.isEmpty {
-            error += " arguments \(arguments)"
-        }
-        fatalError(error)
-    }
-    
-    /// Converts the database value to the type Optional<T>.
-    ///
-    ///     let dbv = "foo".databaseValue
-    ///     let string = dbv.losslessConvert() as String? // "foo"
-    ///     let null = DatabaseValue.null.losslessConvert() as String? // nil
-    ///
-    /// Conversion is successful if and only if T.fromDatabaseValue returns a
-    /// non-nil value.
-    ///
-    /// This method crashes with a fatal error when conversion fails.
-    ///
-    ///     let dbv = "foo".databaseValue
-    ///     let int = dbv.losslessConvert() as Int? // fatalError
-    ///
-    /// - parameters:
-    ///     - sql: Optional SQL statement that enhances the eventual
-    ///       conversion error
-    ///     - arguments: Optional statement arguments that enhances the eventual
-    ///       conversion error
-    public func losslessConvert<T>(sql: String? = nil, arguments: StatementArguments? = nil) -> T? where T : DatabaseValueConvertible {
-        // Use fromDatabaseValue first: this allows DatabaseValue to convert NULL to .null.
-        if let value = T.fromDatabaseValue(self) {
-            return value
-        }
-        if isNull {
-            // Failed conversion from null: ok
-            return nil
-        } else {
-            // Failed conversion from a non-null database value: this is data
-            // loss, a programmer error.
-            var error = "could not convert database value \(self) to \(T.self)"
-            if let sql = sql {
-                error += " with statement `\(sql)`"
-            }
-            if let arguments = arguments, !arguments.isEmpty {
-                error += " arguments \(arguments)"
-            }
-            fatalError(error)
-        }
-    }
-}
-
-
-// MARK: - DatabaseValueConvertible & SQLExpressible & SQLExpression
-
-/// DatabaseValue adopts DatabaseValueConvertible.
-extension DatabaseValue : DatabaseValueConvertible {
     /// Returns self
     public var databaseValue: DatabaseValue {
-        return self
+        self
     }
     
-    /// Returns `databaseValue`
-    public static func fromDatabaseValue(_ databaseValue: DatabaseValue) -> DatabaseValue? {
-        return databaseValue
+    /// Returns the database value
+    public static func fromDatabaseValue(_ dbValue: DatabaseValue) -> DatabaseValue? {
+        dbValue
     }
 }
 
-extension DatabaseValue : SQLExpressible {
-    
-    /// This property is an implementation detail of the query interface.
-    /// Do not use it directly.
-    ///
-    /// See https://github.com/groue/GRDB.swift/#the-query-interface
-    ///
-    /// # Low Level Query Interface
-    ///
-    /// See SQLExpression.sqlExpression
+// SQLExpressible
+extension DatabaseValue {
     public var sqlExpression: SQLExpression {
-        return self
+        .databaseValue(self)
     }
 }
 
-/// DatabaseValue adopts SQLExpression.
-extension DatabaseValue : SQLExpression {
-    public func expressionSQL(_ arguments: inout StatementArguments?) -> String {
-        // fast path for NULL
-        if isNull {
-            return "NULL"
-        }
-        
-        if arguments != nil {
-            arguments!.values.append(self)
-            return "?"
-        } else {
-            // Correctness above all: use SQLite to quote the value.
-            // Assume that the Quote function always succeeds
-            return DatabaseQueue().inDatabase { try! String.fetchOne($0, "SELECT QUOTE(?)", arguments: [self])! }
-        }
-    }
-    
-    public var negated: SQLExpression {
-        switch storage {
-        case .null:
-            // SELECT NOT NULL -- NULL
-            return DatabaseValue.null
-        case .int64(let int64):
-            return (int64 == 0).sqlExpression
-        case .double(let double):
-            return (double == 0.0).sqlExpression
-        case .string:
-            // We can't assume all strings are true, and return false:
-            //
-            // SELECT NOT '1' -- 0 (because '1' is turned into the integer 1, which is negated into 0)
-            // SELECT NOT '0' -- 1 (because '0' is turned into the integer 0, which is negated into 1)
-            return SQLExpressionNot(self)
-        case .blob:
-            // We can't assume all blobs are true, and return false:
-            //
-            // SELECT NOT X'31' -- 0 (because X'31' is turned into the string '1', then into integer 1, which is negated into 0)
-            // SELECT NOT X'30' -- 1 (because X'30' is turned into the string '0', then into integer 0, which is negated into 1)
-            return SQLExpressionNot(self)
-        }
-    }
-}
-
-// MARK: - CustomStringConvertible
-
-/// DatabaseValue adopts CustomStringConvertible.
-extension DatabaseValue : CustomStringConvertible {
-    /// A textual representation of `self`.
+// CustomStringConvertible
+extension DatabaseValue {
+    /// :nodoc:
     public var description: String {
         switch storage {
         case .null:
@@ -382,7 +250,49 @@ extension DatabaseValue : CustomStringConvertible {
         case .string(let string):
             return String(reflecting: string)
         case .blob(let data):
-            return data.description
+            return "Data(\(data.description))"
         }
+    }
+}
+
+/// Compares DatabaseValue like SQLite.
+///
+/// See RxGRDB for tests.
+///
+/// This comparison is not public because it does not handle text collations,
+/// and may be dangerous when put in user hands.
+///
+/// So far, the only goal of this sorting method so far is aesthetic, and
+/// easier testing.
+func < (lhs: DatabaseValue, rhs: DatabaseValue) -> Bool {
+    switch (lhs.storage, rhs.storage) {
+    case let (.int64(lhs), .int64(rhs)):
+        return lhs < rhs
+    case let (.double(lhs), .double(rhs)):
+        return lhs < rhs
+    case let (.int64(lhs), .double(rhs)):
+        return Double(lhs) < rhs
+    case let (.double(lhs), .int64(rhs)):
+        return lhs < Double(rhs)
+    case let (.string(lhs), .string(rhs)):
+        return lhs.utf8.lexicographicallyPrecedes(rhs.utf8)
+    case let (.blob(lhs), .blob(rhs)):
+        return lhs.lexicographicallyPrecedes(rhs, by: <)
+    case (.blob, _):
+        return false
+    case (_, .blob):
+        return true
+    case (.string, _):
+        return false
+    case (_, .string):
+        return true
+    case (.int64, _), (.double, _):
+        return false
+    case (_, .int64), (_, .double):
+        return true
+    case (.null, _):
+        return false
+    case (_, .null):
+        return true
     }
 }

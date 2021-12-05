@@ -11,14 +11,14 @@ import UIKit
 
 public extension UIImageView {
     
-    public func setupForImageViewer(_ backgroundColor: UIColor = UIColor.white) {
+    func setupForImageViewer(_ backgroundColor: UIColor = UIColor.white) {
         isUserInteractionEnabled = true
         
         let gestureRecognizer = ImageViewerTapGestureRecognizer(target: self, action: #selector(UIImageView.didTap(_:)), backgroundColor: backgroundColor)
         addGestureRecognizer(gestureRecognizer)
     }
     
-    internal func didTap(_ recognizer: ImageViewerTapGestureRecognizer) {
+    @objc internal func didTap(_ recognizer: ImageViewerTapGestureRecognizer) {
         if self.image != nil
         {
             let imageViewer = ImageViewer(senderView: self, backgroundColor: recognizer.backgroundColor)

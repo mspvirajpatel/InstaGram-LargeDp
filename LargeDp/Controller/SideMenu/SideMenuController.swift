@@ -117,7 +117,7 @@ class SideMenuController: BaseViewController {
                 {
                     let navController : BaseNavigationController! = BaseNavigationController(rootViewController: controller!)
                 
-                    SideMenuManager.menuLeftNavigationController?.present(navController, animated: true, completion: {
+                    SideMenuManager.default.menuLeftNavigationController?.present(navController, animated: true, completion: {
                     
                     })
                     
@@ -168,7 +168,7 @@ class SideMenuController: BaseViewController {
                        
                         let navController : BaseNavigationController! = BaseNavigationController(rootViewController: controller!)
                         
-                        SideMenuManager.menuLeftNavigationController?.present(navController, animated: true, completion: {
+                        SideMenuManager.default.menuLeftNavigationController?.present(navController, animated: true, completion: {
                             
                         })
                         //currentSelectedMenu = Menu.login.rawValue
@@ -366,7 +366,7 @@ class SideMenuController: BaseViewController {
                 return
             }
             
-            let alertView : UIAlertController! = UIAlertController(title: "confirm".localize(), message: "logoutConfirm".localize(), preferredStyle: UIAlertControllerStyle.alert)
+            let alertView : UIAlertController! = UIAlertController(title: "confirm".localize(), message: "logoutConfirm".localize(), preferredStyle: UIAlertController.Style.alert)
             
             alertView.addAction(UIAlertAction(title: "no".localize(), style: .destructive, handler: nil))
             alertView.addAction(UIAlertAction(title: "yes".localize(), style: .default, handler: { [weak self] (action) in

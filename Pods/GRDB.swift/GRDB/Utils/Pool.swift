@@ -36,44 +36,55 @@ import Dispatch
 ///     got 1
 ///     got 3
 final class Pool<T> {
-    var makeElement: (() throws -> T)?
-    private var items: [PoolItem<T>] = []
-    private let queue: DispatchQueue         // protects items
-    private let semaphore: DispatchSemaphore // limits the number of elements
-    
-    init(maximumCount: Int, makeElement: (() throws -> T)? = nil) {
-        GRDBPrecondition(maximumCount > 0, "Pool size must be at least 1")
-        self.makeElement = makeElement
-        self.queue = DispatchQueue(label: "GRDB.Pool")
-        self.semaphore = DispatchSemaphore(value: maximumCount)
+    private class Item {
+        let element: T
+        var isAvailable: Bool
+        
+        init(element: T, isAvailable: Bool) {
+            self.element = element
+            self.isAvailable = isAvailable
+        }
     }
     
-    /// Returns a tuple (element, releaseElement())
-    /// Client MUST call releaseElement() after the element has been used.
-    func get() throws -> (T, () -> ()) {
-        var item: PoolItem<T>! = nil
-        _ = semaphore.wait(timeout: .distantFuture)
-        do {
-            try queue.sync {
-                if let availableItem = items.first(where: { $0.available }) {
-                    item = availableItem
-                    item.available = false
-                } else {
-                    item = try PoolItem(element: makeElement!(), available: false)
-                    items.append(item)
+    private let makeElement: () throws -> T
+    @ReadWriteBox private var items: [Item] = []
+    private let itemsSemaphore: DispatchSemaphore // limits the number of elements
+    private let itemsGroup: DispatchGroup         // knows when no element is used
+    private let barrierQueue: DispatchQueue
+    
+    init(maximumCount: Int, makeElement: @escaping () throws -> T) {
+        GRDBPrecondition(maximumCount > 0, "Pool size must be at least 1")
+        self.makeElement = makeElement
+        self.itemsSemaphore = DispatchSemaphore(value: maximumCount)
+        self.itemsGroup = DispatchGroup()
+        self.barrierQueue = DispatchQueue(label: "GRDB.Pool.barrier", attributes: [.concurrent])
+    }
+    
+    /// Returns a tuple (element, release)
+    /// Client must call release(), only once, after the element has been used.
+    func get() throws -> (element: T, release: () -> Void) {
+        try barrierQueue.sync {
+            itemsSemaphore.wait()
+            itemsGroup.enter()
+            do {
+                let item = try $items.update { items -> Item in
+                    if let item = items.first(where: \.isAvailable) {
+                        item.isAvailable = false
+                        return item
+                    } else {
+                        let element = try makeElement()
+                        let item = Item(element: element, isAvailable: false)
+                        items.append(item)
+                        return item
+                    }
                 }
+                return (element: item.element, release: { self.release(item) })
+            } catch {
+                itemsSemaphore.signal()
+                itemsGroup.leave()
+                throw error
             }
-        } catch {
-            semaphore.signal()
-            throw error
         }
-        let unlock = {
-            self.queue.sync {
-                item.available = true
-            }
-            self.semaphore.signal()
-        }
-        return (item.element, unlock)
     }
     
     /// Performs a synchronous block with an element. The element turns
@@ -84,37 +95,47 @@ final class Pool<T> {
         return try block(element)
     }
     
+    private func release(_ item: Item) {
+        $items.update { _ in
+            // This is why Item is a class, not a struct: so that we can
+            // release it without having to find in it the items array.
+            item.isAvailable = true
+        }
+        itemsSemaphore.signal()
+        itemsGroup.leave()
+    }
+    
     /// Performs a block on each pool element, available or not.
-    /// The block is run is some arbitrary queue.
-    func forEach(_ body: (T) throws -> ()) rethrows {
-        try queue.sync {
+    /// The block is run is some arbitrary dispatch queue.
+    func forEach(_ body: (T) throws -> Void) rethrows {
+        try $items.read { items in
             for item in items {
                 try body(item.element)
             }
         }
     }
     
-    /// Empty the pool. Currently used items won't be reused.
-    func clear() {
-        clear {}
+    /// Removes all elements from the pool.
+    /// Currently used elements won't be reused.
+    func removeAll() {
+        items = []
     }
     
-    /// Empty the pool. Currently used items won't be reused.
-    /// Eventual block is executed before any other element is dequeued.
-    func clear(andThen block: () throws -> ()) rethrows {
-        try queue.sync {
-            items = []
-            try block()
+    /// Blocks until no element is used, and runs the `barrier` function before
+    /// any other element is dequeued.
+    func barrier<T>(execute barrier: () throws -> T) rethrows -> T {
+        try barrierQueue.sync(flags: [.barrier]) {
+            itemsGroup.wait()
+            return try barrier()
         }
     }
-}
-
-private class PoolItem<T> {
-    let element: T
-    var available: Bool
     
-    init(element: T, available: Bool) {
-        self.element = element
-        self.available = available
+    /// Asynchronously runs the `barrier` function when no element is used, and
+    /// before any other element is dequeued.
+    func asyncBarrier(execute barrier: @escaping () -> Void) {
+        barrierQueue.async(flags: [.barrier]) {
+            self.itemsGroup.wait()
+            barrier()
+        }
     }
 }

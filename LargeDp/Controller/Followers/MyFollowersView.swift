@@ -159,7 +159,7 @@ class MyFollowersView: BaseView {
         
         refreshControlSent = UIRefreshControl()
         refreshControlSent.attributedTitle = NSAttributedString(string: "pullToRefresh".localize())
-        refreshControlSent.addTarget(self, action: #selector(refreshPlaceList), for: UIControlEvents.valueChanged)
+        refreshControlSent.addTarget(self, action: #selector(refreshPlaceList), for: UIControl.Event.valueChanged)
 
         tableView = UITableView(frame: .zero)
         tableView.backgroundColor = .clear
@@ -228,7 +228,7 @@ class MyFollowersView: BaseView {
                                    "secondaryHorizontalPadding" : secondaryHorizontalPadding,
                                    "secondaryVerticalPadding" : secondaryVerticalPadding]
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewContant]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewContant]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_H)
         
 //        baseLayout.position_CenterX = NSLayoutConstraint(item: addContant, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0)
@@ -249,13 +249,13 @@ class MyFollowersView: BaseView {
 //        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[btnLogin]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
 //        loginButtonContant.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[btnLogin]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[btnLogin]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         loginButtonContant.addConstraints(baseLayout.control_V)
        
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[lblMessage]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[lblMessage]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[lblMessage]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[lblMessage]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_V)
         
         
@@ -268,13 +268,13 @@ class MyFollowersView: BaseView {
 //        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-15@751-[tableView]-15@751-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
 //        addContant.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         addContant.addConstraints(baseLayout.control_V)
         
         self.layoutIfNeeded()
         self.layoutSubviews()
         
-        defer {
+        do {
             baseLayout.releaseObject()
         }
         
@@ -286,7 +286,7 @@ class MyFollowersView: BaseView {
         super.loadViewControls()
         refreshControlSent = UIRefreshControl()
         refreshControlSent.attributedTitle = NSAttributedString(string: "pullToRefresh".localize())
-        refreshControlSent.addTarget(self, action: #selector(refreshPlaceList), for: UIControlEvents.valueChanged)
+        refreshControlSent.addTarget(self, action: #selector(refreshPlaceList), for: UIControl.Event.valueChanged)
         
         
         tableView = UITableView(frame: .zero)
@@ -354,23 +354,23 @@ class MyFollowersView: BaseView {
                                    "secondaryHorizontalPadding" : secondaryHorizontalPadding,
                                    "secondaryVerticalPadding" : secondaryVerticalPadding]
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_V)
         
         self.layoutIfNeeded()
         self.layoutSubviews()
         
-        defer {
+        do {
             baseLayout.releaseObject()
         }
         
     }
     
     // MARK: - Public Interface -
-    func refreshPlaceList()
+    @objc func refreshPlaceList()
     {
         switch typeofFollowers.rawValue
         {
@@ -999,7 +999,7 @@ extension MyFollowersView : UITableViewDataSource {
         {
             self.errorMessageLabel.textColor = Color.activityText.value
             self.displayErrorMessageLabel("noFound".localize())
-            self.bringSubview(toFront: self.errorMessageLabel)
+            self.bringSubviewToFront(self.errorMessageLabel)
             self.errorMessageLabel.isHidden = false
             return 0
         }
@@ -1038,7 +1038,7 @@ extension MyFollowersView : UITableViewDataSource {
                     var cell : PeopleTableViewCell!
                     cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.people) as? PeopleTableViewCell
                     if cell == nil {
-                        cell = PeopleTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: CellIdentifire.people)
+                        cell = PeopleTableViewCell(style: .default, reuseIdentifier: CellIdentifire.people)
                     }
                     cell.selectionStyle = .none
                     
@@ -1136,7 +1136,7 @@ extension MyFollowersView : UITableViewDataSource {
                     var cell : PeopleTableViewCell!
                     cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.people) as? PeopleTableViewCell
                     if cell == nil {
-                        cell = PeopleTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: CellIdentifire.people)
+                        cell = PeopleTableViewCell(style: .default, reuseIdentifier: CellIdentifire.people)
                     }
                     cell.selectionStyle = .none
                     
@@ -1392,11 +1392,11 @@ extension MyFollowersView : UITableViewDelegate {
                     return isAdLoaded == true ? adBigViewHeight : 0
                 }
             }
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
             
         }
         
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
         
     }
     

@@ -1,86 +1,148 @@
 import Foundation
 
-#if SWIFT_PACKAGE
-    import CSQLite
-#endif
-
 /// A raw SQLite statement, suitable for the SQLite C API.
 public typealias SQLiteStatement = OpaquePointer
 
+extension CharacterSet {
+    /// Statements are separated by semicolons and white spaces
+    static let sqlStatementSeparators = CharacterSet(charactersIn: ";").union(.whitespacesAndNewlines)
+}
+
 /// A statement represents an SQL query.
-///
-/// It is the base class of UpdateStatement that executes *update statements*,
-/// and SelectStatement that fetches rows.
-public class Statement {
+public final class Statement {
+    enum TransactionEffect {
+        case beginTransaction
+        case commitTransaction
+        case rollbackTransaction
+        case beginSavepoint(String)
+        case releaseSavepoint(String)
+        case rollbackSavepoint(String)
+    }
     
     /// The raw SQLite statement, suitable for the SQLite C API.
     public let sqliteStatement: SQLiteStatement
     
     /// The SQL query
     public var sql: String {
-        return String(cString: sqlite3_sql(sqliteStatement))
-    }
-    
-    /// The database
-    unowned let database: Database
-    
-    init(database: Database, sqliteStatement: SQLiteStatement) {
-        self.database = database
-        self.sqliteStatement = sqliteStatement
-    }
-    
-    fileprivate init(database: Database, sql: String, observer: StatementCompilationObserver) throws {
         SchedulingWatchdog.preconditionValidQueue(database)
         
-        observer.start()
-        defer { observer.stop() }
+        // trim white space and semicolumn for homogeneous output
+        return String(cString: sqlite3_sql(sqliteStatement))
+            .trimmingCharacters(in: .sqlStatementSeparators)
+    }
+    
+    /// The column names, ordered from left to right.
+    public lazy var columnNames: [String] = {
+        let sqliteStatement = self.sqliteStatement
+        return (0..<Int32(self.columnCount)).map { String(cString: sqlite3_column_name(sqliteStatement, $0)) }
+    }()
+    
+    // Database region is computed during statement compilation, and maybe
+    // extended for select statements compiled by QueryInterfaceRequest, in
+    // order to perform focused database observation. See
+    // SQLQueryGenerator.makeStatement(_:)
+    /// The database region that the statement looks into.
+    public internal(set) var databaseRegion = DatabaseRegion()
+    
+    /// If true, the database schema cache gets invalidated after this statement
+    /// is executed.
+    private(set) var invalidatesDatabaseSchemaCache = false
+    private(set) var transactionEffect: TransactionEffect?
+    private(set) var databaseEventKinds: [DatabaseEventKind] = []
+    
+    /// Returns true if and only if the prepared statement makes no direct
+    /// changes to the content of the database file.
+    ///
+    /// See <https://www.sqlite.org/c3ref/stmt_readonly.html>.
+    public var isReadonly: Bool {
+        sqlite3_stmt_readonly(sqliteStatement) != 0
+    }
+    
+    @usableFromInline
+    unowned let database: Database
+    
+    /// Cache for index(ofColumn:). Keys are lowercase.
+    private lazy var columnIndexes: [String: Int] = {
+        Dictionary(
+            self.columnNames.enumerated().map { ($0.element.lowercased(), $0.offset) },
+            uniquingKeysWith: { (left, _) in left }) // keep leftmost indexes
+    }()
+    
+    /// Creates a prepared statement. Returns nil if the compiled string is
+    /// blank or empty.
+    ///
+    /// - parameter database: A database connection.
+    /// - parameter statementStart: A pointer to a UTF-8 encoded C string
+    ///   containing SQL.
+    /// - parameter statementEnd: Upon success, the pointer to the next
+    ///   statement in the C string.
+    /// - parameter prepFlags: Flags for sqlite3_prepare_v3 (available from
+    ///   SQLite 3.20.0, see <http://www.sqlite.org/c3ref/prepare.html>)
+    /// - throws: DatabaseError in case of compilation error.
+    required init?(
+        database: Database,
+        statementStart: UnsafePointer<Int8>,
+        statementEnd: UnsafeMutablePointer<UnsafePointer<Int8>?>,
+        prepFlags: Int32) throws
+    {
+        SchedulingWatchdog.preconditionValidQueue(database)
         
-        let sqlCodeUnits = sql.utf8CString
+        let authorizer = StatementCompilationAuthorizer()
         var sqliteStatement: SQLiteStatement? = nil
-        var code: Int32 = 0
-        var remainingSQL = ""
-        sqlCodeUnits.withUnsafeBufferPointer { codeUnits in
-            let sqlStart = UnsafePointer<Int8>(codeUnits.baseAddress)!
-            var sqlEnd: UnsafePointer<Int8>? = nil
-            code = sqlite3_prepare_v2(database.sqliteConnection, sqlStart, -1, &sqliteStatement, &sqlEnd)
-            let remainingData = Data(bytesNoCopy: UnsafeMutableRawPointer(mutating: sqlEnd!), count: sqlStart + sqlCodeUnits.count - sqlEnd! - 1, deallocator: .none)
-            remainingSQL = String(data: remainingData, encoding: .utf8)!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let code: Int32 = database.withAuthorizer(authorizer) {
+            // sqlite3_prepare_v3 was introduced in SQLite 3.20.0 http://www.sqlite.org/changes.html#version_3_20
+            #if GRDBCUSTOMSQLITE || GRDBCIPHER
+            return sqlite3_prepare_v3(
+                database.sqliteConnection, statementStart, -1, UInt32(bitPattern: prepFlags),
+                &sqliteStatement, statementEnd)
+            #else
+            if #available(iOS 12.0, OSX 10.14, tvOS 12.0, watchOS 5.0, *) {
+                return sqlite3_prepare_v3(
+                    database.sqliteConnection, statementStart, -1, UInt32(bitPattern: prepFlags),
+                    &sqliteStatement, statementEnd)
+            } else {
+                return sqlite3_prepare_v2(database.sqliteConnection, statementStart, -1, &sqliteStatement, statementEnd)
+            }
+            #endif
         }
         
         guard code == SQLITE_OK else {
-            throw DatabaseError(resultCode: code, message: database.lastErrorMessage, sql: sql)
+            throw DatabaseError(
+                resultCode: code,
+                message: database.lastErrorMessage,
+                sql: String(cString: statementStart))
         }
         
-        guard remainingSQL.isEmpty else {
-            sqlite3_finalize(sqliteStatement)
-            throw DatabaseError(resultCode: .SQLITE_MISUSE, message: "Multiple statements found. To execute multiple statements, use Database.execute() instead.", sql: sql, arguments: nil)
+        guard let statement = sqliteStatement else {
+            return nil
         }
         
         self.database = database
-        self.sqliteStatement = sqliteStatement!
-        
+        self.sqliteStatement = statement
+        self.databaseRegion = authorizer.selectedRegion
+        self.invalidatesDatabaseSchemaCache = authorizer.invalidatesDatabaseSchemaCache
+        self.transactionEffect = authorizer.transactionEffect
+        self.databaseEventKinds = authorizer.databaseEventKinds
     }
     
     deinit {
         sqlite3_finalize(sqliteStatement)
     }
     
-    final func reset() {
-        // It looks like sqlite3_reset() does not access the file system.
-        // This function call should thus succeed, unless a GRDB bug, or a
-        // programmer error (reusing a failed statement): there is no point
-        // throwing any error.
+    final func reset() throws {
+        SchedulingWatchdog.preconditionValidQueue(database)
         let code = sqlite3_reset(sqliteStatement)
         guard code == SQLITE_OK else {
-            fatalError(DatabaseError(resultCode: code, message: database.lastErrorMessage, sql: sql).description)
+            throw DatabaseError(resultCode: code, message: database.lastErrorMessage, sql: sql)
         }
     }
     
     
     // MARK: Arguments
     
-    var argumentsNeedValidation = true
-    var _arguments: StatementArguments = []
+    private var argumentsNeedValidation = true
+    
+    private var _arguments = StatementArguments()
     
     lazy var sqliteArgumentCount: Int = {
         Int(sqlite3_bind_parameter_count(self.sqliteStatement))
@@ -88,384 +150,306 @@ public class Statement {
     
     // Returns ["id", nil", "name"] for "INSERT INTO table VALUES (:id, ?, :name)"
     fileprivate lazy var sqliteArgumentNames: [String?] = {
-        return (0..<self.sqliteArgumentCount).map {
-            guard let cString = sqlite3_bind_parameter_name(self.sqliteStatement, Int32($0 + 1)) else {
+        (0..<Int32(self.sqliteArgumentCount)).map {
+            guard let cString = sqlite3_bind_parameter_name(self.sqliteStatement, $0 + 1) else {
                 return nil
             }
-            return String(String(cString: cString).characters.dropFirst()) // Drop initial ":", "@", "$"
+            return String(String(cString: cString).dropFirst()) // Drop initial ":", "@", "$"
         }
     }()
     
     /// The statement arguments.
     public var arguments: StatementArguments {
-        get { return _arguments }
+        get { _arguments }
         set {
             // Force arguments validity: it is a programmer error to provide
             // arguments that do not match the statement.
-            try! setArgumentsWithValidation(newValue)
+            try! setArguments(newValue)
         }
     }
     
     /// Throws a DatabaseError of code SQLITE_ERROR if arguments don't fill all
     /// statement arguments.
-    public func validate(arguments: StatementArguments) throws {
+    ///
+    /// For example:
+    ///
+    ///     let statement = try db.makeUpdateArgument(sql: """
+    ///         INSERT INTO player (id, name) VALUES (?, ?)
+    ///         """)
+    ///
+    ///     // OK
+    ///     statement.validateArguments([1, "Arthur"])
+    ///
+    ///     // Throws
+    ///     statement.validateArguments([1])
+    ///
+    /// See also setArguments(_:)
+    public func validateArguments(_ arguments: StatementArguments) throws {
         var arguments = arguments
-        _ = try arguments.consume(self, allowingRemainingValues: false)
+        _ = try arguments.extractBindings(forStatement: self, allowingRemainingValues: false)
     }
     
     /// Set arguments without any validation. Trades safety for performance.
-    public func unsafeSetArguments(_ arguments: StatementArguments) {
+    ///
+    /// Only call this method if you are sure input arguments match all expected
+    /// arguments of the statement.
+    ///
+    /// For example:
+    ///
+    ///     let statement = try db.makeUpdateArgument(sql: """
+    ///         INSERT INTO player (id, name) VALUES (?, ?)
+    ///         """)
+    ///
+    ///     // OK
+    ///     statement.setUncheckedArguments([1, "Arthur"])
+    ///
+    ///     // OK
+    ///     let arguments: StatementArguments = ... // some untrusted arguments
+    ///     try statement.validateArguments(arguments)
+    ///     statement.setUncheckedArguments(arguments)
+    ///
+    ///     // NOT OK
+    ///     statement.setUncheckedArguments([1])
+    public func setUncheckedArguments(_ arguments: StatementArguments) {
         _arguments = arguments
         argumentsNeedValidation = false
         
-        reset()
+        try! reset()
         clearBindings()
         
         var valuesIterator = arguments.values.makeIterator()
-        for (index, argumentName) in sqliteArgumentNames.enumerated() {
+        for (index, argumentName) in zip(Int32(1)..., sqliteArgumentNames) {
             if let argumentName = argumentName, let value = arguments.namedValues[argumentName] {
-                bind(databaseValue: value, at: index)
+                bind(value, at: index)
             } else if let value = valuesIterator.next() {
-                bind(databaseValue: value, at: index)
-            } else {
-                bind(databaseValue: .null, at: index)
+                bind(value, at: index)
             }
         }
     }
     
-    func setArgumentsWithValidation(_ arguments: StatementArguments) throws {
+    /// Set the statement arguments, or throws a DatabaseError of code
+    /// SQLITE_ERROR if arguments don't fill all statement arguments.
+    ///
+    /// For example:
+    ///
+    ///     let statement = try db.makeUpdateArgument(sql: """
+    ///         INSERT INTO player (id, name) VALUES (?, ?)
+    ///         """)
+    ///
+    ///     // OK
+    ///     try statement.setArguments([1, "Arthur"])
+    ///
+    ///     // Throws an error
+    ///     try statement.setArguments([1])
+    public func setArguments(_ arguments: StatementArguments) throws {
         // Validate
-        _arguments = arguments
-        var arguments = arguments
-        let bindings = try arguments.consume(self, allowingRemainingValues: false)
-        argumentsNeedValidation = false
+        var consumedArguments = arguments
+        let bindings = try consumedArguments.extractBindings(forStatement: self, allowingRemainingValues: false)
         
         // Apply
-        reset()
+        _arguments = arguments
+        argumentsNeedValidation = false
+        try reset()
         clearBindings()
-        for (index, databaseValue) in bindings.enumerated() {
-            bind(databaseValue: databaseValue, at: index)
+        for (index, dbValue) in zip(Int32(1)..., bindings) {
+            bind(dbValue, at: index)
         }
     }
     
-    // 0-based index
-    private func bind(databaseValue: DatabaseValue, at index: Int) {
-        let code: Int32
-        switch databaseValue.storage {
-        case .null:
-            code = sqlite3_bind_null(sqliteStatement, Int32(index + 1))
-        case .int64(let int64):
-            code = sqlite3_bind_int64(sqliteStatement, Int32(index + 1), int64)
-        case .double(let double):
-            code = sqlite3_bind_double(sqliteStatement, Int32(index + 1), double)
-        case .string(let string):
-            code = sqlite3_bind_text(sqliteStatement, Int32(index + 1), string, -1, SQLITE_TRANSIENT)
-        case .blob(let data):
-            code = data.withUnsafeBytes { bytes in
-                sqlite3_bind_blob(sqliteStatement, Int32(index + 1), bytes, Int32(data.count), SQLITE_TRANSIENT)
-            }
-        }
+    // 1-based index
+    func bind<T: StatementBinding>(_ value: T, at index: CInt) {
+        let code = value.bind(to: sqliteStatement, at: index)
         
         // It looks like sqlite3_bind_xxx() functions do not access the file system.
         // They should thus succeed, unless a GRDB bug: there is no point throwing any error.
         guard code == SQLITE_OK else {
-            fatalError(DatabaseError(resultCode: code, message: database.lastErrorMessage, sql: sql).description)
+            fatalError(DatabaseError(resultCode: code, message: database.lastErrorMessage, sql: sql))
         }
     }
     
     // Don't make this one public unless we keep the arguments property in sync.
-    private func clearBindings() {
+    func clearBindings() {
         // It looks like sqlite3_clear_bindings() does not access the file system.
         // This function call should thus succeed, unless a GRDB bug: there is
         // no point throwing any error.
         let code = sqlite3_clear_bindings(sqliteStatement)
         guard code == SQLITE_OK else {
-            fatalError(DatabaseError(resultCode: code, message: database.lastErrorMessage, sql: sql).description)
+            fatalError(DatabaseError(resultCode: code, message: database.lastErrorMessage, sql: sql))
         }
     }
-
-    fileprivate func prepare(withArguments arguments: StatementArguments?) throws {
+    
+    func reset(withArguments arguments: StatementArguments?) {
+        // Force arguments validity: it is a programmer error to provide
+        // arguments that do not match the statement.
         if let arguments = arguments {
-            try setArgumentsWithValidation(arguments)
+            try! setArguments(arguments)
         } else if argumentsNeedValidation {
-            try validate(arguments: self.arguments)
+            try! reset()
+            try! validateArguments(self.arguments)
         }
     }
 }
 
+@available(*, deprecated, renamed: "Statement")
+public typealias SelectStatement = Statement
 
-// MARK: - SelectStatement
+@available(*, deprecated, renamed: "Statement")
+public typealias UpdateStatement = Statement
 
-/// A subclass of Statement that fetches database rows.
-///
-/// You create SelectStatement with the Database.makeSelectStatement() method:
-///
-///     try dbQueue.inDatabase { db in
-///         let statement = try db.makeSelectStatement("SELECT COUNT(*) FROM persons WHERE age > ?")
-///         let moreThanTwentyCount = try Int.fetchOne(statement, arguments: [20])!
-///         let moreThanThirtyCount = try Int.fetchOne(statement, arguments: [30])!
-///     }
-public final class SelectStatement : Statement {
-    /// Information about the table and columns read by a SelectStatement
-    public private(set) var selectionInfo: SelectionInfo
-    
-    init(database: Database, sql: String) throws {
-        self.selectionInfo = SelectionInfo()
-        let observer = StatementCompilationObserver(database)
-        try super.init(database: database, sql: sql, observer: observer)
-        Database.preconditionValidSelectStatement(sql: sql, observer: observer)
-        self.selectionInfo = observer.selectionInfo
+extension Statement: CustomStringConvertible {
+    public var description: String {
+        "SQL: \(sql), Arguments: \(arguments)"
     }
-    
+}
+
+// MARK: - Select Statements
+
+extension Statement {
     /// The number of columns in the resulting rows.
-    public lazy var columnCount: Int = {
+    public var columnCount: Int {
         Int(sqlite3_column_count(self.sqliteStatement))
-    }()
-    
-    /// The column names, ordered from left to right.
-    public lazy var columnNames: [String] = {
-        let sqliteStatement = self.sqliteStatement
-        return (0..<self.columnCount).map { (index: Int) -> String in String(cString: sqlite3_column_name(sqliteStatement, Int32(index))) }
-    }()
-    
-    /// Cache for indexOfColumn(). Keys are lowercase.
-    private lazy var columnIndexes: [String: Int] = {
-        return Dictionary(keyValueSequence: self.columnNames.enumerated().map { ($1.lowercased(), $0) }.reversed())
-    }()
+    }
     
     /// Returns the index of the leftmost column named `name`, in a
     /// case-insensitive way.
-    func index(ofColumn name: String) -> Int? {
-        return columnIndexes[name.lowercased()]
+    public func index(ofColumn name: String) -> Int? {
+        columnIndexes[name.lowercased()]
     }
     
-    /// Creates a DatabaseCursor
-    func cursor<Element>(arguments: StatementArguments? = nil, next element: @escaping () throws -> Element) -> DatabaseCursor<Element> {
-        // Check that cursor is built on a valid queue.
-        SchedulingWatchdog.preconditionValidQueue(database, "Database was not used on the correct thread.")
-        
-        // Force arguments validity: it is a programmer error to provide
-        // arguments that do not match the statement.
-        try! prepare(withArguments: arguments)
-        
-        reset()
-        return DatabaseCursor(statement: self, element: element)
-    }
-    
-    /// Creates a cursor whose results are ignored
-    func cursor(arguments: StatementArguments? = nil) -> DatabaseCursor<Void> {
-        return cursor(arguments: arguments) { }
-    }
-
-    /// Information about the table and columns read by a SelectStatement
-    public struct SelectionInfo : CustomStringConvertible {
-        mutating func insert(table: String) {
-            tables.insert(table)
-        }
-        
-        mutating func insert(column: String, ofTable table: String) {
-            if columns[table] != nil {
-                columns[table]!.insert(column)
-            } else {
-                columns[table] = [column]
-            }
-        }
-        
-        /// If true, selection is unknown
-        let isUnknown: Bool
-        
-        /// Relevant iff isUnknown is false
-        func contains(anyColumnFrom table: String) -> Bool {
-            return tables.contains(table) || columns.index(forKey: table) != nil
-        }
-        
-        /// Relevant iff isUnknown is false
-        func contains(anyColumnIn columns: Set<String>, from table: String) -> Bool {
-            return tables.contains(table) || !(self.columns[table]?.isDisjoint(with: columns) ?? true)
-        }
-        
-        init() {
-            self.init(isUnknown: false)
-        }
-        
-        static func unknown() -> SelectionInfo {
-            return self.init(isUnknown: true)
-        }
-        
-        // `SELECT a, b FROM t1` -> ["t1": ["a", "b"]]
-        private var columns: [String: Set<String>] = [:]
-
-        // `SELECT COUNT(*) FROM t1` -> ["t1"]
-        private var tables: Set<String> = []
-        
-        private init(isUnknown: Bool) {
-            self.isUnknown = isUnknown
-        }
-        
-        /// A textual representation of `self`.
-        public var description: String {
-            // TODO: include tables in the description
-            return columns
-                .sorted { $0.key < $1.key }
-                .map { (table, columns) in "\(table)(\(columns.sorted().joined(separator: ", ")))" }
-                .joined(separator: ", ")
-        }
+    /// Creates a cursor over the statement which does not produce any
+    /// value. Each call to the next() cursor method calls the sqlite3_step()
+    /// C function.
+    func makeCursor(arguments: StatementArguments? = nil) throws -> StatementCursor {
+        try StatementCursor(statement: self, arguments: arguments)
     }
 }
 
-/// A cursor on a statement
-public final class DatabaseCursor<Element> : Cursor {
-    fileprivate let statement: SelectStatement
-    private let sqliteStatement: SQLiteStatement
-    private let element: () throws -> Element?
-    private var done = false
-    
-    // Fileprivate so that only SelectStatement can instantiate a database cursor
-    fileprivate init(statement: SelectStatement, element: @escaping () throws -> Element?) {
-        self.statement = statement
-        self.sqliteStatement = statement.sqliteStatement
-        self.element = element
+/// A cursor that iterates a database statement without producing any value.
+/// Each call to the next() cursor method calls the sqlite3_step() C function.
+///
+/// For example:
+///
+///     try dbQueue.read { db in
+///         let statement = db.makeStatement(sql: "SELECT performSideEffect()")
+///         let cursor = statement.makeCursor()
+///         try cursor.next()
+///     }
+final class StatementCursor: Cursor {
+    private enum _State {
+        case idle, busy, done, failed
     }
     
-    /// Advances to the next element and returns it, or `nil` if no next element
-    /// exists. Once nil has been returned, all subsequent calls return nil.
-    ///
-    ///     let rows = try Row.fetchCursor(db, "SELECT ...") // DatabaseCursor<Row>
-    ///     while let row = try rows.next() { // Row
-    ///         let id: Int64 = row.value(atIndex: 0)
-    ///         let name: String = row.value(atIndex: 1)
-    ///     }
-    public func next() throws -> Element? {
-        if done {
-            return nil
+    /* private, internal for testability */ let _statement: Statement
+    private let _sqliteStatement: SQLiteStatement
+    private var _state = _State.idle
+    
+    // Use Statement.makeCursor() instead
+    init(statement: Statement, arguments: StatementArguments? = nil) throws {
+        _statement = statement
+        _sqliteStatement = statement.sqliteStatement
+        
+        // Assume cursor is created for immediate iteration: reset and set arguments
+        statement.reset(withArguments: arguments)
+    }
+    
+    deinit {
+        if _state == .busy {
+            try? _statement.database.statementDidExecute(_statement)
         }
         
-        switch sqlite3_step(sqliteStatement) {
+        // Statement reset fails when sqlite3_step has previously failed.
+        // Just ignore reset error.
+        try? _statement.reset()
+    }
+    
+    /// :nodoc:
+    func next() throws -> Void? {
+        switch _state {
+        case .done:
+            // make sure this instance never yields a value again, even if the
+            // statement is reset by another cursor.
+            return nil
+        case .idle:
+            guard try _statement.database.statementWillExecute(_statement) == nil else {
+                throw DatabaseError(
+                    resultCode: SQLITE_MISUSE,
+                    message: "Can't run statement that requires a customized authorizer from a cursor",
+                    sql: _statement.sql,
+                    arguments: _statement.arguments)
+            }
+            _state = .busy
+        default:
+            break
+        }
+        
+        switch sqlite3_step(_sqliteStatement) {
         case SQLITE_DONE:
-            done = true
+            _state = .done
+            try _statement.database.statementDidExecute(_statement)
             return nil
         case SQLITE_ROW:
-            return try element()
+            return .some(())
         case let code:
-            statement.database.selectStatementDidFail(statement)
-            throw DatabaseError(resultCode: code, message: statement.database.lastErrorMessage, sql: statement.sql, arguments: statement.arguments)
+            _state = .failed
+            try _statement.database.statementDidFail(_statement, withResultCode: code)
         }
     }
 }
 
+// MARK: - Update Statements
 
-// MARK: - UpdateStatement
-
-/// A subclass of Statement that executes SQL queries.
-///
-/// You create UpdateStatement with the Database.makeUpdateStatement() method:
-///
-///     try dbQueue.inTransaction { db in
-///         let statement = try db.makeUpdateStatement("INSERT INTO persons (name) VALUES (?)")
-///         try statement.execute(arguments: ["Arthur"])
-///         try statement.execute(arguments: ["Barbara"])
-///         return .commit
-///     }
-public final class UpdateStatement : Statement {
-    enum TransactionStatementInfo {
-        enum SavepointAction : String {
-            case begin = "BEGIN"
-            case release = "RELEASE"
-            case rollback = "ROLLBACK"
+extension Statement {
+    var releasesDatabaseLock: Bool {
+        guard let transactionEffect = transactionEffect else {
+            return false
         }
         
-        enum TransactionAction : String {
-            case begin = "BEGIN"
-            case commit = "COMMIT"
-            case rollback = "ROLLBACK"
+        switch transactionEffect {
+        case .commitTransaction, .rollbackTransaction,
+             .releaseSavepoint, .rollbackSavepoint:
+            // Not technically correct:
+            // - ROLLBACK TRANSACTION TO SAVEPOINT does not release any lock
+            // - RELEASE SAVEPOINT does not always release lock
+            //
+            // But both move in the direction of releasing locks :-)
+            return true
+        default:
+            return false
         }
-        
-        case transaction(action: TransactionAction)
-        case savepoint(name: String, action: SavepointAction)
     }
     
-    /// If true, the database schema cache gets invalidated after this statement
-    /// is executed.
-    private(set) var invalidatesDatabaseSchemaCache: Bool
-    private(set) var transactionStatementInfo: TransactionStatementInfo?
-    private(set) var databaseEventKinds: [DatabaseEventKind]
-    
-    init(database: Database, sqliteStatement: SQLiteStatement, invalidatesDatabaseSchemaCache: Bool, transactionStatementInfo: TransactionStatementInfo?, databaseEventKinds: [DatabaseEventKind]) {
-        self.invalidatesDatabaseSchemaCache = invalidatesDatabaseSchemaCache
-        self.transactionStatementInfo = transactionStatementInfo
-        self.databaseEventKinds = databaseEventKinds
-        super.init(database: database, sqliteStatement: sqliteStatement)
-    }
-    
-    init(database: Database, sql: String) throws {
-        self.invalidatesDatabaseSchemaCache = false
-        self.databaseEventKinds = []
-        
-        let observer = StatementCompilationObserver(database)
-        try super.init(database: database, sql: sql, observer: observer)
-        self.invalidatesDatabaseSchemaCache = observer.invalidatesDatabaseSchemaCache
-        self.transactionStatementInfo = observer.transactionStatementInfo
-        self.databaseEventKinds = observer.databaseEventKinds
-    }
-    
-    /// Executes the SQL query.
+    /// Executes the prepared statement.
     ///
-    /// - parameter arguments: Statement arguments.
+    /// - parameter arguments: Optional statement arguments.
     /// - throws: A DatabaseError whenever an SQLite error occurs.
     public func execute(arguments: StatementArguments? = nil) throws {
         SchedulingWatchdog.preconditionValidQueue(database)
+        reset(withArguments: arguments)
         
-        // Force arguments validity: it is a programmer error to provide
-        // arguments that do not match the statement.
-        try! prepare(withArguments: arguments)
-        
-        reset()
-        database.updateStatementWillExecute(self)
-        
-        while true {
-            switch sqlite3_step(sqliteStatement) {
-            case SQLITE_ROW:
-                // The statement did return a row, and the user ignores the
-                // content of this row:
-                //
-                //     try db.execute("SELECT ...")
-                //
-                // That's OK: maybe the selected rows perform side effects.
-                // For example:
-                //
-                //      try db.execute("SELECT sqlcipher_export(...)")
-                //
-                // Or maybe the user doesn't know that the executed statement
-                // return rows (https://github.com/groue/GRDB.swift/issues/15);
-                //
-                //      try db.execute("PRAGMA journal_mode=WAL")
-                //
-                // It is thus important that we consume *all* rows.
-                continue
-                
-            case SQLITE_DONE:
-                database.updateStatementDidExecute(self)
-                return
-                
-            case let code:
-                // Failure
-                //
-                // Let database rethrow eventual transaction observer error:
-                try database.updateStatementDidFail(self)
-                
-                throw DatabaseError(resultCode: code, message: database.lastErrorMessage, sql: sql, arguments: self.arguments) // Error uses self.arguments, not the optional arguments parameter.
-            }
-        }
+        // Statement does not know how to execute itself, because it does not
+        // know how to handle its errors, or if truncate optimisation should be
+        // prevented or not. Database knows.
+        try database.executeStatement(self)
     }
 }
 
+// MARK: - StatementBinding
+
+public protocol StatementBinding {
+    /// Binds a statement argument.
+    ///
+    /// - parameter sqliteStatement: An SQLite statement.
+    /// - parameter index: 1-based index to statement arguments
+    /// - returns: the code returned by the `sqlite3_bind_xxx` function.
+    func bind(to sqliteStatement: SQLiteStatement, at index: CInt) -> CInt
+}
 
 // MARK: - StatementArguments
 
 /// StatementArguments provide values to argument placeholders in raw
 /// SQL queries.
 ///
-/// Placeholders can take several forms (see https://www.sqlite.org/lang_expr.html#varparam
+/// Placeholders can take several forms (see <https://www.sqlite.org/lang_expr.html#varparam>
 /// for more information):
 ///
 /// - `?NNN` (e.g. `?2`): the NNN-th argument (starts at 1)
@@ -480,12 +464,12 @@ public final class UpdateStatement : Statement {
 /// To fill question marks placeholders, feed StatementArguments with an array:
 ///
 ///     db.execute(
-///         "INSERT ... (?, ?)",
+///         sql: "INSERT ... (?, ?)",
 ///         arguments: StatementArguments(["Arthur", 41]))
 ///
 ///     // Array literals are automatically converted:
 ///     db.execute(
-///         "INSERT ... (?, ?)",
+///         sql: "INSERT ... (?, ?)",
 ///         arguments: ["Arthur", 41])
 ///
 /// ## Named Arguments
@@ -493,13 +477,13 @@ public final class UpdateStatement : Statement {
 /// To fill named arguments, feed StatementArguments with a dictionary:
 ///
 ///     db.execute(
-///         "INSERT ... (:name, :age)",
-///         arguments: StatementArguments(["name": "Arthur", "age": 41]))
+///         sql: "INSERT ... (:name, :score)",
+///         arguments: StatementArguments(["name": "Arthur", "score": 41]))
 ///
 ///     // Dictionary literals are automatically converted:
 ///     db.execute(
-///         "INSERT ... (:name, :age)",
-///         arguments: ["name": "Arthur", "age": 41])
+///         sql: "INSERT ... (:name, :score)",
+///         arguments: ["name": "Arthur", "score": 41])
 ///
 /// ## Concatenating Arguments
 ///
@@ -508,7 +492,7 @@ public final class UpdateStatement : Statement {
 ///
 ///     var arguments: StatementArguments = ["Arthur"]
 ///     arguments += [41]
-///     db.execute("INSERT ... (?, ?)", arguments: arguments)
+///     db.execute(sql: "INSERT ... (?, ?)", arguments: arguments)
 ///
 /// `+` and `+=` operators consider that overriding named arguments is a
 /// programmer error:
@@ -526,89 +510,121 @@ public final class UpdateStatement : Statement {
 ///
 /// ## Mixed Arguments
 ///
-/// When a statement consumes a mix of named and positional arguments, it
-/// prefers named arguments over positional ones. For example:
+/// It is possible to mix named and positional arguments. Yet this is usually
+/// confusing, and it is best to avoid this practice:
 ///
 ///     let sql = "SELECT ?2 AS two, :foo AS foo, ?1 AS one, :foo AS foo2, :bar AS bar"
-///     let row = try Row.fetchOne(db, sql, arguments: [1, 2, "bar"] + ["foo": "foo"])!
+///     var arguments: StatementArguments = [1, 2, "bar"] + ["foo": "foo"]
+///     let row = try Row.fetchOne(db, sql: sql, arguments: arguments)!
 ///     print(row)
-///     // Prints <Row two:2 foo:"foo" one:1 foo2:"foo" bar:"bar">
-public struct StatementArguments {
+///     // Prints [two:2 foo:"foo" one:1 foo2:"foo" bar:"bar"]
+///
+/// Mixed arguments exist as a support for requests like the following:
+///
+///     let players = try Player
+///         .filter(sql: "team = :team", arguments: ["team": "Blue"])
+///         .filter(sql: "score > ?", arguments: [1000])
+///         .fetchAll(db)
+public struct StatementArguments: CustomStringConvertible, Equatable,
+                                  ExpressibleByArrayLiteral, ExpressibleByDictionaryLiteral
+{
+    private(set) var values: [DatabaseValue]
+    private(set) var namedValues: [String: DatabaseValue]
     
     public var isEmpty: Bool {
-        return values.isEmpty && namedValues.isEmpty
+        values.isEmpty && namedValues.isEmpty
     }
     
+    
+    // MARK: Empty Arguments
+    
+    /// Creates empty StatementArguments.
+    public init() {
+        values = .init()
+        namedValues = .init()
+    }
     
     // MARK: Positional Arguments
     
-    /// Initializes arguments from a sequence of optional values.
+    /// Creates statement arguments from a sequence of optional values.
     ///
     ///     let values: [DatabaseValueConvertible?] = ["foo", 1, nil]
-    ///     db.execute("INSERT ... (?,?,?)", arguments: StatementArguments(values))
+    ///     db.execute(sql: "INSERT ... (?,?,?)", arguments: StatementArguments(values))
     ///
     /// - parameter sequence: A sequence of DatabaseValueConvertible values.
     /// - returns: A StatementArguments.
-    public init<Sequence: Swift.Sequence>(_ sequence: Sequence) where Sequence.Iterator.Element == DatabaseValueConvertible? {
+    public init<Sequence: Swift.Sequence>(_ sequence: Sequence) where Sequence.Element == DatabaseValueConvertible? {
         values = sequence.map { $0?.databaseValue ?? .null }
+        namedValues = .init()
     }
     
-    /// Initializes arguments from a sequence of optional values.
+    /// Creates statement arguments from a sequence of optional values.
     ///
     ///     let values: [String] = ["foo", "bar"]
-    ///     db.execute("INSERT ... (?,?)", arguments: StatementArguments(values))
+    ///     db.execute(sql: "INSERT ... (?,?)", arguments: StatementArguments(values))
     ///
     /// - parameter sequence: A sequence of DatabaseValueConvertible values.
     /// - returns: A StatementArguments.
-    public init<Sequence: Swift.Sequence>(_ sequence: Sequence) where Sequence.Iterator.Element: DatabaseValueConvertible {
-        values = sequence.map { $0.databaseValue }
+    public init<Sequence: Swift.Sequence>(_ sequence: Sequence) where Sequence.Element: DatabaseValueConvertible {
+        values = sequence.map(\.databaseValue)
+        namedValues = .init()
     }
     
-    /// Initializes arguments from [Any].
-    ///
-    /// The result is nil unless all objects adopt DatabaseValueConvertible.
+    /// Creates statement arguments from any array. The result is nil unless all
+    /// array elements adopt DatabaseValueConvertible.
     ///
     /// - parameter array: An array
     /// - returns: A StatementArguments.
     public init?(_ array: [Any]) {
         var values = [DatabaseValueConvertible?]()
         for value in array {
-            guard let databaseValue = DatabaseValue(value: value) else {
+            guard let dbValue = DatabaseValue(value: value) else {
                 return nil
             }
-            values.append(databaseValue)
+            values.append(dbValue)
         }
         self.init(values)
     }
     
+    private mutating func set(databaseValues: [DatabaseValue]) {
+        self.values = databaseValues
+        namedValues.removeAll(keepingCapacity: true)
+    }
     
     // MARK: Named Arguments
     
-    /// Initializes arguments from a sequence of (key, value) dictionary, such as
-    /// a dictionary.
+    /// Creates statement arguments from a sequence of (key, value) dictionary,
+    /// such as a dictionary.
     ///
     ///     let values: [String: DatabaseValueConvertible?] = ["firstName": nil, "lastName": "Miller"]
-    ///     db.execute("INSERT ... (:firstName, :lastName)", arguments: StatementArguments(values))
+    ///     db.execute(sql: "INSERT ... (:firstName, :lastName)", arguments: StatementArguments(values))
     ///
     /// - parameter sequence: A sequence of (key, value) pairs
     /// - returns: A StatementArguments.
     public init(_ dictionary: [String: DatabaseValueConvertible?]) {
-        namedValues = Dictionary(keys: dictionary.keys) { dictionary[$0]!?.databaseValue ?? .null }
+        namedValues = dictionary.mapValues { $0?.databaseValue ?? .null }
+        values = .init()
     }
     
-    /// Initializes arguments from a sequence of (key, value) pairs, such as
-    /// a dictionary.
+    /// Creates statement arguments from a sequence of (key, value) pairs, such
+    /// as a dictionary.
     ///
     ///     let values: [String: DatabaseValueConvertible?] = ["firstName": nil, "lastName": "Miller"]
-    ///     db.execute("INSERT ... (:firstName, :lastName)", arguments: StatementArguments(values))
+    ///     db.execute(sql: "INSERT ... (:firstName, :lastName)", arguments: StatementArguments(values))
     ///
     /// - parameter sequence: A sequence of (key, value) pairs
     /// - returns: A StatementArguments.
-    public init<Sequence: Swift.Sequence>(_ sequence: Sequence) where Sequence.Iterator.Element == (String, DatabaseValueConvertible?) {
-        namedValues = Dictionary(keyValueSequence: sequence.map { ($0, $1?.databaseValue ?? .null) })
+    public init<Sequence>(_ sequence: Sequence)
+    where Sequence: Swift.Sequence, Sequence.Element == (String, DatabaseValueConvertible?)
+    {
+        namedValues = .init(minimumCapacity: sequence.underestimatedCount)
+        for (key, value) in sequence {
+            namedValues[key] = value?.databaseValue ?? .null
+        }
+        values = .init()
     }
     
-    /// Initializes arguments from [AnyHashable: Any].
+    /// Creates statement arguments from [AnyHashable: Any].
     ///
     /// The result is nil unless all dictionary keys are strings, and values
     /// adopt DatabaseValueConvertible.
@@ -621,10 +637,10 @@ public struct StatementArguments {
             guard let columnName = key as? String else {
                 return nil
             }
-            guard let databaseValue = DatabaseValue(value: value) else {
+            guard let dbValue = DatabaseValue(value: value) else {
                 return nil
             }
-            initDictionary[columnName] = databaseValue
+            initDictionary[columnName] = dbValue
         }
         self.init(initDictionary)
     }
@@ -780,117 +796,87 @@ public struct StatementArguments {
     /// append(contentsOf:) method.
     public static func += (lhs: inout StatementArguments, rhs: StatementArguments) {
         let replacedValues = lhs.append(contentsOf: rhs)
-        GRDBPrecondition(replacedValues.isEmpty, "already defined statement argument: \(replacedValues.keys.joined(separator: ", "))")
+        GRDBPrecondition(
+            replacedValues.isEmpty,
+            "already defined statement argument: \(replacedValues.keys.joined(separator: ", "))")
     }
     
     
     // MARK: Not Public
     
-    var values: [DatabaseValue] = []
-    var namedValues: [String: DatabaseValue] = [:]
-    
-    init() {
-    }
-    
-    mutating func consume(_ statement: Statement, allowingRemainingValues: Bool) throws -> [DatabaseValue] {
+    mutating func extractBindings(
+        forStatement statement: Statement,
+        allowingRemainingValues: Bool)
+    throws -> [DatabaseValue]
+    {
         let initialValuesCount = values.count
         let bindings = try statement.sqliteArgumentNames.map { argumentName -> DatabaseValue in
             if let argumentName = argumentName {
-                if let databaseValue = namedValues[argumentName] {
-                    return databaseValue
+                if let dbValue = namedValues[argumentName] {
+                    return dbValue
                 } else if values.isEmpty {
-                    throw DatabaseError(resultCode: .SQLITE_MISUSE, message: "missing statement argument: \(argumentName)", sql: statement.sql, arguments: nil)
+                    throw DatabaseError(
+                        resultCode: .SQLITE_MISUSE,
+                        message: "missing statement argument: \(argumentName)",
+                        sql: statement.sql)
                 } else {
                     return values.removeFirst()
                 }
             } else {
                 if values.isEmpty {
-                    throw DatabaseError(resultCode: .SQLITE_MISUSE, message: "wrong number of statement arguments: \(initialValuesCount)", sql: statement.sql, arguments: nil)
+                    throw DatabaseError(
+                        resultCode: .SQLITE_MISUSE,
+                        message: "wrong number of statement arguments: \(initialValuesCount)",
+                        sql: statement.sql)
                 } else {
                     return values.removeFirst()
                 }
             }
         }
         if !allowingRemainingValues && !values.isEmpty {
-            throw DatabaseError(resultCode: .SQLITE_MISUSE, message: "wrong number of statement arguments: \(initialValuesCount)", sql: statement.sql, arguments: nil)
+            throw DatabaseError(
+                resultCode: .SQLITE_MISUSE,
+                message: "wrong number of statement arguments: \(initialValuesCount)",
+                sql: statement.sql)
         }
         return bindings
     }
 }
 
-extension StatementArguments : ExpressibleByArrayLiteral {
+// ExpressibleByArrayLiteral
+extension StatementArguments {
     /// Returns a StatementArguments from an array literal:
     ///
-    ///     db.selectRows("SELECT ...", arguments: ["Arthur", 41])
+    ///     let arguments: StatementArguments = ["Arthur", 41]
+    ///     try db.execute(
+    ///         sql: "INSERT INTO player (name, score) VALUES (?, ?)"
+    ///         arguments: arguments)
     public init(arrayLiteral elements: DatabaseValueConvertible?...) {
         self.init(elements)
     }
 }
 
-extension StatementArguments : ExpressibleByDictionaryLiteral {
+// ExpressibleByDictionaryLiteral
+extension StatementArguments {
     /// Returns a StatementArguments from a dictionary literal:
     ///
-    ///     db.selectRows("SELECT ...", arguments: ["name": "Arthur", "age": 41])
+    ///     let arguments: StatementArguments = ["name": "Arthur", "score": 41]
+    ///     try db.execute(
+    ///         sql: "INSERT INTO player (name, score) VALUES (:name, :score)"
+    ///         arguments: arguments)
     public init(dictionaryLiteral elements: (String, DatabaseValueConvertible?)...) {
         self.init(elements)
     }
 }
 
-extension StatementArguments : CustomStringConvertible {
-    /// A textual representation of `self`.
+// CustomStringConvertible
+extension StatementArguments {
+    /// :nodoc:
     public var description: String {
-        let valuesDescriptions = values.map { $0.description }
+        let valuesDescriptions = values.map(\.description)
         let namedValuesDescriptions = namedValues.map { (key, value) -> String in
-            return "\(String(reflecting: key)): \(value)"
+            "\(String(reflecting: key)): \(value)"
         }
         return "[" + (namedValuesDescriptions + valuesDescriptions).joined(separator: ", ") + "]"
-    }
-}
-
-/// A thread-unsafe statement cache
-struct StatementCache {
-    unowned let db: Database
-    private var selectStatements: [String: SelectStatement] = [:]
-    private var updateStatements: [String: UpdateStatement] = [:]
-    
-    init(database: Database) {
-        self.db = database
-    }
-    
-    mutating func selectStatement(_ sql: String) throws -> SelectStatement {
-        if let statement = selectStatements[sql] {
-            return statement
-        }
-        
-        let statement = try db.makeSelectStatement(sql)
-        selectStatements[sql] = statement
-        return statement
-    }
-
-    mutating func updateStatement(_ sql: String) throws -> UpdateStatement {
-        if let statement = updateStatements[sql] {
-            return statement
-        }
-        
-        let statement = try db.makeUpdateStatement(sql)
-        updateStatements[sql] = statement
-        return statement
-    }
-    
-    mutating func clear() {
-        updateStatements = [:]
-        selectStatements = [:]
-    }
-    
-    mutating func remove(_ statement: SelectStatement) {
-        if let index = selectStatements.index(where: { $0.1 === statement }) {
-            selectStatements.remove(at: index)
-        }
-    }
-    
-    mutating func remove(_ statement: UpdateStatement) {
-        if let index = updateStatements.index(where: { $0.1 === statement }) {
-            updateStatements.remove(at: index)
-        }
     }
 }

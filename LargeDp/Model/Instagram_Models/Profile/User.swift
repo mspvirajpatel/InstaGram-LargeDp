@@ -50,7 +50,7 @@ class User : NSObject, NSCoding{
             countryBlock = data
         }
         
-        connectedFbPage = dictionary["connected_fb_page"] as AnyObject!
+        connectedFbPage = dictionary["connected_fb_page"] as AnyObject?
         
         if let data = dictionary["external_url"] as? String{
             externalUrl = data

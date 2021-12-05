@@ -19,7 +19,7 @@ private var xoAssociationDelegateKey = "xoAssociationDelegateKey"
 
 public extension String {
    
-    public func localize(comment: String?) -> String {
+    func localize(comment: String?) -> String {
         if comment != nil
         {
             return NSLocalizedString(self, comment: comment!)
@@ -30,7 +30,7 @@ public extension String {
         }
     }
     
-    public func localize() -> String {
+    func localize() -> String {
        
         return NSLocalizedString(self, comment: "")
         
@@ -39,7 +39,7 @@ public extension String {
 
 
 public extension UIAlertController {
-    public func kam_show(animated: Bool = true, completionHandler: (() -> Void)? = nil) {
+    func kam_show(animated: Bool = true, completionHandler: (() -> Void)? = nil) {
         guard let rootVC = UIApplication.shared.keyWindow?.rootViewController else {
             return
         }
@@ -53,7 +53,7 @@ public extension UIAlertController {
 
 public extension UIColor {
     
-    public convenience init(rgbValue: Int, alpha: CGFloat) {
+    convenience init(rgbValue: Int, alpha: CGFloat) {
         
         self.init(red:   CGFloat( (rgbValue & 0xFF0000) >> 16 ) / 255.0,
                   green: CGFloat( (rgbValue & 0x00FF00) >> 8 ) / 255.0,
@@ -62,12 +62,12 @@ public extension UIColor {
         
     }
     
-    public convenience init(rgbValue: Int) {
+    convenience init(rgbValue: Int) {
         self.init(rgbValue: rgbValue, alpha: 1.0)
     
     }
     
-    public func lighterColorForColor() -> UIColor? {
+    func lighterColorForColor() -> UIColor? {
         
         var r: CGFloat = 0
         var g: CGFloat = 0
@@ -86,7 +86,7 @@ public extension UIColor {
         
     }
     
-    public func darkerColorForColor() -> UIColor? {
+    func darkerColorForColor() -> UIColor? {
         
         var r: CGFloat = 0
         var g: CGFloat = 0
@@ -108,7 +108,7 @@ public extension UIColor {
 }
 
 
-extension UIGestureRecognizerState{
+extension UIGestureRecognizer.State{
     
     func toString()->String{
         switch self{
@@ -124,6 +124,8 @@ extension UIGestureRecognizerState{
             return "Failed"
         case .possible:
             return "invaid value"
+        default:
+            return "hh"
         }
     }
 }
@@ -142,9 +144,9 @@ extension UIColor {
 
 public extension UIFont {
     
-    public convenience init(fontString: String) {
+    convenience init(fontString: String) {
         
-        var stringArray : Array = fontString.components(separatedBy: ";")
+        let stringArray : Array = fontString.components(separatedBy: ";")
         self.init(name: stringArray[0], size:stringArray[1].stringToFloat())!
         
     }
@@ -170,20 +172,21 @@ extension UIViewController {
         }
     }
     
-    override open static func initialize() {
-        if !didKDVCInitialized {
-            replaceInteractiveMethods()
-            didKDVCInitialized = true
-        }
-    }
+    
+//    public override static func initialize() {
+//        if !didKDVCInitialized {
+//            replaceInteractiveMethods()
+//            didKDVCInitialized = true
+//        }
+//    }
     
     fileprivate static func replaceInteractiveMethods() {
         method_exchangeImplementations(
-            class_getInstanceMethod(self, #selector(UIViewController.viewWillAppear(_:))),
-            class_getInstanceMethod(self, #selector(UIViewController.KD_interactiveViewWillAppear(_:))))
+            class_getInstanceMethod(self, #selector(UIViewController.viewWillAppear(_:)))!,
+            class_getInstanceMethod(self, #selector(UIViewController.KD_interactiveViewWillAppear(_:)))!)
     }
     
-    func KD_interactiveViewWillAppear(_ animated: Bool) {
+    @objc func KD_interactiveViewWillAppear(_ animated: Bool) {
         KD_interactiveViewWillAppear(animated)
         navigationController?.setNavigationBarHidden(interactiveNavigationBarHidden, animated: animated)
     }
@@ -261,19 +264,19 @@ public extension UIView {
         self.frame.origin.y = bottom - self.frame.size.height
     }
     
-    public func isTextControl() -> Bool{
+    func isTextControl() -> Bool{
         return (self.isTextFieldControl() || self.isTextViewControl())
     }
     
-    public func isTextFieldControl() -> Bool{
+    func isTextFieldControl() -> Bool{
         return self.isKind(of: UITextField.self)
     }
     
-    public func isTextViewControl() -> Bool{
+    func isTextViewControl() -> Bool{
         return self.isKind(of: UITextView.self)
     }
     
-    public func getRequestDictionaryFromView() -> [String: String]{
+    func getRequestDictionaryFromView() -> [String: String]{
         
         var textControl : AnyObject?
         var textFromTextControl : String?
@@ -365,7 +368,7 @@ public extension UIView {
         return dicView
     }
     
-    public func setBorder(_ borderColor: UIColor, width: CGFloat, radius: CGFloat){
+    func setBorder(_ borderColor: UIColor, width: CGFloat, radius: CGFloat){
         
         self.layer.borderColor = borderColor.cgColor
         self.layer.borderWidth = width
@@ -373,7 +376,7 @@ public extension UIView {
         
     }
 
-    public func setTopBorder(_ borderColor: UIColor, width: CGFloat) {
+    func setTopBorder(_ borderColor: UIColor, width: CGFloat) {
         
         let layerName: String = "upper_layer"
         var upperBorder: CALayer?
@@ -398,7 +401,7 @@ public extension UIView {
         self.layer.addSublayer(upperBorder!)
     }
     
-    public func setBottomBorder(_ borderColor: UIColor, width: CGFloat) {
+    func setBottomBorder(_ borderColor: UIColor, width: CGFloat) {
         
         let layerName: String = "bottom_layer"
         var bottomBorder: CALayer?
@@ -424,7 +427,7 @@ public extension UIView {
     
     }
     
-    public func setLeftBorder(_ borderColor: UIColor, width: CGFloat) {
+    func setLeftBorder(_ borderColor: UIColor, width: CGFloat) {
         
         let layerName: String = "left_layer"
         var leftBorder: CALayer?
@@ -449,7 +452,7 @@ public extension UIView {
         self.layer.addSublayer(leftBorder!)
     }
     
-    public func setRightBorder(_ borderColor: UIColor, width: CGFloat) {
+    func setRightBorder(_ borderColor: UIColor, width: CGFloat) {
         
         let layerName: String = "right_layer"
         var rightBorder: CALayer?
@@ -474,7 +477,7 @@ public extension UIView {
         self.layer.addSublayer(rightBorder!)
     }
     
-    public func setCircleViewWith(_ borderColor: UIColor, width: CGFloat) {
+    func setCircleViewWith(_ borderColor: UIColor, width: CGFloat) {
         
         self.layer.cornerRadius = (self.frame.size.width / 2)
         self.layer.masksToBounds = (true)
@@ -491,7 +494,7 @@ public extension UIView {
     
     }
     
-    public func removeIndicatorFromView() {
+    func removeIndicatorFromView() {
         
         let layerNamebox: String = "bottom_box_layer"
         let layerNamepoint: String = "bottom_point_layer"
@@ -512,7 +515,7 @@ public extension UIView {
         
     }
     
-    public func getViewControllerFromSubView() -> UIViewController? {
+    func getViewControllerFromSubView() -> UIViewController? {
         
         var responder: UIResponder = self
         
@@ -535,80 +538,80 @@ public extension UIView {
         return nil
     }
     //  Get End X point of view
-    public var endX : CGFloat {
+    var endX : CGFloat {
         return frame.origin.x + frame.width
     }
     
     //  Get End Y point of view
-    public var endY : CGFloat {
+    var endY : CGFloat {
         return frame.origin.y + frame.height
     }
     
     //  Get Origin.x
-    public var startX : CGFloat {
+    var startX : CGFloat {
         return frame.origin.x
     }
     
     //  Get Origin.y
-    public var startY : CGFloat {
+    var startY : CGFloat {
         return frame.origin.y
     }
     
     //  Get width of View
-    public var getWidth : CGFloat {
+    var getWidth : CGFloat {
         return frame.width
     }
     
     //  Get height of view
-    public var getHeight : CGFloat {
+    var getHeight : CGFloat {
         return frame.height
     }
     
     //  Set Origin.x
-    public func setStartX(_ x : CGFloat) {
+    func setStartX(_ x : CGFloat) {
         self.frame.origin.x = x
     }
     
     //  Set Origin.y
-    public func setStartY( _ y : CGFloat) {
+    func setStartY( _ y : CGFloat) {
         self.frame.origin.y = y
     }
 
     
     //  Get center
-    public func getCenter() -> CGPoint {
+    func getCenter() -> CGPoint {
         return self.center
     }
     
     //  Get center.x
-    public func getCenterX() -> CGFloat {
+    func getCenterX() -> CGFloat {
         return self.center.x
     }
     
     //  Set center.y
-    public func setCenterY(_ y : CGFloat)  {
+    func setCenterY(_ y : CGFloat)  {
         self.center = CGPoint(x : self.getCenterX(), y : y)
     }
     
     //  Get center.y
-    public func getCenterY() -> CGFloat {
+    func getCenterY() -> CGFloat {
         return self.center.y
     }
     
     //  Get Parent View controller
-    public var parentViewController: UIViewController? {
+    var parentViewController: UIViewController? {
         var parentResponder: UIResponder? = self
         while parentResponder != nil {
             parentResponder = parentResponder!.next
             if parentResponder is UIViewController {
-                return parentResponder as! UIViewController!
+                return parentResponder as! UIViewController?
             }
         }
         return nil
     }
     
     //  Apply plain shadow to view
-    public func applyPlainShadow() {
+    func applyPlainShadow() {
         let layer = self.layer
         
         layer.shadowColor = UIColor.black.cgColor
@@ -618,25 +621,25 @@ public extension UIView {
     }
     
     //  Apply boarder to view
-    public func applyBorder() {
+    func applyBorder() {
         self.layer.borderWidth = 1.0
         self.layer.borderColor = UIColor.gray.cgColor
     }
     
     //  Apply corner radius
-    public func applyCornerRadius(_ corenrRadius : CGFloat , mask : Bool) {
+    func applyCornerRadius(_ corenrRadius : CGFloat , mask : Bool) {
         self.layer.masksToBounds = mask
         self.layer.cornerRadius = corenrRadius
     }
     
     //  Add only bottom border
-    public func applyBottomBorder() {
+    func applyBottomBorder() {
         self.layer.borderWidth = 1.0
         self.layer.borderColor = UIColor.gray.cgColor
     }
     
     //  Add Top Border
-    public func addTopBorderWithColor(_ color: UIColor, width: CGFloat) {
+    func addTopBorderWithColor(_ color: UIColor, width: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         border.frame = CGRect(x: 0, y: 0, width: self.getWidth, height: width)
@@ -644,7 +647,7 @@ public extension UIView {
     }
     
     //  Add Right Border
-    public func addRightBorderWithColor(_ color: UIColor, width: CGFloat) {
+    func addRightBorderWithColor(_ color: UIColor, width: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         border.frame = CGRect(x: self.getWidth - width, y: 0, width: width, height: self.getHeight)
@@ -652,7 +655,7 @@ public extension UIView {
     }
     
     //  Add Bottom Border
-    public func addBottomBorderWithColor(_ color: UIColor, width: CGFloat) {
+    func addBottomBorderWithColor(_ color: UIColor, width: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         border.frame = CGRect(x: 0, y: self.getHeight - width, width: self.getWidth, height: width)
@@ -660,7 +663,7 @@ public extension UIView {
     }
     
     //  Add Left Border
-    public func addLeftBorderWithColor(_ color: UIColor, width: CGFloat) {
+    func addLeftBorderWithColor(_ color: UIColor, width: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
         border.frame = CGRect(x: 0, y: 0, width: width, height: self.getHeight)
@@ -669,93 +672,93 @@ public extension UIView {
     
     
     // TODO: Autolayout Constraint
-    public func topEqualTo(view : UIView) -> Void{
+    func topEqualTo(view : UIView) -> Void{
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0.0))
     }
     
-    public func topSpaceToSuper(space : CGFloat) -> Void{
+    func topSpaceToSuper(space : CGFloat) -> Void{
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: self.superview, attribute: .top, multiplier: 1.0, constant: space))
     }
     
-    public func topSpaceTo(view : UIView,space : CGFloat){
+    func topSpaceTo(view : UIView,space : CGFloat){
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: space))
     }
     
-    public func bottomEqualTo(view : UIView){
+    func bottomEqualTo(view : UIView){
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0.0))
     }
     
-    public func bottomSpaceToSuper(spcae : CGFloat) -> Void{
+    func bottomSpaceToSuper(spcae : CGFloat) -> Void{
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: self.superview, attribute: .bottom, multiplier: 1.0, constant: spcae))
     }
     
-    public func bottomSpaceTo(view : UIView,space : CGFloat){
+    func bottomSpaceTo(view : UIView,space : CGFloat){
        self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: space))
     }
     
-    public func leftMarginTo(view : UIView){
+    func leftMarginTo(view : UIView){
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: 0.0))
     }
     
-    public func leftMarginTo(view : UIView,margin : CGFloat){
+    func leftMarginTo(view : UIView,margin : CGFloat){
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .left, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: margin))
     }
     
-    public func rightMarginTo(view : UIView){
+    func rightMarginTo(view : UIView){
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: 0.0))
     }
     
-    public func rightMarginTo(view : UIView,margin : CGFloat){
+    func rightMarginTo(view : UIView,margin : CGFloat){
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .right, relatedBy: .equal, toItem: view, attribute: .right, multiplier: 1.0, constant: margin))
     }
     
-    public func horizontalSpace(view : UIView, space : CGFloat){
+    func horizontalSpace(view : UIView, space : CGFloat){
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .right, relatedBy: .equal, toItem: view, attribute: .left, multiplier: 1.0, constant: space))
     }
     
-    public func verticalSpace(view : UIView, space : CGFloat){
+    func verticalSpace(view : UIView, space : CGFloat){
         self.superview?.addConstraint(NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: space))
     }
     
-    public func edgeEqualTo(view : UIView){
+    func edgeEqualTo(view : UIView){
         self.leftMarginTo(view: view)
         self.rightMarginTo(view: view)
         self.topEqualTo(view: view)
         self.bottomEqualTo(view: view)
     }
     
-    public func edgeToSuperView(top : CGFloat,left : CGFloat,bottom : CGFloat,right : CGFloat){
+    func edgeToSuperView(top : CGFloat,left : CGFloat,bottom : CGFloat,right : CGFloat){
         self.topSpaceTo(view: self.superview!, space: top)
         self.bottomSpaceTo(view: self.superview!, space: bottom)
         self.leftMarginTo(view: self.superview!, margin: left)
         self.rightMarginTo(view: self.superview!, margin: right)
     }
     
-    public func equalWidthTo(view : UIView){
+    func equalWidthTo(view : UIView){
         self.addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: view, attribute: .width, multiplier: 1.0, constant: 0.0))
     }
     
-    public func equalHeightTo(view : UIView){
+    func equalHeightTo(view : UIView){
         self.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: view, attribute: .height, multiplier: 1.0, constant: 0.0))
     }
     
-    public func setWidth(width : CGFloat){
+    func setWidth(width : CGFloat){
         self.addConstraint(NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1.0, constant: width))
     }
     
-    public func setHeight(height : CGFloat){
+    func setHeight(height : CGFloat){
         self.addConstraint(NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1.0, constant: height))
     }
     
-    public func centerX(view : UIView){
+    func centerX(view : UIView){
         self.superview!.addConstraint(NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0.0))
     }
     
-    public func centerY(view : UIView){
+    func centerY(view : UIView){
         self.superview!.addConstraint(NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.0, constant: 0.0))
     }
     
-    public func verticalSpace(Views : [UIView],space : CGFloat) -> Void{
+    func verticalSpace(Views : [UIView],space : CGFloat) -> Void{
     
         var verticalString : String = ""
         
@@ -770,11 +773,11 @@ public extension UIView {
         
         var viewDic : NSDictionary! = self.getDictionaryOfVariableBindings(viewArray: Views)
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:\(verticalString)", options: NSLayoutFormatOptions(rawValue : 0), metrics: nil, views: viewDic as! [String : Any]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:\(verticalString)", options: NSLayoutConstraint.FormatOptions(rawValue : 0), metrics: nil, views: viewDic as! [String : Any]))
         viewDic = nil
     }
     
-    public func horizontalSpace(Views : [UIView],space : CGFloat) -> Void{
+    func horizontalSpace(Views : [UIView],space : CGFloat) -> Void{
         var horizontalSpace : String = ""
         
         for (index,view) in Views.enumerated(){
@@ -788,7 +791,7 @@ public extension UIView {
         
         var viewDic : NSDictionary! = self.getDictionaryOfVariableBindings(viewArray: Views)
         
-        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:\(horizontalSpace)", options: NSLayoutFormatOptions(rawValue : 0), metrics: nil, views: viewDic as! [String : Any]))
+        self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:\(horizontalSpace)", options: NSLayoutConstraint.FormatOptions(rawValue : 0), metrics: nil, views: viewDic as! [String : Any]))
         viewDic = nil
     }
 }
@@ -808,7 +811,7 @@ private class NSTimerActor {
 
 extension UIViewController {
     func displayNavBarActivity() {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        let indicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         indicator.startAnimating()
         let item = UIBarButtonItem(customView: indicator)
         
@@ -865,13 +868,13 @@ extension Timer {
     
     class func after(interval: TimeInterval, _ block: @escaping () -> ()) -> Timer {
         let timer = Timer.new(after: interval, block)
-        RunLoop.current.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.default)
         return timer
     }
     
     class func every(interval: TimeInterval, _ block: @escaping () -> ()) -> Timer {
         let timer = Timer.new(every: interval, block)
-        RunLoop.current.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.default)
         return timer
     }
 }
@@ -910,13 +913,13 @@ extension Double {
 
 public extension String {
     
-    public func stringToFloat() -> CGFloat{
+    func stringToFloat() -> CGFloat{
         
         var floatNumber : CGFloat = 0.0
         
         let number : NSNumber! = NumberFormatter().number(from: self)
         if (number != nil){
-            floatNumber = CGFloat(number)
+            floatNumber = CGFloat(truncating: number)
             
         }
         
@@ -927,14 +930,14 @@ public extension String {
     // https://gist.github.com/stevenschobert/540dd33e828461916c11
     func camelize() -> String {
         let source = clean(with: " ", allOf: "-", "_")
-        if source.characters.contains(" ") {
-            let first = source.substring(to: source.characters.index(source.startIndex, offsetBy: 1))
+        if source.contains(" ") {
+            let first = source.substring(to: source.index(source.startIndex, offsetBy: 1))
             let cammel = NSString(format: "%@", (source as NSString).capitalized.replacingOccurrences(of: " ", with: "", options: [], range: nil)) as String
-            let rest = String(cammel.characters.dropFirst())
+            let rest = String(cammel.dropFirst())
             return "\(first)\(rest)"
         } else {
-            let first = (source as NSString).lowercased.substring(to: source.characters.index(source.startIndex, offsetBy: 1))
-            let rest = String(source.characters.dropFirst())
+            let first = (source as NSString).lowercased.substring(to: source.index(source.startIndex, offsetBy: 1))
+            let rest = String(source.dropFirst())
             return "\(first)\(rest)"
         }
     }
@@ -950,9 +953,9 @@ public extension String {
     func chompLeft(_ prefix: String) -> String {
         if let prefixRange = range(of: prefix) {
             if prefixRange.upperBound >= endIndex {
-                return self[startIndex..<prefixRange.lowerBound]
+                return String(self[startIndex..<prefixRange.lowerBound])
             } else {
-                return self[prefixRange.upperBound..<endIndex]
+                return String(self[prefixRange.upperBound..<endIndex])
             }
         }
         return self
@@ -961,9 +964,9 @@ public extension String {
     func chompRight(_ suffix: String) -> String {
         if let suffixRange = range(of: suffix, options: .backwards) {
             if suffixRange.upperBound >= endIndex {
-                return self[startIndex..<suffixRange.lowerBound]
+                return String(self[startIndex..<suffixRange.lowerBound])
             } else {
-                return self[suffixRange.upperBound..<endIndex]
+                return String(self[suffixRange.upperBound..<endIndex])
             }
         }
         return self
@@ -1008,13 +1011,13 @@ public extension String {
     
     func indexOf(_ substring: String) -> Int? {
         if let range = range(of: substring) {
-            return characters.distance(from: startIndex, to: range.lowerBound)
+            return distance(from: startIndex, to: range.lowerBound)
         }
         return nil
     }
     
     func isAlpha() -> Bool {
-        for chr in characters {
+        for chr in self {
             if (!(chr >= "a" && chr <= "z") && !(chr >= "A" && chr <= "Z") ) {
                 return false
             }
@@ -1045,7 +1048,7 @@ public extension String {
     
     var length2: Int {
         get {
-            return self.characters.count
+            return self.count
         }
     }
     
@@ -1070,7 +1073,7 @@ public extension String {
     }
     
     func split(_ separator: Character) -> [String] {
-        return characters.split{$0 == separator}.map(String.init)
+        return split{$0 == separator}.map(String.init)
     }
     
     func startsWith(_ prefix: String) -> Bool {
@@ -1079,7 +1082,7 @@ public extension String {
     
    
     func times(_ n: Int) -> String {
-        return (0..<n).reduce("") { $0.0 + self }
+        return ""
     }
     
     func toFloat() -> Float? {
@@ -1115,14 +1118,14 @@ public extension String {
     
     func trimmedLeft() -> String {
         if let range = rangeOfCharacter(from: CharacterSet.whitespacesAndNewlines.inverted) {
-            return self[range.lowerBound..<endIndex]
+            return String(self[range.lowerBound..<endIndex])
         }
         return self
     }
     
     func trimmedRight() -> String {
         if let range = rangeOfCharacter(from: CharacterSet.whitespacesAndNewlines.inverted, options: NSString.CompareOptions.backwards) {
-            return self[startIndex..<range.upperBound]
+            return String(self[startIndex..<range.upperBound])
         }
         return self
     }
@@ -1133,21 +1136,21 @@ public extension String {
     
     subscript(r: Range<Int>) -> String {
         get {
-            let startIndex = self.characters.index(self.startIndex, offsetBy: r.lowerBound)
-            let endIndex = self.characters.index(self.startIndex, offsetBy: r.upperBound - r.lowerBound)
-            return self[startIndex..<endIndex]
+            let startIndex = self.index(self.startIndex, offsetBy: r.lowerBound)
+            let endIndex = self.index(self.startIndex, offsetBy: r.upperBound - r.lowerBound)
+            return String(self[startIndex..<endIndex])
         }
     }
     
     func substring(_ startIndex: Int, length: Int) -> String {
-        let start = self.characters.index(self.startIndex, offsetBy: startIndex)
-        let end = self.characters.index(self.startIndex, offsetBy: startIndex + length)
-        return self[start..<end]
+        let start = self.index(self.startIndex, offsetBy: startIndex)
+        let end = self.index(self.startIndex, offsetBy: startIndex + length)
+        return String(self[start..<end])
     }
     
     subscript(i: Int) -> Character {
         get {
-            let index = self.characters.index(self.startIndex, offsetBy: i)
+            let index = self.index(self.startIndex, offsetBy: i)
             return self[index]
         }
     }
@@ -1188,7 +1191,7 @@ public extension String {
         return scanner.scanDecimal(nil) && scanner.isAtEnd
     }
     
-    public func dictionary() -> NSDictionary?{
+    func dictionary() -> NSDictionary?{
         do{
             return try JSONSerialization .jsonObject(with: self.data(using: String.Encoding.utf8)!, options: JSONSerialization.ReadingOptions(rawValue : 0)) as? NSDictionary
         }
@@ -1204,7 +1207,7 @@ public extension String {
 // MARK: - NSArray Extension -
 public extension NSArray
 {
-    public func JSONString() -> NSString{
+    func JSONString() -> NSString{
         var jsonString : NSString = ""
         
         do
@@ -1222,13 +1225,13 @@ public extension NSArray
     
     
     //  Make Comma separated String from array
-    public var toCommaString: String! {
+    var toCommaString: String! {
         return self.componentsJoined(by: ",")
     }
    
     
     //  Chack Array contain specific object
-    public func containsObject<T:AnyObject>(_ item:T) -> Bool
+    func containsObject<T:AnyObject>(_ item:T) -> Bool
     {
         for element in self
         {
@@ -1241,7 +1244,7 @@ public extension NSArray
     }
     
     //  Get Index of specific object
-    public func indexOfObject<T : Equatable>(_ x:T) -> Int? {
+    func indexOfObject<T : Equatable>(_ x:T) -> Int? {
         for i in 0...self.count {
             if self[i] as! T == x {
                 return i
@@ -1251,7 +1254,7 @@ public extension NSArray
     }
     
     //  Gets the object at the specified index, if it exists.
-    public func get(_ index: Int) -> Element? {
+    func get(_ index: Int) -> Element? {
         return index >= 0 && index < count ? self[index] : nil
     }
     
@@ -1261,7 +1264,7 @@ public extension NSArray
 
 public extension Character {
     /// Return true if character is emoji.
-    public var isEmoji: Bool {
+    var isEmoji: Bool {
         // http://stackoverflow.com/questions/30757193/find-out-if-character-in-string-is-emoji
         guard let scalarValue = String(self).unicodeScalars.first?.value else {
             return false
@@ -1279,17 +1282,17 @@ public extension Character {
     }
     
     /// Return true if character is number.
-    public var isNumber: Bool {
+    var isNumber: Bool {
         return Int(String(self)) != nil
     }
     
     /// Return integer from character (if applicable).
-    public var toInt: Int? {
+    var toInt: Int? {
         return Int(String(self))
     }
     
     /// Return string from character.
-    public var toString: String {
+    var toString: String {
         return String(self)
     }
 }
@@ -1341,7 +1344,7 @@ extension UIImage{
     {
         let scaledBounds : CGRect = CGRect(x: bound.origin.x * self.scale, y: bound.origin.y * self.scale, width: bound.size.width * self.scale, height: bound.size.height * self.scale)
         let imageRef = self.cgImage?.cropping(to: scaledBounds)
-        let croppedImage : UIImage = UIImage(cgImage: imageRef!, scale: self.scale, orientation: UIImageOrientation.up)
+        let croppedImage : UIImage = UIImage(cgImage: imageRef!, scale: self.scale, orientation: UIImage.Orientation.up)
         return croppedImage;
     }
   
@@ -1373,8 +1376,8 @@ extension UIImage{
     
     func waterMarkedImage(waterMarkText:String, corner:WaterMarkCorner = .BottomRight, margin:CGPoint = CGPoint(x: 20, y: 20), waterMarkTextColor:UIColor = UIColor.white, waterMarkTextFont:UIFont = UIFont.systemFont(ofSize: 20), backgroundColor:UIColor = UIColor.clear) -> UIImage{
         
-        let textAttributes = [NSForegroundColorAttributeName:waterMarkTextColor, NSFontAttributeName:waterMarkTextFont]
-        let textSize = NSString(string: waterMarkText).size(attributes: textAttributes)
+        let textAttributes = [NSAttributedString.Key.foregroundColor:waterMarkTextColor, NSAttributedString.Key.font:waterMarkTextFont]
+        let textSize = NSString(string: waterMarkText).size(withAttributes: textAttributes)
         var textFrame = CGRect.init(x: 0, y: 0, width: textSize.width, height: textSize.width)
         
         let imageSize = self.size
@@ -1412,7 +1415,7 @@ extension UIImage{
         let context = UIGraphicsGetCurrentContext()
         self.draw(at: .zero)
         
-        let stringBox : CGSize = NSString(string: text).size(attributes: [NSFontAttributeName : font])
+        let stringBox : CGSize = NSString(string: text).size(withAttributes: [NSAttributedString.Key.font : font])
         
         
         //Ractangle
@@ -1429,7 +1432,7 @@ extension UIImage{
         
         //Labale
         let lableRact = CGRect(x: 90, y: (imageSize.height) - stringBox.height, width: stringBox.width, height: stringBox.height)
-        text.draw(in: lableRact.integral, withAttributes: [NSFontAttributeName : font, NSForegroundColorAttributeName : UIColor.white , NSParagraphStyleAttributeName : paragraphStyle])
+        text.draw(in: lableRact.integral, withAttributes: [NSAttributedString.Key.font : font, NSAttributedString.Key.foregroundColor : UIColor.white , NSAttributedString.Key.paragraphStyle : paragraphStyle])
         
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -1461,7 +1464,7 @@ extension Bundle {
 // MARK: - NSDictionary Extension -
 public extension NSDictionary
 {
-    public func JSONString() -> NSString{
+    func JSONString() -> NSString{
         var jsonString : NSString = ""
         
         do
@@ -1479,7 +1482,7 @@ public extension NSDictionary
     
     
     //  Convert NSDictionary to NSData
-    public var toNSData : Data! {
+    var toNSData : Data! {
         do {
             return try JSONSerialization.data(withJSONObject: self, options: .prettyPrinted)          // success ...
         } catch {
@@ -1490,7 +1493,7 @@ public extension NSDictionary
     }
     
     //  Check key is exist in NSDictionary or not
-    public func has(_ key: Key) -> Bool {
+    func has(_ key: Key) -> Bool {
         return object(forKey: key) != nil
     }
     
@@ -1501,13 +1504,13 @@ public extension NSDictionary
 public extension UIButton {
     
     //  Apply corner radius
-    public func applyCornerRadius(_ mask : Bool) {
+    func applyCornerRadius(_ mask : Bool) {
         self.layer.masksToBounds = mask
         self.layer.cornerRadius = self.frame.size.width/2
     }
     
     //  Set background color for state
-    public func setBackgroundColor(_ color: UIColor, forState: UIControlState) {
+    func setBackgroundColor(_ color: UIColor, forState: UIControl.State) {
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
         UIGraphicsGetCurrentContext()?.setFillColor(color.cgColor)
         UIGraphicsGetCurrentContext()?.fill(CGRect(x: 0, y: 0, width: 1, height: 1))
@@ -1518,76 +1521,76 @@ public extension UIButton {
     }
     
     //  Set title text for all state
-    public func textForAllState(_ titleText : String) {
-        self.setTitle(titleText, for: UIControlState())
+    func textForAllState(_ titleText : String) {
+        self.setTitle(titleText, for: UIControl.State())
         self.setTitle(titleText, for: .selected)
         self.setTitle(titleText, for: .highlighted)
         self.setTitle(titleText, for: .disabled)
     }
     
     //  Set title text for only normal state
-    public func textForNormal(_ titleText : String) {
-        self.setTitle(titleText, for: UIControlState())
+    func textForNormal(_ titleText : String) {
+        self.setTitle(titleText, for: UIControl.State())
     }
     
     //  Set title text for only selected state
-    public func textForSelected(_ titleText : String) {
+    func textForSelected(_ titleText : String) {
         self.setTitle(titleText, for: .selected)
     }
     
     //  Set title text for only highlight state
-    public func textForHighlighted(_ titleText : String) {
+    func textForHighlighted(_ titleText : String) {
         self.setTitle(titleText, for: .highlighted)
     }
     
     //  Set image for all state
-    public func imageForAllState(_ image : UIImage) {
-        self.setImage(image, for: UIControlState())
+    func imageForAllState(_ image : UIImage) {
+        self.setImage(image, for: UIControl.State())
         self.setImage(image, for: .selected)
         self.setImage(image, for: .highlighted)
         self.setImage(image, for: .disabled)
     }
     
     //  Set image for only normal state
-    public func imageForNormal(_ image : UIImage) {
-        self.setImage(image, for: UIControlState())
+    func imageForNormal(_ image : UIImage) {
+        self.setImage(image, for: UIControl.State())
     }
     
     //  Set image for only selected state
-    public func imageForSelected(_ image : UIImage) {
+    func imageForSelected(_ image : UIImage) {
         self.setImage(image, for: .selected)
     }
     
     //  Set image for only highlighted state
-    public func imageForHighlighted(_ image : UIImage) {
+    func imageForHighlighted(_ image : UIImage) {
         self.setImage(image, for: .highlighted)
     }
     
     //  Set title color for all state
-    public func colorOfTitleLabelForAllState(_ color : UIColor) {
-        self.setTitleColor(color, for: UIControlState())
+    func colorOfTitleLabelForAllState(_ color : UIColor) {
+        self.setTitleColor(color, for: UIControl.State())
         self.setTitleColor(color, for: .selected)
         self.setTitleColor(color, for: .highlighted)
         self.setTitleColor(color, for: .disabled)
     }
     
     //  Set title color for normal state
-    public func colorOfTitleLabelForNormal(_ color : UIColor) {
-        self.setTitleColor(color, for: UIControlState())
+    func colorOfTitleLabelForNormal(_ color : UIColor) {
+        self.setTitleColor(color, for: UIControl.State())
     }
     
     //  Set title color for selected state
-    public func colorOfTitleLabelForSelected(_ color : UIColor) {
+    func colorOfTitleLabelForSelected(_ color : UIColor) {
         self.setTitleColor(color, for: .selected)
     }
     
     //  Set title color for highkighted state
-    public func colorForHighlighted(_ color : UIColor) {
+    func colorForHighlighted(_ color : UIColor) {
         self.setTitleColor(color, for: .highlighted)
     }
     
     //  Set image behind the text in button
-    public func setImageBehindTextWithCenterAlignment(_ imageWidth : CGFloat, buttonWidth : CGFloat, space : CGFloat) {
+    func setImageBehindTextWithCenterAlignment(_ imageWidth : CGFloat, buttonWidth : CGFloat, space : CGFloat) {
         let titleLabelWidth:CGFloat = 50.0
         let buttonMiddlePoint = buttonWidth/2
         let fullLenght = titleLabelWidth + space + imageWidth
@@ -1595,30 +1598,30 @@ public extension UIButton {
         let imageInset = buttonMiddlePoint + fullLenght/2 - imageWidth + space
         let buttonInset = buttonMiddlePoint - fullLenght/2 - imageWidth
         
-        self.imageEdgeInsets = UIEdgeInsetsMake(0, imageInset, 0, 0)
-        self.titleEdgeInsets = UIEdgeInsetsMake(0, buttonInset, 0, 0)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: imageInset, bottom: 0, right: 0)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: buttonInset, bottom: 0, right: 0)
     }
     
     //  Set image behind text in left alignment
-    public func setImageBehindTextWithLeftAlignment(_ imageWidth : CGFloat, buttonWidth : CGFloat) {
+    func setImageBehindTextWithLeftAlignment(_ imageWidth : CGFloat, buttonWidth : CGFloat) {
         let titleLabelWidth:CGFloat = 40.0
         let fullLenght = titleLabelWidth + 5 + imageWidth
         
         let imageInset = fullLenght - imageWidth + 5
         let buttonInset = CGFloat(-10.0)
         
-        self.imageEdgeInsets = UIEdgeInsetsMake(0, imageInset, 0, 0)
-        self.titleEdgeInsets = UIEdgeInsetsMake(0, buttonInset, 0, 0)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: imageInset, bottom: 0, right: 0)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: buttonInset, bottom: 0, right: 0)
     }
     
     //  Set image behind text in right alignment
-    public func setImageOnRightAndTitleOnLeft(_ imageWidth : CGFloat, buttonWidth : CGFloat)  {
+    func setImageOnRightAndTitleOnLeft(_ imageWidth : CGFloat, buttonWidth : CGFloat)  {
         let imageInset = CGFloat(buttonWidth - imageWidth - 10)
         
         let buttonInset = CGFloat(-10.0)
         
-        self.imageEdgeInsets = UIEdgeInsetsMake(0, imageInset, 0, 0)
-        self.titleEdgeInsets = UIEdgeInsetsMake(0, buttonInset, 0, 0)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: imageInset, bottom: 0, right: 0)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: buttonInset, bottom: 0, right: 0)
     }
 }
 
@@ -1626,7 +1629,7 @@ public extension UIButton {
 
 public extension Mirror
 {
-    public func proparty() -> [String]
+    func proparty() -> [String]
     {
         var arrPropary : [String] = []
         
@@ -1644,7 +1647,7 @@ public extension Mirror
 
 public extension Date
 {
-    public func getCurrentUTCTimeStampe() -> TimeInterval
+    func getCurrentUTCTimeStampe() -> TimeInterval
     {
         let date = Date();
         
@@ -1663,7 +1666,7 @@ public extension Date
         
     }
     
-    public func getTimeStampWithDateTime()  -> TimeInterval
+    func getTimeStampWithDateTime()  -> TimeInterval
     {
         let date = Date();
         
@@ -1717,7 +1720,7 @@ public extension Date
     }
     
     
-    public func getDateFromTimeStampe(_ formate : String , timestampe : String) -> String?
+    func getDateFromTimeStampe(_ formate : String , timestampe : String) -> String?
     {
         let dateFormater : DateFormatter = DateFormatter()
         dateFormater .dateFormat = formate
@@ -1726,7 +1729,7 @@ public extension Date
         return dateString
     }
     
-    public func setDateFromTimeStampe(_ formate : String , timestampe : Double) -> String?
+    func setDateFromTimeStampe(_ formate : String , timestampe : Double) -> String?
     {
         let dateFormatter = DateFormatter()
         
@@ -1745,17 +1748,17 @@ public extension Date
     }
     
     //  Get Week day from date
-    public var weekDay:Int {
+    var weekDay:Int {
         return (Calendar.current as NSCalendar).component(.weekday, from: self)
     }
     
     //  Get Week index of month from date
-    public var weekOfMonth : Int {
+    var weekOfMonth : Int {
         return (Calendar.current as NSCalendar).component(.weekOfMonth, from: self)
     }
     
     //  Get Week day name from date
-    public var weekDayName : String {
+    var weekDayName : String {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE"
         return formatter.string(from: self)
@@ -1763,36 +1766,36 @@ public extension Date
     
     
     //  Get Month name from date
-    public var monthName : String {
+    var monthName : String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM"
         return formatter.string(from: self)
     }
     
     //  Get Month index from date
-    public var month: Int {
+    var month: Int {
         return (Calendar.current as NSCalendar).component(.month, from: self)
     }
     
     //  Get Day index from date
-    public var day: Int {
+    var day: Int {
         return (Calendar.current as NSCalendar).component(.day, from: self)
     }
     
     //  Get Year index from date
-    public var year: Int {
+    var year: Int {
         return (Calendar.current as NSCalendar).component(.year, from: self)
     }
     
     //  Get Hour and Minute from date
-    public func getHourAndMinute() -> (hour : Int, minute : Int) {
+    func getHourAndMinute() -> (hour : Int, minute : Int) {
         let calendar = Calendar.current
         let comp = (calendar as NSCalendar).components([.hour, .minute], from: self)
         return (comp.hour!, comp.minute!)
     }
     
     //  Get Total count of weeks in month from date
-    public func weeksInMonth() -> Int?
+    func weeksInMonth() -> Int?
     {
         var calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         calendar.firstWeekday = 2 // 2 == Monday
@@ -1819,7 +1822,7 @@ public extension Date
     }
     
     //  Get Total count of week days in month from date
-    public func weekDaysInMonth() -> Int?
+    func weekDaysInMonth() -> Int?
     {
         guard 1...12 ~= month else { return nil }
         
@@ -1839,84 +1842,84 @@ public extension Date
     }
     
     //  Get Total count of days in month from date
-    public func daysInMonth() -> Int? {
+    func daysInMonth() -> Int? {
         let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         return (calendar as NSCalendar).range(of: .day, in: .month, for: self).length
     }
     
     //  Get Time in AM / PM format
-    public func getTime() -> String {
+    func getTime() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "hh:mm a"
         return formatter.string(from: self)
     }
     
     //  Get Time short (i.e 12 Mar) format
-    public func getTimeInShortFormat() -> String{
+    func getTimeInShortFormat() -> String{
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM"
         return formatter.string(from: self)
     }
     
     //  Get Time short (i.e 12 Mar, 2016) format
-    public func getTimeInFullFormat() -> String{
+    func getTimeInFullFormat() -> String{
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM, yyyy"
         return formatter.string(from: self)
     }
     
     //  Get Time standard (i.e 2016-03-12) format
-    public func formateBirthDate() -> String {
+    func formateBirthDate() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         return formatter.string(from: self)
     }
     
     //  Check date is after date
-    public func afterDate(_ date : Date) -> Bool {
+    func afterDate(_ date : Date) -> Bool {
         return self.compare(date) == ComparisonResult.orderedAscending
     }
     
     //  Check date is before date
-    public func beforDate(_ date : Date) -> Bool {
+    func beforDate(_ date : Date) -> Bool {
         return self.compare(date) == ComparisonResult.orderedDescending
     }
     
     //  Check date is equal date
-    public func equalDate(_ date : Date) -> Bool {
+    func equalDate(_ date : Date) -> Bool {
         return (self == date)
     }
     
     //  Get days difference between dates
-    public func daysInBetweenDate(_ date: Date) -> Int {
+    func daysInBetweenDate(_ date: Date) -> Int {
         var difference = self.timeIntervalSinceNow - date.timeIntervalSinceNow
         difference = fabs(difference/86400)
         return Int(difference)
     }
     
     //  Get hours difference between dates
-    public func hoursInBetweenDate(_ date: Date) -> Int {
+    func hoursInBetweenDate(_ date: Date) -> Int {
         var difference = self.timeIntervalSinceNow - date.timeIntervalSinceNow
         difference = fabs(difference/3600)
         return Int(difference)
     }
     
     //  Get minutes difference between dates
-    public func minutesInBetweenDate(_ date: Date) -> Int {
+    func minutesInBetweenDate(_ date: Date) -> Int {
         var difference = self.timeIntervalSinceNow - date.timeIntervalSinceNow
         difference = fabs(difference/60)
         return Int(difference)
     }
     
     //  Get seconds difference between dates
-    public func secondsInBetweenDate(_ date: Date) -> Int {
+    func secondsInBetweenDate(_ date: Date) -> Int {
         var difference = self.timeIntervalSinceNow - date.timeIntervalSinceNow
         difference = fabs(difference)
         return Int(difference)
     }
     
     //  Get time difference between dates
-    public func getDifferenceBetweenDates() -> String {
+    func getDifferenceBetweenDates() -> String {
         let interval = self.timeIntervalSinceNow
         let year : Int = Int(interval) / 31536000
         var finalString = "'"
@@ -2034,7 +2037,7 @@ extension Int{
 
 public extension NSObject
 {
-    public func setValueFromDictionary(_ dicResponse : NSDictionary)
+    func setValueFromDictionary(_ dicResponse : NSDictionary)
     {
         let mirror = Mirror(reflecting: self)
         let allKey : [String] = mirror.proparty()
@@ -2138,7 +2141,7 @@ private func localeNumberFormatter(_ locale: Locale) -> NumberFormatter {
 // each type has its own random
 public extension Bool {
     /// SwiftRandom extension
-    public static func random() -> Bool {
+    static func random() -> Bool {
         return Int.random() % 2 == 0
     }
 }
@@ -2146,7 +2149,7 @@ public extension Bool {
 public extension Int {
     
     /// SwiftRandom extension
-    public static func random(_ lower: Int = 0, _ upper: Int = 100) -> Int {
+    static func random(_ lower: Int = 0, _ upper: Int = 100) -> Int {
         return lower + Int(arc4random_uniform(UInt32(upper - lower + 1)))
     }
 }
@@ -2155,7 +2158,7 @@ public extension Int32 {
     /// SwiftRandom extension
     ///
     /// - note: Using `Int` as parameter type as we usually just want to write `Int32.random(13, 37)` and not `Int32.random(Int32(13), Int32(37))`
-    public static func random(_ lower: Int = 0, _ upper: Int = 100) -> Int32 {
+    static func random(_ lower: Int = 0, _ upper: Int = 100) -> Int32 {
         let r = arc4random_uniform(UInt32(Int64(upper) - Int64(lower)))
         return Int32(Int64(r) + Int64(lower))
     }
@@ -2163,21 +2166,21 @@ public extension Int32 {
 
 public extension Double {
     /// SwiftRandom extension
-    public static func random(_ lower: Double = 0, _ upper: Double = 100) -> Double {
+    static func random(_ lower: Double = 0, _ upper: Double = 100) -> Double {
         return (Double(arc4random()) / 0xFFFFFFFF) * (upper - lower) + lower
     }
 }
 
 public extension Float {
     /// SwiftRandom extension
-    public static func random(_ lower: Float = 0, _ upper: Float = 100) -> Float {
+    static func random(_ lower: Float = 0, _ upper: Float = 100) -> Float {
         return (Float(arc4random()) / 0xFFFFFFFF) * (upper - lower) + lower
     }
 }
 
 public extension CGFloat {
     /// SwiftRandom extension
-    public static func random(_ lower: CGFloat = 0, _ upper: CGFloat = 1) -> CGFloat {
+    static func random(_ lower: CGFloat = 0, _ upper: CGFloat = 1) -> CGFloat {
         return CGFloat(Float(arc4random()) / Float(UINT32_MAX)) * (upper - lower) + lower
     }
 }
@@ -2185,7 +2188,7 @@ public extension CGFloat {
 public extension Date {
     
     /// SwiftRandom extension
-    public static func random() -> Date {
+    static func random() -> Date {
         let randomTime = TimeInterval(arc4random_uniform(UInt32.max))
         return Date(timeIntervalSince1970: randomTime)
     }
@@ -2194,7 +2197,7 @@ public extension Date {
 
 public extension UIColor {
     /// SwiftRandom extension
-    public static func random(_ randomAlpha: Bool = false) -> UIColor {
+    static func random(_ randomAlpha: Bool = false) -> UIColor {
         let randomRed = CGFloat.random()
         let randomGreen = CGFloat.random()
         let randomBlue = CGFloat.random()
@@ -2205,7 +2208,7 @@ public extension UIColor {
 
 public extension Array {
     /// SwiftRandom extension
-    public func randomItem() -> Element {
+    func randomItem() -> Element {
         let index = Int(arc4random_uniform(UInt32(self.count)))
         return self[index]
     }
@@ -2213,7 +2216,7 @@ public extension Array {
 
 public extension ArraySlice {
     /// SwiftRandom extension
-    public func randomItem() -> Element {
+    func randomItem() -> Element {
         let index = Int.random(startIndex, endIndex)
         return self[index]
     }
@@ -2221,7 +2224,7 @@ public extension ArraySlice {
 
 public extension URL {
     /// SwiftRandom extension
-    public static func random() -> URL {
+    static func random() -> URL {
         let urlList = ["http://www.google.com", "http://leagueoflegends.com/", "https://github.com/", "http://stackoverflow.com/", "https://medium.com/", "http://9gag.com/gag/6715049", "http://imgur.com/gallery/s9zoqs9", "https://www.youtube.com/watch?v=uelHwf8o7_U"]
         return URL(string: urlList.randomItem())!
     }
@@ -2397,10 +2400,10 @@ extension UIViewController {
 }
 
 extension UITabBarController {
-    
-    override var topMostViewController: UIViewController? {
-        return self.selectedViewController?.topMostViewController
-    }
+//    
+//    @objc var topMostViewController: UIViewController? {
+//        return self.selectedViewController?.topMostViewController
+//    }
     
     var topVisibleViewController: UIViewController? {
         var top = selectedViewController
@@ -2411,11 +2414,11 @@ extension UITabBarController {
     }
 }
 
-extension UINavigationController {
-    override var topMostViewController: UIViewController? {
-        return self.visibleViewController?.topMostViewController
-    }
-}
+//extension UINavigationController {
+//    @objc var topMostViewController: UIViewController? {
+//        return self.visibleViewController?.topMostViewController
+//    }
+//}
 
 public extension DispatchQueue {
     
@@ -2428,7 +2431,7 @@ public extension DispatchQueue {
      - parameter token: A unique reverse DNS style name such as com.vectorform.<name> or a GUID
      - parameter block: Block to execute once
      */
-    public class func once(token: String, block:(Void)->Void) {
+    class func once(token: String, block:()->Void) {
         objc_sync_enter(self); defer { objc_sync_exit(self) }
         
         if _onceTracker.contains(token) {

@@ -99,7 +99,7 @@ class InfoMedia : NSObject, NSCoding{
 			likes = Comment(fromDictionary: likesData)
 		}
 		
-        location = dictionary["location"] as AnyObject!
+        location = dictionary["location"] as AnyObject?
 		
         if let ownerData = dictionary["owner"] as? [String:Any]{
 			owner = Owner(fromDictionary: ownerData)

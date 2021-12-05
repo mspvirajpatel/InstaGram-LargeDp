@@ -95,7 +95,7 @@ class FeedbackView: BaseView {
        
         viewAdd = BaseAddBannerView(adSize: kGADAdSizeBanner, bannerKey: InAddvertise.KAddBannerKey)
         self.addSubview(viewAdd)
-        self.bringSubview(toFront: viewAdd)
+        self.bringSubviewToFront(viewAdd)
 
     }
     
@@ -109,39 +109,39 @@ class FeedbackView: BaseView {
         let txtdescheight : CGFloat = 120
        
         
-        baseLayout.position_Top = NSLayoutConstraint(item: txtname, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: self, attribute:  NSLayoutAttribute.top, multiplier: 1, constant: txtnametoppading)
+        baseLayout.position_Top = NSLayoutConstraint(item: txtname, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute:  NSLayoutConstraint.Attribute.top, multiplier: 1, constant: txtnametoppading)
         
-        baseLayout.position_Left = NSLayoutConstraint(item: txtname, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.left, multiplier: 1, constant: txtleftrightpading)
+        baseLayout.position_Left = NSLayoutConstraint(item: txtname, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: txtleftrightpading)
         
-        baseLayout.position_Right = NSLayoutConstraint(item: txtname, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.right, multiplier: 1, constant: -txtleftrightpading)
-        
-        self.addConstraints([ baseLayout.position_Top,baseLayout.position_Left,baseLayout.position_Right])
-        
-        
-        baseLayout.position_Top = NSLayoutConstraint(item: txtemail, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: txtname, attribute:  NSLayoutAttribute.bottom, multiplier: 1, constant: txtleftrightpading)
-        
-        baseLayout.position_Left = NSLayoutConstraint(item: txtemail, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.left, multiplier: 1, constant: txtleftrightpading)
-        
-        baseLayout.position_Right = NSLayoutConstraint(item: txtemail, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.right, multiplier: 1, constant: -txtleftrightpading)
+        baseLayout.position_Right = NSLayoutConstraint(item: txtname, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: -txtleftrightpading)
         
         self.addConstraints([ baseLayout.position_Top,baseLayout.position_Left,baseLayout.position_Right])
         
         
-        baseLayout.position_Top = NSLayoutConstraint(item: txtdesc, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: txtemail, attribute:  NSLayoutAttribute.bottom, multiplier: 1, constant: txtleftrightpading)
+        baseLayout.position_Top = NSLayoutConstraint(item: txtemail, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: txtname, attribute:  NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: txtleftrightpading)
         
-        baseLayout.position_Left = NSLayoutConstraint(item: txtdesc, attribute: NSLayoutAttribute.left, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.left, multiplier: 1, constant: txtleftrightpading)
+        baseLayout.position_Left = NSLayoutConstraint(item: txtemail, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: txtleftrightpading)
         
-        baseLayout.position_Right = NSLayoutConstraint(item: txtdesc, attribute: NSLayoutAttribute.right, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.right, multiplier: 1, constant: -txtleftrightpading)
-        baseLayout.size_Height = NSLayoutConstraint(item: txtdesc, attribute: NSLayoutAttribute.height, relatedBy: NSLayoutRelation.equal, toItem:nil, attribute: NSLayoutAttribute.height, multiplier: 1, constant: txtdescheight)
+        baseLayout.position_Right = NSLayoutConstraint(item: txtemail, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: -txtleftrightpading)
+        
+        self.addConstraints([ baseLayout.position_Top,baseLayout.position_Left,baseLayout.position_Right])
+        
+        
+        baseLayout.position_Top = NSLayoutConstraint(item: txtdesc, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: txtemail, attribute:  NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: txtleftrightpading)
+        
+        baseLayout.position_Left = NSLayoutConstraint(item: txtdesc, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: txtleftrightpading)
+        
+        baseLayout.position_Right = NSLayoutConstraint(item: txtdesc, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: -txtleftrightpading)
+        baseLayout.size_Height = NSLayoutConstraint(item: txtdesc, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem:nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: txtdescheight)
         
         self.addConstraints([ baseLayout.position_Top,baseLayout.position_Left,baseLayout.position_Right,baseLayout.size_Height])
         
         
-        baseLayout.position_Top = NSLayoutConstraint(item:btnsubmit, attribute: NSLayoutAttribute.top, relatedBy: NSLayoutRelation.equal, toItem: txtdesc, attribute:  NSLayoutAttribute.bottom, multiplier: 1, constant: txtleftrightpading)
+        baseLayout.position_Top = NSLayoutConstraint(item:btnsubmit, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: txtdesc, attribute:  NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: txtleftrightpading)
         
-        baseLayout.position_Right = NSLayoutConstraint(item: btnsubmit, attribute: NSLayoutAttribute.centerX, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.centerX, multiplier: 1, constant:0)
+        baseLayout.position_Right = NSLayoutConstraint(item: btnsubmit, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant:0)
         
-        baseLayout.size_Width = NSLayoutConstraint(item: btnsubmit, attribute: NSLayoutAttribute.width, relatedBy: NSLayoutRelation.equal, toItem: self, attribute: NSLayoutAttribute.width, multiplier: 0.4, constant: 1.0)
+        baseLayout.size_Width = NSLayoutConstraint(item: btnsubmit, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.width, multiplier: 0.4, constant: 1.0)
         
         self.addConstraints([ baseLayout.position_Top, baseLayout.size_Width,baseLayout.position_Right])
         
@@ -150,17 +150,17 @@ class FeedbackView: BaseView {
         
         self.baseLayout.metrics = [:]
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewAdd]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewAdd]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[viewAdd]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[viewAdd]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_V)
         
     }
     
     // MARK: - User Interaction -
     
-    func onSubmitClick()
+    @objc func onSubmitClick()
     {
         if (self.txtemail.text == "") && (self.txtname.text == "") && (self.txtdesc.text?.trimmed() == "")
         {

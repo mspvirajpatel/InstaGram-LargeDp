@@ -11,6 +11,17 @@ open class WhistleFactory: UIViewController {
 
   open lazy var whistleWindow: UIWindow = UIWindow()
 
+  public struct Dimensions {
+
+    static var notchHeight: CGFloat {
+      if UIApplication.shared.statusBarFrame.height > 20 {
+        return 32.0
+      } else {
+        return 0.0
+      }
+    }
+  }
+
   open lazy var titleLabelHeight = CGFloat(20.0)
 
   open lazy var titleLabel: UILabel = {
@@ -31,6 +42,8 @@ open class WhistleFactory: UIViewController {
   open var viewController: UIViewController?
   open var hideTimer = Timer()
 
+  private weak var previousKeyWindow: UIWindow?
+
   // MARK: - Initializers
 
   override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -42,7 +55,7 @@ open class WhistleFactory: UIViewController {
     
     view.addGestureRecognizer(tapGestureRecognizer)
 
-    NotificationCenter.default.addObserver(self, selector: #selector(WhistleFactory.orientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(WhistleFactory.orientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
   }
 
   public required init?(coder aDecoder: NSCoder) {
@@ -50,7 +63,7 @@ open class WhistleFactory: UIViewController {
   }
 
   deinit {
-    NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
   }
 
   // MARK: - Configuration
@@ -83,9 +96,12 @@ open class WhistleFactory: UIViewController {
   }
 
   func moveWindowToFront() {
-    let currentStatusBarStyle = UIApplication.shared.statusBarStyle
-    whistleWindow.windowLevel = UIWindowLevelStatusBar
-    UIApplication.shared.setStatusBarStyle(currentStatusBarStyle, animated: false)
+    whistleWindow.windowLevel = view.isiPhoneX ? UIWindow.Level.normal : UIWindow.Level.statusBar
+    setNeedsStatusBarAppearanceUpdate()
+  }
+
+  open override var preferredStatusBarStyle: UIStatusBarStyle {
+    return UIApplication.shared.statusBarStyle
   }
 
   open func setupFrames() {
@@ -101,7 +117,7 @@ open class WhistleFactory: UIViewController {
         NSString(string: text).boundingRect(
           with: CGSize(width: labelWidth, height: CGFloat.infinity),
           options: NSStringDrawingOptions.usesLineFragmentOrigin,
-          attributes: [NSFontAttributeName: titleLabel.font],
+          attributes: [NSAttributedString.Key.font: titleLabel.font!],
           context: nil
         )
       titleLabelHeight = CGFloat(neededDimensions.size.height)
@@ -114,10 +130,17 @@ open class WhistleFactory: UIViewController {
       titleLabel.sizeToFit()
     }
 
-    whistleWindow.frame = CGRect(x: 0, y: 0, width: labelWidth,
-      height: titleLabelHeight)
+    whistleWindow.frame = CGRect(x: 0, y: 0,
+                                 width: labelWidth,
+                                 height: titleLabelHeight + Dimensions.notchHeight)
     view.frame = whistleWindow.bounds
-    titleLabel.frame = view.bounds
+
+    titleLabel.frame = CGRect(
+        x: 0.0,
+        y: Dimensions.notchHeight,
+        width: view.bounds.width,
+        height: titleLabelHeight
+    )
   }
 
   // MARK: - Movement methods
@@ -130,33 +153,29 @@ open class WhistleFactory: UIViewController {
   public func present() {
     hideTimer.invalidate()
 
+    if UIApplication.shared.keyWindow != whistleWindow {
+      previousKeyWindow = UIApplication.shared.keyWindow
+    }
+
     let initialOrigin = whistleWindow.frame.origin.y
-    whistleWindow.frame.origin.y = initialOrigin - titleLabelHeight
-    whistleWindow.makeKeyAndVisible()
+    whistleWindow.frame.origin.y = initialOrigin - titleLabelHeight - Dimensions.notchHeight
+    whistleWindow.isHidden = false
     UIView.animate(withDuration: 0.2, animations: {
       self.whistleWindow.frame.origin.y = initialOrigin
     })
   }
 
   public func hide() {
-    let finalOrigin = view.frame.origin.y - titleLabelHeight
+    let finalOrigin = view.frame.origin.y - titleLabelHeight - Dimensions.notchHeight
     UIView.animate(withDuration: 0.2, animations: {
       self.whistleWindow.frame.origin.y = finalOrigin
       }, completion: { _ in
-//        if UIApplication.shared.keyWindow!.rootViewController == nil
-//        {
-//            return
-//        }
-//        else
-//        {
-////            if UIApplication.shared.windows != nil{
-////                if let window = UIApplication.shared.windows.filter({ $0 != self.whistleWindow }).first {
-////                    window.makeKeyAndVisible()
-////                    self.whistleWindow.windowLevel = UIWindowLevelNormal - 1
-////                    window.rootViewController?.setNeedsStatusBarAppearanceUpdate()
-////                }
-////            }
-//        }
+        if let window = self.previousKeyWindow {
+          window.isHidden = false
+          self.whistleWindow.windowLevel = UIWindow.Level.normal - 1
+          self.previousKeyWindow = nil
+          window.rootViewController?.setNeedsStatusBarAppearanceUpdate()
+        }
     })
   }
 
@@ -167,11 +186,11 @@ open class WhistleFactory: UIViewController {
 
   // MARK: - Timer methods
 
-  public func timerDidFire() {
+    @objc public func timerDidFire() {
     hide()
   }
 
-  func orientationDidChange() {
+    @objc func orientationDidChange() {
     if whistleWindow.isKeyWindow {
       setupFrames()
       hide()

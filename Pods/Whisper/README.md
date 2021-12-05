@@ -1,27 +1,24 @@
 ![Whisper](https://github.com/hyperoslo/Whisper/blob/master/Resources/whisper-cover.png)
 
-[![Version](https://img.shields.io/cocoapods/v/Whisper.svg?style=flat)](http://cocoadocs.org/docsets/Whisper)
-[![CI Status](http://img.shields.io/travis/hyperoslo/Whisper.svg?style=flat)](https://travis-ci.org/hyperoslo/Whisper)
-[![Carthage](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+![CircleCI](https://circleci.com/gh/hyperoslo/Whisper.png)
 [![License](https://img.shields.io/cocoapods/l/Whisper.svg?style=flat)](http://cocoadocs.org/docsets/Whisper)
 [![Platform](https://img.shields.io/cocoapods/p/Whisper.svg?style=flat)](http://cocoadocs.org/docsets/Whisper)
-![Swift](https://img.shields.io/badge/%20in-swift%203.0-orange.svg)
 
 ## Description :leaves:
 
-Break the silence of your UI, whispering, shouting or whistling at it. **Whisper** is a component that will make the task of display messages and in-app notifications simple. It has three different views inside.
+Break the silence of your UI, whispering, shouting or whistling at it. **Whisper** is a component that will make the task of displaying messages and in-app notifications simple. It has three different views inside.
 
 #### Whispers
 
 ![Whisper](https://github.com/hyperoslo/Whisper/blob/master/Resources/permanent-whisper.png)
 
-Display a short message at the bottom of the navigation bar, this can be anything, from a "Great Job!" to an error message. It can have images or even a loader.
+Display a short message at the bottom of the navigation bar—this can be anything, from a "Great Job!" to an error message. It can have images or even a loader.
 
 #### Shouts
 
 ![In-App](https://github.com/hyperoslo/Whisper/blob/master/Resources/in-app-notification.png)
 
-Let the users know that something happened inside the app with this beautiful customizable in app notification.
+Let users know that something happened inside the app with this beautiful customizable in-app notification.
 
 #### Whistles
 
@@ -31,36 +28,36 @@ This is the smallest of all, a beautiful discretion in your UI.
 
 ##### Bonus
 
-All the sounds are fully customizable, from colors to fonts.
+All sounds are fully customizable, as are colors and fonts.
 
 Shouts have an optional action that will be called if the user taps on it, and you'll even get a message when the Shout is gone. Finally, if you want to set how long the Shout should be displayed, you have a duration property.
 
-In Whisper, there is no need to think about scroll view insets anymore, this will be handled automatically. As and added bonus, when transitioning from one view controller to another, the next controllers offset will be adjusted like you would expect. It just works!
+In Whisper, there is no need to think about scroll view insets anymore—this will be handled automatically. As an added bonus, when transitioning from one view controller to another, the next controller's offset will be adjusted as you'd expect. It just works!
 
 ## Usage
 
-The usage of the component is so simple, you just create a message in the case of Whisper, an announcement in the case of a Shout or a Murmur in the case of a Whistle, it's done like this:
+The usage of the component is so simple, you just create a message in the case of Whisper, an announcement in the case of a Shout, or a Murmur in the case of a Whistle. Because there may be a conflict with `show` from `UIViewController`, you need to explicitly use the `Whisper` namespace to call `show`.
 
 ##### For a Whisper:
 
 ```swift
-let message = Message(title: "Enter your message here.", backgroundColor: UIColor.redColor())
+let message = Message(title: "Enter your message here.", backgroundColor: .red)
 
 // Show and hide a message after delay
-show(whisper: message, to: navigationController, action: .Show)
+Whisper.show(whisper: message, to: navigationController, action: .show)
 
 // Present a permanent message
-show(whisper: message, to: navigationController, action: .Present)
+Whisper.show(whisper: message, to: navigationController, action: .present)
 
 // Hide a message
-hide(whisperFrom: navigationController)
+Whisper.hide(whisperFrom: navigationController)
 ```
 
 ##### For a Shout:
 
 ```swift
 let announcement = Announcement(title: "Your title", subtitle: "Your subtitle", image: UIImage(named: "avatar"))
-show(shout: announcement, to: navigationController, completion: {
+Whisper.show(shout: announcement, to: navigationController, completion: {
   print("The shout was silent.")
 })
 ```
@@ -71,13 +68,13 @@ show(shout: announcement, to: navigationController, completion: {
 let murmur = Murmur(title: "This is a small whistle...")
 
 // Show and hide a message after delay
-show(whistle: murmur, action: .Show(0.5))
+Whisper.show(whistle: murmur, action: .show(0.5))
 
 // Present a permanent status bar message
-show(whistle: murmur, action: .Present)
+Whisper.show(whistle: murmur, action: .present)
 
 // Hide a message
-hide(whistleAfter: 3)
+Whisper.hide(whistleAfter: 3)
 ```
 
 If you want to use **Whisper** with Objective-C, you can find information about it [here](https://github.com/hyperoslo/Whisper/wiki/Using-Whisper-in-Objective-C).
@@ -109,7 +106,7 @@ In the future the idea is to keep improving and add some features:
 
 ## Author
 
-[Hyper](http://hyper.no) made this with ❤️. If you’re using this library we probably want to [hire you](https://github.com/hyperoslo/iOS-playbook/blob/master/HYPER_RECIPES.md)! Send us an email at ios@hyper.no.
+[Hyper](http://hyper.no) made this with ❤️
 
 ## Contribute
 

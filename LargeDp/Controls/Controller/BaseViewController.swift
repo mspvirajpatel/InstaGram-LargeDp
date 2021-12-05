@@ -148,10 +148,10 @@ class BaseViewController: UIViewController, UINavigationControllerDelegate {
     func displayMenuButton(){
         
         var origImage : UIImage? = UIImage(named: "MenuIcon");
-        var tintedImage : UIImage? = origImage!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        var tintedImage : UIImage? = origImage!.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         
         btnName = UIButton()
-        btnName.setImage(tintedImage!, for: UIControlState())
+        btnName.setImage(tintedImage!, for: UIControl.State())
         btnName.tintColor = UIColor.white
         btnName.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         btnName.addTarget(self, action: #selector(openslider), for: .touchUpInside)
@@ -162,9 +162,9 @@ class BaseViewController: UIViewController, UINavigationControllerDelegate {
         tintedImage = nil
     }
     
-    func openslider() {
+    @objc func openslider() {
         self.view.endEditing(true)
-        self.present(SideMenuManager.menuLeftNavigationController!, animated: true, completion: nil)
+        self.present(SideMenuManager.default.menuLeftNavigationController!, animated: true, completion: nil)
     }
     
     func HideMenuButton(){

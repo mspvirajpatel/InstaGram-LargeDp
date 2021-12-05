@@ -13,7 +13,7 @@ class PageInfo : NSObject, NSCoding{
 	var endCursor : String? = ""
     var hasNextPage : Bool! = false
 	var hasPreviousPage : Bool! = false
-	var startCursor : AnyObject!
+	var startCursor : AnyObject?
 
 
 	/**
@@ -34,7 +34,7 @@ class PageInfo : NSObject, NSCoding{
         }
         
         if let data = dictionary["start_cursor"]{
-            startCursor = data as AnyObject!
+            startCursor = data as AnyObject?
         }
     }
 
@@ -67,7 +67,7 @@ class PageInfo : NSObject, NSCoding{
          endCursor = aDecoder.decodeObject(forKey: "end_cursor") as? String
          hasNextPage = aDecoder.decodeObject(forKey: "has_next_page") as? Bool
          hasPreviousPage = aDecoder.decodeObject(forKey: "has_previous_page") as? Bool
-         startCursor = aDecoder.decodeObject(forKey: "start_cursor") as AnyObject!
+        startCursor = aDecoder.decodeObject(forKey: "start_cursor") as AnyObject?
 	}
 
     /**

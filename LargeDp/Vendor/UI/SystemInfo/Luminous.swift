@@ -12,7 +12,7 @@ import CoreTelephony
 import AVFoundation
 import ExternalAccessory
 import CoreMotion
-import ReachabilitySwift
+import Reachability
 
 // MARK: Enums
 
@@ -68,7 +68,7 @@ public struct Luminous {
             
             /// Check if the device is connected to the WiFi network
             public static var isConnectedViaWiFi: Bool {
-                let reachability = Reachability()!
+                let reachability = try! Reachability()
                 
                 if reachability.isReachableViaWiFi {
                     return true
@@ -94,7 +94,7 @@ public struct Luminous {
                         let rec = unsafeBitCast(interfaceName, to: AnyObject.self)
                         let unsafeInterfaceData = CNCopyCurrentNetworkInfo("\(rec)" as CFString)
                         if unsafeInterfaceData != nil {
-                            let interfaceData = unsafeInterfaceData! as Dictionary!
+                            let interfaceData = unsafeInterfaceData! as Dictionary?
                             for dictData in interfaceData! {
                                 if dictData.key as! String == "SSID" {
                                     currentSSID = dictData.value as! String
@@ -393,7 +393,7 @@ public struct Luminous {
                     let route = AVAudioSession.sharedInstance().currentRoute
                     
                     for desc in route.outputs {
-                        if desc.portType == AVAudioSessionPortHeadphones {
+                        if desc.portType == AVAudioSession.Port.headphones {
                             return true
                         }
                     }
@@ -527,6 +527,8 @@ public struct Luminous {
                 case .charging:
                     return LMBatteryState.charging
                 case .full:
+                    return LMBatteryState.full
+                @unknown default:
                     return LMBatteryState.full
                 }
             }

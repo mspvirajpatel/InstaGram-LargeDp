@@ -46,7 +46,7 @@ class BaseImageView: UIImageView {
                 CATransaction.setAnimationDuration(self.fadeDuration)
                 
                 let transition = CATransition()
-                transition.type = kCATransitionFade
+                transition.type = CATransitionType.fade
                 
                 super.layer.add(transition, forKey: kCATransition)
                 super.image = img
@@ -158,60 +158,37 @@ class BaseImageView: UIImageView {
     
     // MARK: - Public Interface -
     
-    /**
-     This imethod is Used to Set the image from Url.Its will set the Image when download complete meanwhile its show placeholder image on imageview. or progress bar.
-     - parameter urlString: URL of image.
-     */
-    func displayImageFromURL(_ urlString : String) {
+    func displayImageFromURL(_ urlString : String, placeholder : UIImage? = UIImage(named: "postplaceholder")) {
         self.kf.indicatorType = .activity
         self.kf.indicator?.startAnimatingView()
         let imageURL : URL? = URL(string: urlString)
         
-        self.kf.setImage(with: imageURL, placeholder:  UIImage(named: "postplaceholder"), options: [.transition(ImageTransition.fade(0.2))], progressBlock: { [weak self] (receivedSize, totalSize) in
-            if self == nil {
-                return
-            }
-            //self.progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(totalSize)
-            
-        }) { [weak self] (image, error, CacheType, imageURL) in
-            if self == nil {
-                return
-            }
-            if(image ==  nil) {
-                self?.kf.indicator?.stopAnimatingView()
-            }
-            else {
-                self?.kf.indicator?.stopAnimatingView()
-                self!.image = image
-            }
-        }
-        self.layoutSubviews()
+        self.kf.setImage(
+            with: imageURL,
+            placeholder: placeholder,
+            options: [
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(0.2)),
+                .cacheOriginalImage
+            ],
+            progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            },
+            completionHandler: { [weak self] result in
+                guard let `self` = self else {
+                    return
+                }
+                // Done
+                self.kf.indicator?.stopAnimatingView()
+                switch result {
+                case .success(let value):
+                    self.image = value.image
+                    print("Task done for: \(value.source.url?.absoluteString ?? "")")
+                case .failure(let error):
+                    print("Job failed: \(error.localizedDescription)")
+                }
+            });
         
-    }
-    
-    func displayImageFromURLWithPlaceholder(_ urlString : String, placeholder : UIImage?) {
-        self.kf.indicatorType = .activity
-        self.kf.indicator?.startAnimatingView()
-        let imageURL : URL? = URL(string: urlString)
-        
-        self.kf.setImage(with: imageURL, placeholder: placeholder, options: [.transition(ImageTransition.fade(0.2))], progressBlock: { [weak self] (receivedSize, totalSize) in
-            if self == nil {
-                return
-            }
-            //self.progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(totalSize)
-            
-        }) { [weak self] (image, error, CacheType, imageURL) in
-            if self == nil {
-                return
-            }
-            if(image ==  nil) {
-                self?.kf.indicator?.stopAnimatingView()
-            }
-            else {
-                self?.kf.indicator?.stopAnimatingView()
-                self!.image = image
-            }
-        }
         self.layoutSubviews()
         
     }
@@ -222,25 +199,33 @@ class BaseImageView: UIImageView {
         
         let imageURL : URL? = URL(string: urlString)
         
-        self.kf.setImage(with: imageURL, placeholder: nil, options: [.transition(ImageTransition.fade(0.2))], progressBlock: { [weak self] (receivedSize, totalSize) in
-            if self == nil {
-                return
-            }
-            
-        }) { [weak self] (image, error, CacheType, imageURL) in
-            if self == nil {
-                return
-            }
-            if(image ==  nil) {
-                self?.kf.indicator?.stopAnimatingView()
-                completion(false, nil)
-            }
-            else {
-                self?.kf.indicator?.stopAnimatingView()
-                self!.image = image
-                completion(true, image)
-            }
-        }
+        self.kf.setImage(
+            with: imageURL,
+            placeholder: UIImage(named: "postplaceholder"),
+            options: [
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(0.2)),
+                .cacheOriginalImage
+            ],
+            progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            },
+            completionHandler: { [weak self] result in
+                guard let `self` = self else {
+                    return
+                }
+                // Done
+                self.kf.indicator?.stopAnimatingView()
+                switch result {
+                case .success(let value):
+                    self.image = value.image
+                    completion(true, self.image)
+                    print("Task done for: \(value.source.url?.absoluteString ?? "")")
+                case .failure(let error):
+                    completion(false, nil)
+                    print("Job failed: \(error.localizedDescription)")
+                }
+            });
     }
     
     func displayImageFromURLWithAppLable(_ urlString : String) {
@@ -249,24 +234,32 @@ class BaseImageView: UIImageView {
         self.kf.indicator?.startAnimatingView()
         let imageURL : URL? = URL(string: urlString)
         
-        self.kf.setImage(with: imageURL, placeholder:  UIImage(named: "postplaceholder"), options: [.transition(ImageTransition.fade(0.2))], progressBlock: { [weak self] (receivedSize, totalSize) in
-            if self == nil {
-                return
-            }
-            //self.progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(totalSize)
-            
-        }) { [weak self] (image, error, CacheType, imageURL) in
-            if self == nil {
-                return
-            }
-            if(image ==  nil) {
-                self?.kf.indicator?.stopAnimatingView()
-            }
-            else {
-                self?.kf.indicator?.stopAnimatingView()
-                self!.image = image?.editWithText(text: "@\(AppName)")
-            }
-        }
+        self.kf.setImage(
+            with: imageURL,
+            placeholder: UIImage(named: "postplaceholder"),
+            options: [
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(0.2)),
+                .cacheOriginalImage
+            ],
+            progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            },
+            completionHandler: { [weak self] result in
+                guard let `self` = self else {
+                    return
+                }
+                // Done
+                self.kf.indicator?.stopAnimatingView()
+                switch result {
+                case .success(let value):
+                    self.image = value.image.editWithText(text: "@\(AppName)")
+                    print("Task done for: \(value.source.url?.absoluteString ?? "")")
+                case .failure(let error):
+                    print("Job failed: \(error.localizedDescription)")
+                }
+            });
+        
         self.layoutSubviews()
         
     }
@@ -277,30 +270,41 @@ class BaseImageView: UIImageView {
         self.kf.indicator?.startAnimatingView()
         let imageURL : URL? = URL(string: urlString)
         
-        self.kf.setImage(with: imageURL, placeholder:  UIImage(named: "postplaceholder"), options: [.transition(ImageTransition.fade(0.2))], progressBlock: { [weak self] (receivedSize, totalSize) in
-            if self == nil {
-                return
-            }
-            //self.progressIndicatorView.progress = CGFloat(receivedSize)/CGFloat(totalSize)
-            
-        }) { [weak self] (image, error, CacheType, imageURL) in
-            if self == nil {
-                return
-            }
-            if(image !=  nil)
-            {
-                let hie : Int = Int((image?.size.height)!)
-                if hie < 640
-                {
-                    let images : UIImage = image!.scaled(to: CGSize.init(width: 640, height: 640), scalingMode: .aspectFill)
-                    self!.image = images.editWithText(text: "@\(username)")
+        self.kf.setImage(
+            with: imageURL,
+            placeholder: UIImage(named: "postplaceholder"),
+            options: [
+                .scaleFactor(UIScreen.main.scale),
+                .transition(.fade(0.2)),
+                .cacheOriginalImage
+            ],
+            progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            },
+            completionHandler: { [weak self] result in
+                guard let `self` = self else {
+                    return
                 }
-                else
-                {
-                    self!.image = image?.editWithText(text: "@\(username)")
+                // Done
+                self.kf.indicator?.stopAnimatingView()
+                switch result {
+                case .success(let value):
+                    
+                    let hie : Int = Int((value.image.size.height))
+                    if hie < 640 {
+                        let images : UIImage = value.image.scaled(to: CGSize.init(width: 640, height: 640), scalingMode: .aspectFill)
+                        self.image = images.editWithText(text: "@\(username)")
+                    }
+                    else
+                    {
+                        self.image = value.image.editWithText(text: "@\(username)")
+                    }
+                    
+                case .failure(let error):
+                    print("Job failed: \(error.localizedDescription)")
                 }
-            }
-        }
+            });
+        
         self.layoutSubviews()
         
         

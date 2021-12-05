@@ -22,7 +22,9 @@ class HomeView: BaseView {
     var btnSearch : BaseButton!
     var collectionView : UICollectionView!
     var btnSearchTouchUp : ControlTouchUpInsideEvent!
-    var personsController: FetchedRecordsController<myCollection>!
+//    var personsController: FetchedRecordsController<myCollection>!
+    private var cancellable: DatabaseCancellable?
+        
     var clearAll : BaseButton!
     var lblRecentSearch : BaseLabel!
     var lblTitle : BaseLabel!
@@ -65,10 +67,10 @@ class HomeView: BaseView {
             collectionView.removeFromSuperview()
             collectionView = nil
         }
-        if personsController != nil
-        {
-            personsController = nil
-        }
+//        if personsController != nil
+//        {
+//            personsController = nil
+//        }
         if clearAll != nil && clearAll.superview != nil
         {
             clearAll.removeFromSuperview()
@@ -188,40 +190,50 @@ class HomeView: BaseView {
         viewContant.addSubview(collectionView)
         collectionView.register(PhotoCollectionViewcell.self, forCellWithReuseIdentifier : CellIdentifire.photoCollection)
        
-        viewAdd = BaseAddBannerView(adSize: kGADAdSizeBanner, bannerKey: InAddvertise.KAddBannerKey)
-        self.addSubview(viewAdd)
-        self.bringSubview(toFront: viewAdd)
+//        viewAdd = BaseAddBannerView(adSize: kGADAdSizeBanner, bannerKey: InAddvertise.KAddBannerKey)
+//        self.addSubview(viewAdd)
+//        self.bringSubviewToFront(viewAdd)
         
-        do{
-        
-            personsController = try FetchedRecordsController.init(DatabaseManager.sharedInstance.dbQueue, sql: "SELECT * from myCollection where  isFavorite = 0 ORDER BY timestamp DESC")
-            
-            personsController.trackChanges(willChange: { (_) in
-            }, onChange: { (controller, record, change) in
-                switch change{
-                    
-                case .insertion(_):
-                    self.collectionView.reloadData()
-                    break
-                case .deletion(_):
-                    self.collectionView.reloadData()
-                    break
-                case .update(_, changes: _):
-                    self.collectionView.reloadData()
-                    break
-                case .move(_):
-                    self.collectionView.reloadData()
-                    break
-                }
-            }) { (_) in
-                //self.tblCamList.endUpdates()
-            }
-            
-            try personsController.performFetch()
-        }
-        catch let error as NSError{
-            print(error.localizedDescription)
-        }
+        let observation = ValueObservation.tracking(myCollection.fetchAll)
+//        cancellable = observation.start(
+//            in: dbQueue,
+//            scheduling: .immediate, // <- immediate scheduler
+//            onError: { error in ... },
+//            onChange: { [weak self] (players: [Player]) in
+//                guard let self = self else { return }
+//                self.updateView(players)
+//            })
+//
+//        do{
+//
+//            personsController = try FetchedRecordsController.init(DatabaseManager.sharedInstance.dbQueue, sql: "SELECT * from myCollection where  isFavorite = 0 ORDER BY timestamp DESC")
+//
+//            personsController.trackChanges(willChange: { (_) in
+//            }, onChange: { (controller, record, change) in
+//                switch change{
+//
+//                case .insertion(_):
+//                    self.collectionView.reloadData()
+//                    break
+//                case .deletion(_):
+//                    self.collectionView.reloadData()
+//                    break
+//                case .update(_, changes: _):
+//                    self.collectionView.reloadData()
+//                    break
+//                case .move(_):
+//                    self.collectionView.reloadData()
+//                    break
+//                }
+//            }) { (_) in
+//                //self.tblCamList.endUpdates()
+//            }
+//
+//            try personsController.performFetch()
+//        }
+//        catch let error as NSError{
+//            print(error.localizedDescription)
+//        }
         
     }
     
@@ -230,7 +242,6 @@ class HomeView: BaseView {
         
         self.baseLayout.viewDictionary = ["lblTitle" :lblTitle,
                                           "lblDetail" :lblDetail,
-                                          "viewAdd" : viewAdd,
                                           "viewContant" : viewContant,
                                           "txtSearch" : txtSearch,
                                           "collectionView" : collectionView,
@@ -253,10 +264,10 @@ class HomeView: BaseView {
                                    "buttonrdias" : buttonrdias
                                   ]
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewContant]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewContant]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[viewContant][viewAdd]|", options: [.alignAllLeading, .alignAllTrailing], metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[viewContant]|", options: [.alignAllLeading, .alignAllTrailing], metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_V)
         
         //SearchTextfields
@@ -267,7 +278,7 @@ class HomeView: BaseView {
         viewContant.addConstraint(baseLayout.size_Width)
        
         //collectionView
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[collectionView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[collectionView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_H)
       
         baseLayout.position_CenterX = NSLayoutConstraint(item: btnSearch, attribute: .centerX, relatedBy: .equal, toItem: viewContant, attribute: .centerX, multiplier: 1.0, constant: 0)
@@ -276,19 +287,19 @@ class HomeView: BaseView {
         baseLayout.size_Width = NSLayoutConstraint(item: btnSearch, attribute: .width, relatedBy: .equal, toItem: viewContant, attribute: .width, multiplier: 0.41, constant: 0)
         viewContant.addConstraint(baseLayout.size_Width)
        
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-verticalPadding-[lblTitle]-verticalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-verticalPadding-[lblTitle]-verticalPadding-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-verticalPadding-[lblDetail]-verticalPadding-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-verticalPadding-[lblDetail]-verticalPadding-|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[lblTitle]-20-[lblDetail]-15-[txtSearch]-verticalPadding-[btnSearch]", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[lblTitle]-20-[lblDetail]-15-[txtSearch]-verticalPadding-[btnSearch]", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_V)
        
         baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-secondaryVerticalPadding-[lblRecentSearch]-[clearAll(buttonwidth)]-verticalPadding@751-|", options: [.alignAllBottom,.alignAllTop], metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_H)
 
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[btnSearch]-secondaryVerticalPadding-[clearAll(buttonhight)]-secondaryVerticalPadding-[collectionView(collectionhight)]", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[btnSearch]-secondaryVerticalPadding-[clearAll(buttonhight)]-secondaryVerticalPadding-[collectionView(collectionhight)]", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         viewContant.addConstraints(baseLayout.control_V)
         
         self.layoutIfNeeded()
@@ -309,7 +320,7 @@ class HomeView: BaseView {
         self.layoutIfNeeded()
         self.layoutSubviews()
         
-        defer {
+        do {
             baseLayout.releaseObject()
         }
 
@@ -317,7 +328,7 @@ class HomeView: BaseView {
     
     // MARK: - Public Interface -
     
-    func onClearClick()
+    @objc func onClearClick()
     {
         do{
             try DatabaseManager.sharedInstance.removeAddedRecent(completion: { [weak self] (isSuccess) in
@@ -398,18 +409,18 @@ extension HomeView : UITextFieldDelegate {
 
 extension HomeView : UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if  personsController != nil && personsController.sections[section].numberOfRecords != 0
-        {
-            lblRecentSearch.isHidden = false
-            clearAll.isHidden = false
-            return personsController.sections[section].numberOfRecords
-        }
-        else
-        {
+//        if  personsController != nil && personsController.sections[section].numberOfRecords != 0
+//        {
+//            lblRecentSearch.isHidden = false
+//            clearAll.isHidden = false
+//            return personsController.sections[section].numberOfRecords
+//        }
+//        else
+//        {
             lblRecentSearch.isHidden = true
             clearAll.isHidden = true
             return 0
-        }
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -431,7 +442,7 @@ extension HomeView : UICollectionViewDataSource {
     }
     
     func configure(_ cell: PhotoCollectionViewcell, at indexPath: IndexPath) {
-        cell.configureddatawithModel(model: personsController.record(at: indexPath))
+//        cell.configureddatawithModel(model: personsController.record(at: indexPath))
     }
 
 }
@@ -442,58 +453,58 @@ extension HomeView : UICollectionViewDelegate {
         
         let cell: UIView? = collectionView.cellForItem(at: indexPath)
         if cell is PhotoCollectionViewcell {
-            if let cells : PhotoCollectionViewcell = cell as? PhotoCollectionViewcell {
-                
-                let myCollection = self.personsController.record(at: indexPath)
-                let dic = myCollection.toDictionary()
-                if let data : String = dic["data"] as? String
-                {
-                    if let dicData : NSDictionary = data.dictionary()
-                    {
-                        var type : Int = -1
-                        if let modelType = dic["modelType"] as? Int
-                        {
-                            type = modelType
-                        }
-                        else if let modelType = dic["modelType"]  as? Int64{
-                            type = Int(modelType)
-                        }
-                        else if let modelType = dic["modelType"]  as? String{
-                            type = Int(modelType)!
-                        }
-                        
-                        switch type
-                        {
-                            
-                        case ImageEditorViewType.follow.rawValue:
-                             let followersEdge = FollowersEdge.init(fromDictionary: dicData as! [String : AnyObject])
-                            
-                             if let controller : HomeController = self.getViewControllerFromSubView() as? HomeController {
-                                self.endEditing(true)
-                                let profileViewController : ProfileViewController = ProfileViewController.init(followersEdge: followersEdge, placeholder: cells.imgPhoto.image!)
-                                
-                                controller.navigationController?.pushViewController(profileViewController, animated: true)
-                             }
-                             
-                           break
-                            
-                        case ImageEditorViewType.searchUser.rawValue:
-                           
-                            let searchUser = SearchUser.init(fromDictionary: dicData as! [String : AnyObject])
-                            
-                            if let controller : HomeController = self.getViewControllerFromSubView() as? HomeController {
-                                self.endEditing(true)
-                                let profileViewController : ProfileViewController = ProfileViewController.init(searchUserModel: searchUser, placeholder: cells.imgPhoto.image!)
-                                
-                                controller.navigationController?.pushViewController(profileViewController, animated: true)
-                            }
-                            break
-                        default:
-                            break
-                        }
-                    }
-                }
-            }
+//            if let cells : PhotoCollectionViewcell = cell as? PhotoCollectionViewcell {
+//
+//                let myCollection = self.personsController.record(at: indexPath)
+//                let dic = myCollection.toDictionary()
+//                if let data : String = dic["data"] as? String
+//                {
+//                    if let dicData : NSDictionary = data.dictionary()
+//                    {
+//                        var type : Int = -1
+//                        if let modelType = dic["modelType"] as? Int
+//                        {
+//                            type = modelType
+//                        }
+//                        else if let modelType = dic["modelType"]  as? Int64{
+//                            type = Int(modelType)
+//                        }
+//                        else if let modelType = dic["modelType"]  as? String{
+//                            type = Int(modelType)!
+//                        }
+//
+//                        switch type
+//                        {
+//
+//                        case ImageEditorViewType.follow.rawValue:
+//                             let followersEdge = FollowersEdge.init(fromDictionary: dicData as! [String : AnyObject])
+//
+//                             if let controller : HomeController = self.getViewControllerFromSubView() as? HomeController {
+//                                self.endEditing(true)
+//                                let profileViewController : ProfileViewController = ProfileViewController.init(followersEdge: followersEdge, placeholder: cells.imgPhoto.image!)
+//
+//                                controller.navigationController?.pushViewController(profileViewController, animated: true)
+//                             }
+//
+//                           break
+//
+//                        case ImageEditorViewType.searchUser.rawValue:
+//
+//                            let searchUser = SearchUser.init(fromDictionary: dicData as! [String : AnyObject])
+//
+//                            if let controller : HomeController = self.getViewControllerFromSubView() as? HomeController {
+//                                self.endEditing(true)
+//                                let profileViewController : ProfileViewController = ProfileViewController.init(searchUserModel: searchUser, placeholder: cells.imgPhoto.image!)
+//
+//                                controller.navigationController?.pushViewController(profileViewController, animated: true)
+//                            }
+//                            break
+//                        default:
+//                            break
+//                        }
+//                    }
+//                }
+//            }
         }
     }
     
@@ -517,7 +528,7 @@ extension HomeView : UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsetsMake(0, 16, 0, 16)
+        return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     }
     
 }

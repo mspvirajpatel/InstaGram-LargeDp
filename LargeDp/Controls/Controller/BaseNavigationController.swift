@@ -41,7 +41,7 @@ class BaseNavigationController: UINavigationController,UIGestureRecognizerDelega
         var navigationBarFont: UIFont? = UIFont(name: FontStyle.regular, size: SystemConstants.IS_IPAD ? 22.0 : 18.0)
        // UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: Color.navigationTitle.value,NSFontAttributeName: navigationBarFont!] as [String : Any]
         
-        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: Color.navigationTitle.value,NSFontAttributeName: navigationBarFont!] as [String : Any]
+        self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: Color.navigationTitle.value, NSAttributedString.Key.font: navigationBarFont!] as [NSAttributedString.Key : Any]
         
         self.navigationBar.tintColor =  UIColor.white //Color.navigationTitle.value
         

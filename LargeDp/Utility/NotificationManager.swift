@@ -9,7 +9,7 @@
 import Foundation
 import SystemConfiguration
 import UserNotifications
-import ReachabilitySwift
+import Reachability
 import SwiftEventBus
 
 struct PushNotificationType : OptionSet {
@@ -48,7 +48,7 @@ open class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     open func isNetworkAvailableWithBlock(_ completion: @escaping (_ wasSuccessful: Bool) -> Void) {
       
-        let reachability = Reachability()!
+        let reachability = try! Reachability()
         
         reachability.whenReachable = { reachability in
             // this is called on a background thread, but UI updates must

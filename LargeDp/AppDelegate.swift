@@ -22,13 +22,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var navigationController : BaseNavigationController!
     //var sideMenuController : REFrostedViewController!
     var backgroundSessionCompletionHandler : (() -> Void)?
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-       
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
         try! DatabaseManager.sharedInstance.setUpDatabase(application)
         UIApplication.shared.statusBarStyle = .lightContent
         
-        GADMobileAds.configure(withApplicationID: ThiredPartyKey.adMob)
+//        GADMobileAds.configure(withApplicationID: ThiredPartyKey.adMob)
         LocationManager.shared.authorize()
         Crashlytics().debugMode = true
         Fabric.with([Crashlytics.self,Answers.self])
@@ -48,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         FirebaseApp.configure()
-        IQKeyboardManager.sharedManager().enable = true
+        IQKeyboardManager.shared.enable = true
         
         self.loadUI()
        
@@ -102,14 +101,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         menuLeftNavigationController.leftSide = false
         
-        SideMenuManager.menuLeftNavigationController = menuLeftNavigationController
+        SideMenuManager.default.menuLeftNavigationController = menuLeftNavigationController
         
         //SideMenuManager.menuAddPanGestureToPresent(toView: navigationController.navigationBar)
-        SideMenuManager.menuAddScreenEdgePanGesturesToPresent(toView: navigationController.view)
-        SideMenuManager.menuPresentMode = .menuSlideIn
-        SideMenuManager.menuWidth = max(round(min((UIScreen.main.bounds.size.width), (UIScreen.main.bounds.size.height)) * 0.85), 240)
+        SideMenuManager.default.menuAddScreenEdgePanGesturesToPresent(toView: navigationController.view)
+        SideMenuManager.default.menuPresentMode = .menuSlideIn
+        SideMenuManager.default.menuWidth = max(round(min((UIScreen.main.bounds.size.width), (UIScreen.main.bounds.size.height)) * 0.85), 240)
         
-        SideMenuManager.menuAnimationFadeStrength = 0.50
+        SideMenuManager.default.menuAnimationFadeStrength = 0.50
         
         window?.rootViewController = navigationController
     }

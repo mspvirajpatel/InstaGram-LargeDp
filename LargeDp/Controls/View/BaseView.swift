@@ -211,7 +211,7 @@ class BaseView: UIView {
             
             /*     errorLabel Layout     */
             
-            baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[errorMessageLabel]|", options:NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: baseLayout.viewDictionary)
+            baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[errorMessageLabel]|", options:NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: nil, views: baseLayout.viewDictionary)
             
             self.addConstraints(baseLayout.control_H)
             
@@ -318,13 +318,13 @@ class BaseView: UIView {
                 self!.errorMessageLabel.attributedText = nil
                 
                 if(self!.errorMessageLabel.tag == -1){
-                    self!.sendSubview(toBack: self!.errorMessageLabel)
+                    self!.sendSubviewToBack(self!.errorMessageLabel)
                 }
                 
                 if(errorAttributeMessage != nil){
                     
                     if(self!.errorMessageLabel.tag == -1){
-                        self!.bringSubview(toFront: self!.errorMessageLabel)
+                        self!.bringSubviewToFront(self!.errorMessageLabel)
                     }
                     
                     self!.errorMessageLabel.isHidden = false
@@ -395,7 +395,7 @@ class BaseView: UIView {
         
         let screenSize : CGSize = InterfaceUtility.getDeviceScreenSize()
         
-        footerIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        footerIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
         tableFooterHeight = footerIndicatorView.frame.size.height + 20.0
         
         tableFooterView = UIView()
@@ -436,13 +436,13 @@ class BaseView: UIView {
                 self!.errorMessageLabel.text = ""
                 
                 if(self!.errorMessageLabel.tag == -1){
-                    self!.sendSubview(toBack: self!.errorMessageLabel)
+                    self!.sendSubviewToBack(self!.errorMessageLabel)
                 }
                 
                 if(errorMessage != nil){
                     
                     if(self!.errorMessageLabel.tag == -1){
-                        self!.bringSubview(toFront: self!.errorMessageLabel)
+                        self!.bringSubviewToFront(self!.errorMessageLabel)
                     }
                     
                     self!.errorMessageLabel.isHidden = false
@@ -467,14 +467,14 @@ class BaseView: UIView {
         if(superview != nil){
             
             if((superview?.subviews.contains(textControl))!){
-                textControlIndex = superview!.subviews.index(of: textControl)!
+                textControlIndex = superview!.subviews.firstIndex(of: textControl)!
             }
             
             for view in (superview?.subviews)! {
                 
                 if(view.isTextControl() && textControl != view){
                     
-                    viewControlIndex = superview!.subviews.index(of: view)!
+                    viewControlIndex = superview!.subviews.firstIndex(of: view)!
                     
                     if(viewControlIndex < textControlIndex){
                         isFirstTextControl = false
@@ -501,14 +501,14 @@ class BaseView: UIView {
         if(superview != nil){
             
             if((superview?.subviews.contains(textControl))!){
-                textControlIndex = superview!.subviews.index(of: textControl)!
+                textControlIndex = superview!.subviews.firstIndex(of: textControl)!
             }
             
             for view in (superview?.subviews)! {
                 
                 if(view.isTextControl() && textControl != view){
                     
-                    viewControlIndex = superview!.subviews.index(of: view)!
+                    viewControlIndex = superview!.subviews.firstIndex(of: view)!
                     
                     if(viewControlIndex > textControlIndex){
                         isLastTextControl = false

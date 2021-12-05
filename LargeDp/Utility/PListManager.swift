@@ -37,7 +37,7 @@ class PListManager: NSObject {
         do {
             let fileData : Data = try Data(contentsOf: URL(fileURLWithPath: paths!))
             
-            plistData = try PropertyListSerialization .propertyList(from: fileData, options: PropertyListSerialization.ReadOptions.mutableContainers, format: nil) as AnyObject!
+            plistData = try PropertyListSerialization .propertyList(from: fileData, options: PropertyListSerialization.ReadOptions.mutableContainers, format: nil) as AnyObject?
         }
         catch let error as NSError {
             print(error.localizedDescription)

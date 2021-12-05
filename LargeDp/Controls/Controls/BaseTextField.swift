@@ -106,8 +106,8 @@ class BaseTextField: UITextField, UITextFieldDelegate {
         if(self.placeholder!.responds(to: #selector(NSString.draw(at:withAttributes:))))
         {
             
-            var attributes : [String : AnyObject]! = [NSForegroundColorAttributeName : Color.textFieldPlaceholder.withAlpha(0.45),
-                                                      NSFontAttributeName : self.font!]
+            var attributes : [NSAttributedString.Key: AnyObject]! = [NSAttributedString.Key.foregroundColor : Color.textFieldPlaceholder.withAlpha(0.45),
+                                                                     NSAttributedString.Key.font : self.font!]
             
             var boundingRect : CGRect! = self.placeholder!.boundingRect(with: rect.size, options: NSStringDrawingOptions(rawValue: 0), attributes: attributes, context: nil)
             
@@ -274,7 +274,7 @@ class BaseTextField: UITextField, UITextFieldDelegate {
         
         baseLayout.metrics = ["textFieldHeight" : textFieldHeight , "textFieldWidth" : textFieldWidth]
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[textField(textFieldHeight)]", options:NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[textField(textFieldHeight)]", options:NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         
         self.addConstraints(baseLayout.control_V)
         
@@ -282,11 +282,11 @@ class BaseTextField: UITextField, UITextFieldDelegate {
         {
         case .showPassword:
             
-            var btnShowPassword : UIButton! = UIButton(type: UIButtonType.custom)
+            var btnShowPassword : UIButton! = UIButton(type: UIButton.ButtonType.custom)
             btnShowPassword.translatesAutoresizingMaskIntoConstraints = false
             btnShowPassword.backgroundColor = self.backgroundColor
-            btnShowPassword .setImage(UIImage(named: "ShowPassword")?.maskWithColor(Color.appPrimaryBG.value), for: UIControlState.normal)
-            btnShowPassword .setImage(UIImage(named: "HidePassword")?.maskWithColor(Color.appPrimaryBG.value), for: UIControlState.selected)
+            btnShowPassword .setImage(UIImage(named: "ShowPassword")?.maskWithColor(Color.appPrimaryBG.value), for: UIControl.State.normal)
+            btnShowPassword .setImage(UIImage(named: "HidePassword")?.maskWithColor(Color.appPrimaryBG.value), for: UIControl.State.selected)
             btnShowPassword.imageEdgeInsets = SystemConstants.IS_IPAD ? UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) : UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             btnShowPassword .addTarget(self, action: #selector(self.btnShowPassword(sender:)), for: .touchUpInside)
             btnShowPassword .isSelected = true
@@ -294,7 +294,7 @@ class BaseTextField: UITextField, UITextFieldDelegate {
             
             baseLayout.viewDictionary = ["btnShowPassword" : btnShowPassword]
             baseLayout.metrics = ["buttonHeight" : textFieldHeight]
-            baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[btnShowPassword]|", options: NSLayoutFormatOptions(rawValue : 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+            baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[btnShowPassword]|", options: NSLayoutConstraint.FormatOptions(rawValue : 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
             baseLayout.position_Right = NSLayoutConstraint(item: btnShowPassword, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: -5.0)
             baseLayout.size_Width = NSLayoutConstraint(item: btnShowPassword, attribute: .width, relatedBy: .equal, toItem: btnShowPassword, attribute: .height, multiplier: 1.0, constant: 0.0)
             
@@ -306,7 +306,7 @@ class BaseTextField: UITextField, UITextFieldDelegate {
             
         case .withoutClear:
             
-            baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:[textField(textFieldWidth)]", options:NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+            baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:[textField(textFieldWidth)]", options:NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
             self.addConstraints(baseLayout.control_H)
             break
             
@@ -412,7 +412,7 @@ class BaseTextField: UITextField, UITextFieldDelegate {
             numberToolbar.setTopBorder(Color.textFieldBorder.withAlpha(General.textFieldColorAlpha), width: 1.0)
             numberToolbar.setBottomBorder(Color.textFieldBorder.withAlpha(General.textFieldColorAlpha), width: 1.0)
             
-            defer{
+            do{
                 doneButton = nil
                 flexibleSpace = nil
                 numberToolbar = nil
@@ -457,7 +457,7 @@ class BaseTextField: UITextField, UITextFieldDelegate {
             
             numberToolbar.setBottomBorder(Color.textFieldBorder.withAlpha(General.textFieldColorAlpha), width: 1.0)
             
-            defer{
+            do{
                 flexibleSpace = nil
                 doneButton = nil
                 numberToolbar = nil
@@ -469,11 +469,11 @@ class BaseTextField: UITextField, UITextFieldDelegate {
     }
     
     // MARK: - User Interaction -
-    func leftArrowButtonAction(){
+    @objc func leftArrowButtonAction(){
         self.setResponderToTextControl(.leftResponderDirectionType)
     }
     
-    func rightArrowButtonAction(){
+    @objc func rightArrowButtonAction(){
         self.setResponderToTextControl(.rightResponderDirectionType)
     }
     
@@ -490,7 +490,7 @@ class BaseTextField: UITextField, UITextFieldDelegate {
         }
     }
     
-    func doneButtonAction(){
+    @objc func doneButtonAction(){
         AppUtility.executeTaskInMainQueueWithCompletion { [weak self] in
             if self == nil {
                 return
@@ -502,7 +502,7 @@ class BaseTextField: UITextField, UITextFieldDelegate {
     }
     
     // MARK: - Internal Helpers -
-    func btnShowPassword(sender : UIButton) -> Void
+    @objc func btnShowPassword(sender : UIButton) -> Void
     {
         self.isSecureTextEntry = !self.isSecureTextEntry
         self.text = self.text?.trimmingCharacters(in: NSCharacterSet.whitespaces)
@@ -520,7 +520,7 @@ class BaseTextField: UITextField, UITextFieldDelegate {
             }
             
             if(self!.pasteButton != nil){
-                self!.pasteButton.isEnabled = ((UIPasteboard.general.string?.characters.count)! > 0)
+                self!.pasteButton.isEnabled = ((UIPasteboard.general.string?.count)! > 0)
             }
         }
         
@@ -599,11 +599,11 @@ class BaseTextField: UITextField, UITextFieldDelegate {
                     return
                 }
                 
-                var subViewArray : Array! = (self!.superview?.subviews)!
+                let subViewArray : Array! = (self!.superview?.subviews)!
                 let subViewArrayCount : Int = subViewArray.count
                 
                 var isNextTextControlAvailable : Bool = false
-                let currentTextFieldIndex : Int = subViewArray.index(of: self!)!
+                let currentTextFieldIndex : Int = subViewArray.firstIndex(of: self!)!
                 
                 var textField : UITextField?
                 var textView : UITextView?
@@ -797,10 +797,10 @@ class BaseTextField: UITextField, UITextFieldDelegate {
         var oldlength : Int = 0
         if textField.text != nil
         {
-            oldlength = (textField.text?.characters.count)!
+            oldlength = (textField.text?.count)!
         }
         
-        let replaceMentLength : Int = string .characters.count
+        let replaceMentLength : Int = string.count
         let rangeLength : Int = range.length
         
         let newLength : Int = oldlength - rangeLength + replaceMentLength

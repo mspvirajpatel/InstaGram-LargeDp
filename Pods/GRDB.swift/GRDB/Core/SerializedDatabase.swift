@@ -6,9 +6,7 @@ final class SerializedDatabase {
     private let db: Database
     
     /// The database configuration
-    var configuration: Configuration {
-        return db.configuration
-    }
+    var configuration: Configuration { db.configuration }
     
     /// The path to the database file
     var path: String
@@ -16,7 +14,13 @@ final class SerializedDatabase {
     /// The dispatch queue
     private let queue: DispatchQueue
     
-    init(path: String, configuration: Configuration = Configuration(), schemaCache: DatabaseSchemaCache) throws {
+    init(
+        path: String,
+        configuration: Configuration = Configuration(),
+        defaultLabel: String,
+        purpose: String? = nil)
+    throws
+    {
         // According to https://www.sqlite.org/threadsafe.html
         //
         // > SQLite support three different threading modes:
@@ -37,18 +41,34 @@ final class SerializedDatabase {
         var config = configuration
         config.threadingMode = .multiThread
         
-        db = try Database(path: path, configuration: config, schemaCache: schemaCache)
-        queue = SchedulingWatchdog.makeSerializedQueue(allowingDatabase: db)
         self.path = path
+        let identifier = configuration.identifier(defaultLabel: defaultLabel, purpose: purpose)
+        self.db = try Database(
+            path: path,
+            description: identifier,
+            configuration: config)
+        self.queue = configuration.makeDispatchQueue(label: identifier)
+        SchedulingWatchdog.allowDatabase(db, onQueue: queue)
         try queue.sync {
-            try db.setup()
+            do {
+                try db.setUp()
+            } catch {
+                // Recent versions of the Swift compiler will call the
+                // deinitializer. Older ones won't.
+                // See https://bugs.swift.org/browse/SR-13746 for details.
+                //
+                // So let's close the database now. The deinitializer
+                // will only close the database if needed.
+                db.close_v2()
+                throw error
+            }
         }
     }
     
     deinit {
         // Database may be deallocated in its own queue: allow reentrancy
         reentrantSync { db in
-            db.close()
+            db.close_v2()
         }
     }
     
@@ -61,27 +81,28 @@ final class SerializedDatabase {
         //
         // 1. A database is invoked from some queue like the main queue:
         //
-        //      dbQueue.inDatabase { db in       // <-- we're here
+        //      serializedDatabase.sync { db in       // <-- we're here
         //      }
         //
         // 2. A database is invoked in a reentrant way:
         //
-        //      dbQueue.inDatabase { db in
-        //          dbQueue.inDatabase { db in   // <-- we're here
+        //      serializedDatabase.sync { db in
+        //          serializedDatabase.sync { db in   // <-- we're here
         //          }
         //      }
         //
         // 3. A database in invoked from another database:
         //
-        //      dbQueue1.inDatabase { db1 in
-        //          dbQueue2.inDatabase { db2 in // <-- we're here
+        //      serializedDatabase1.sync { db1 in
+        //          serializedDatabase2.sync { db2 in // <-- we're here
         //          }
         //      }
         
         guard let watchdog = SchedulingWatchdog.current else {
             // Case 1
             return try queue.sync {
-                try block(db)
+                defer { preconditionNoUnsafeTransactionLeft(db) }
+                return try block(db)
             }
         }
         
@@ -90,8 +111,9 @@ final class SerializedDatabase {
         
         // Case 3
         return try queue.sync {
-            try SchedulingWatchdog.current!.allowing(databases: watchdog.allowedDatabases) {
-                try block(db)
+            try SchedulingWatchdog.current!.inheritingAllowedDatabases(from: watchdog) {
+                defer { preconditionNoUnsafeTransactionLeft(db) }
+                return try block(db)
             }
         }
     }
@@ -105,39 +127,60 @@ final class SerializedDatabase {
         //
         // 1. A database is invoked from some queue like the main queue:
         //
-        //      dbQueue.inDatabase { db in       // <-- we're here
+        //      serializedDatabase.reentrantSync { db in       // <-- we're here
         //      }
         //
         // 2. A database is invoked in a reentrant way:
         //
-        //      dbQueue.inDatabase { db in
-        //          dbQueue.inDatabase { db in   // <-- we're here
+        //      serializedDatabase.reentrantSync { db in
+        //          serializedDatabase.reentrantSync { db in   // <-- we're here
         //          }
         //      }
         //
         // 3. A database in invoked from another database:
         //
-        //      dbQueue1.inDatabase { db1 in
-        //          dbQueue2.inDatabase { db2 in // <-- we're here
+        //      serializedDatabase1.reentrantSync { db1 in
+        //          serializedDatabase2.reentrantSync { db2 in // <-- we're here
         //          }
         //      }
         
         guard let watchdog = SchedulingWatchdog.current else {
             // Case 1
             return try queue.sync {
-                try block(db)
+                // Since we are reentrant, a transaction may already be opened.
+                // In this case, don't check for unsafe transaction at the end.
+                if db.isInsideTransaction {
+                    return try block(db)
+                } else {
+                    defer { preconditionNoUnsafeTransactionLeft(db) }
+                    return try block(db)
+                }
             }
         }
         
         // Case 2
         if watchdog.allows(db) {
-            return try block(db)
+            // Since we are reentrant, a transaction may already be opened.
+            // In this case, don't check for unsafe transaction at the end.
+            if db.isInsideTransaction {
+                return try block(db)
+            } else {
+                defer { preconditionNoUnsafeTransactionLeft(db) }
+                return try block(db)
+            }
         }
         
         // Case 3
         return try queue.sync {
-            try SchedulingWatchdog.current!.allowing(databases: watchdog.allowedDatabases) {
-                try block(db)
+            try SchedulingWatchdog.current!.inheritingAllowedDatabases(from: watchdog) {
+                // Since we are reentrant, a transaction may already be opened.
+                // In this case, don't check for unsafe transaction at the end.
+                if db.isInsideTransaction {
+                    return try block(db)
+                } else {
+                    defer { preconditionNoUnsafeTransactionLeft(db) }
+                    return try block(db)
+                }
             }
         }
     }
@@ -146,17 +189,27 @@ final class SerializedDatabase {
     func async(_ block: @escaping (Database) -> Void) {
         queue.async {
             block(self.db)
+            self.preconditionNoUnsafeTransactionLeft(self.db)
         }
     }
     
-    /// Returns an optional database connection. If not nil, the caller is
-    /// executing on the serialized dispatch queue.
-    var availableDatabaseConnection: Database? {
-        guard let watchdog = SchedulingWatchdog.current else { return nil }
-        guard watchdog.allows(db) else { return nil }
-        return db
+    /// Asynchronously executes a block in the serialized dispatch queue,
+    /// without retaining self.
+    func weakAsync(_ block: @escaping (Database?) -> Void) {
+        queue.async { [weak self] in
+            if let self = self {
+                block(self.db)
+                self.preconditionNoUnsafeTransactionLeft(self.db)
+            } else {
+                block(nil)
+            }
+        }
     }
-
+    
+    /// Returns true if any only if the current dispatch queue is valid.
+    var onValidQueue: Bool {
+        SchedulingWatchdog.current?.allows(db) ?? false
+    }
     
     /// Executes the block in the current queue.
     ///
@@ -166,8 +219,41 @@ final class SerializedDatabase {
         return try block(db)
     }
     
+    func interrupt() {
+        // Intentionally not scheduled in our serial queue
+        db.interrupt()
+    }
+    
+    func suspend() {
+        // Intentionally not scheduled in our serial queue
+        db.suspend()
+    }
+    
+    func resume() {
+        // Intentionally not scheduled in our serial queue
+        db.resume()
+    }
+    
     /// Fatal error if current dispatch queue is not valid.
-    func preconditionValidQueue(_ message: @autoclosure() -> String = "Database was not used on the correct thread.", file: StaticString = #file, line: UInt = #line) {
-        SchedulingWatchdog.preconditionValidQueue(db, message, file: file, line: line)
+    func preconditionValidQueue(
+        _ message: @autoclosure() -> String = "Database was not used on the correct thread.",
+        file: StaticString = #file,
+        line: UInt = #line)
+    {
+        SchedulingWatchdog.preconditionValidQueue(db, message(), file: file, line: line)
+    }
+    
+    /// Fatal error if a transaction has been left opened.
+    private func preconditionNoUnsafeTransactionLeft(
+        _ db: Database,
+        _ message: @autoclosure() -> String = "A transaction has been left opened at the end of a database access",
+        file: StaticString = #file,
+        line: UInt = #line)
+    {
+        GRDBPrecondition(
+            configuration.allowsUnsafeTransactions || !db.isInsideTransaction,
+            message(),
+            file: file,
+            line: line)
     }
 }

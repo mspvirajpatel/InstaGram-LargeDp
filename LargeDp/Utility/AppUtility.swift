@@ -280,12 +280,12 @@ class AppUtility: NSObject {
     }
     
     class func validateMobileNo(_ mobileNo : String) -> Bool    {
-        return mobileNo.characters.count == 10 ? true : false
+        return mobileNo.count == 10 ? true : false
     }
     
     func validateCharCount(_ name: String,minLimit : Int,maxLimit : Int) -> Bool    {
         // check the name is between 4 and 16 characters
-        if !(minLimit...maxLimit ~= name.characters.count) {
+        if !(minLimit...maxLimit ~= name.count) {
             return false
         }
         
@@ -382,7 +382,7 @@ class AppUtility: NSObject {
     
     class func validateMobileNo(mobileNo : String) -> Bool
     {
-        return mobileNo.characters.count == 10 ? true : false
+        return mobileNo.count == 10 ? true : false
         //        let phoneRegex = "[0-9]{10}$"
         //        let phoneTest =  NSPredicate(format: "SELF MATCHES %@", phoneRegex)
         //        return phoneTest.evaluateWithObject(phoneRegex)

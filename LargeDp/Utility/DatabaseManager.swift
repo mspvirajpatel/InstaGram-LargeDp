@@ -33,7 +33,7 @@ class DatabaseManager: NSObject
         
         print(databasePath)
         // Memoery management
-        dbQueue.setupMemoryManagement(in: application)
+//        dbQueue.setupMemoryManagement(in: application)
         
         migration = DatabaseMigrator()
         
@@ -75,13 +75,13 @@ class DatabaseManager: NSObject
         do{
             //let userID : String = AppUtility.getLoginUserID()
             try dbQueue.inDatabase({ (db) throws in
-                let rows = try Row.fetchCursor(db,"SELECT modelID from myCollection where modelID = '\(collectionId)' AND isFavorite = 1")
-                if try rows.next() != nil{
-                    completion(true)
-                }
-                else{
-                    completion(false)
-                }
+//                let rows = try Row.fetchCursor(db,"SELECT modelID from myCollection where modelID = '\(collectionId)' AND isFavorite = 1")
+//                if try rows.next() != nil{
+//                    completion(true)
+//                }
+//                else{
+//                    completion(false)
+//                }
             })
         }
         catch let error as NSError
@@ -98,7 +98,7 @@ class DatabaseManager: NSObject
             do{
                // let userID : String = AppUtility.getLoginUserID()
                 
-                try db.execute("DELETE FROM myCollection WHERE modelID = '\(collectionId)'")
+                try db.execute(sql: "DELETE FROM myCollection WHERE modelID = '\(collectionId)'")
                 completion(true)
                 //AppUtility.showWhisperAlert(message: "removeimage".localize(), duration: 3)
             }
@@ -135,31 +135,31 @@ class DatabaseManager: NSObject
       
         try dbQueue.inDatabase({ (db) throws in
           
-            let rows = try myCollection.fetchAll(db, "SELECT * FROM myCollection WHERE modelID = '\(modelId)'")
-            
-            if rows.count != 0
-            {
-                rows[0].modelType = type
-                rows[0].modelID = modelId
-                rows[0].data = data
-                
-                if rows[0].isFavorite == 0
-                {
-                    rows[0].isFavorite = isFavorite
-                    rows[0].timeStamp = timeStamp
-                }
-                else if rows[0].isFavorite == 1
-                {
-                   
-                }
-                
-                try rows[0].update(db)
-            }
-            else
-            {
-                try db.execute("INSERT INTO myCollection (modelType,data,modelID,timeStamp,loginUserID,isFavorite) VALUES(:modelType, :data,:modelID,:timeStamp,:loginUserID,:isFavorite)", arguments: ["modelType":type,"data" : data,"modelID":modelId,"timeStamp":timeStamp,"loginUserID" : loginUserID,"isFavorite":isFavorite])
-                
-            }
+//            let rows = try myCollection.fetchAll(db, "SELECT * FROM myCollection WHERE modelID = '\(modelId)'")
+//            
+//            if rows.count != 0
+//            {
+//                rows[0].modelType = type
+//                rows[0].modelID = modelId
+//                rows[0].data = data
+//                
+//                if rows[0].isFavorite == 0
+//                {
+//                    rows[0].isFavorite = isFavorite
+//                    rows[0].timeStamp = timeStamp
+//                }
+//                else if rows[0].isFavorite == 1
+//                {
+//                   
+//                }
+//                
+//                try rows[0].update(db)
+//            }
+//            else
+//            {
+//                try db.execute(sql: "INSERT INTO myCollection (modelType,data,modelID,timeStamp,loginUserID,isFavorite) VALUES(:modelType, :data,:modelID,:timeStamp,:loginUserID,:isFavorite)", arguments: ["modelType":type,"data" : data,"modelID":modelId,"timeStamp":timeStamp,"loginUserID" : loginUserID,"isFavorite":isFavorite])
+//                
+//            }
         })
     }
     
@@ -169,8 +169,8 @@ class DatabaseManager: NSObject
         
         try dbQueue.inDatabase({ (db) throws in
             do{
-                let arrModel = try myCollection.fetchAll(db, "SELECT * FROM myCollection  WHERE isFavorite = 1 ORDER BY timeStamp DESC")
-                completion(arrModel)
+//                let arrModel = try myCollection.fetchAll(db, "SELECT * FROM myCollection  WHERE isFavorite = 1 ORDER BY timeStamp DESC")
+//                completion(arrModel)
                
             }
             catch let error as NSError{
@@ -185,41 +185,41 @@ class DatabaseManager: NSObject
             do{
                 let loginUserID : String = AppUtility.getLoginUserID()
                 
-                let rows = try Row.fetchCursor(db, "SELECT modelType,data,isFavorite from myCollection WHERE loginUserID = \(loginUserID) ORDER BY timestamp ASC")
-                
-                var arrModel : [AnyObject] = []
-                while let row = try rows.next(){
-                    
-                    if let data : String = row.value(named: "data") as? String
-                    {
-                        if let dicData : NSDictionary = data.dictionary()
-                        {
-                            var type : Int = -1
-                            if let modelType = row.value(named: "modelType") as? Int
-                            {
-                                type = modelType
-                            }
-                            else if let modelType = row.value(named: "modelType") as? Int64{
-                                type = Int(modelType)
-                            }
-                            else if let modelType = row.value(named: "modelType") as? String{
-                                type = Int(modelType)!
-                            }
-                            
-                            switch type
-                            {
-                            case ImageEditorViewType.follow.rawValue:
-                                
-                                arrModel.append(FollowersEdge(fromDictionary: dicData as! [String : AnyObject]))
-                                break
-                                                            
-                            default:
-                                break
-                            }
-                        }
-                    }
-                }
-                completion(arrModel)
+//                let rows = try Row.fetchCursor(db, "SELECT modelType,data,isFavorite from myCollection WHERE loginUserID = \(loginUserID) ORDER BY timestamp ASC")
+//                
+//                var arrModel : [AnyObject] = []
+//                while let row = try rows.next(){
+//                    
+//                    if let data : String = row.value(named: "data") as? String
+//                    {
+//                        if let dicData : NSDictionary = data.dictionary()
+//                        {
+//                            var type : Int = -1
+//                            if let modelType = row.value(named: "modelType") as? Int
+//                            {
+//                                type = modelType
+//                            }
+//                            else if let modelType = row.value(named: "modelType") as? Int64{
+//                                type = Int(modelType)
+//                            }
+//                            else if let modelType = row.value(named: "modelType") as? String{
+//                                type = Int(modelType)!
+//                            }
+//                            
+//                            switch type
+//                            {
+//                            case ImageEditorViewType.follow.rawValue:
+//                                
+//                                arrModel.append(FollowersEdge(fromDictionary: dicData as! [String : AnyObject]))
+//                                break
+//                                                            
+//                            default:
+//                                break
+//                            }
+//                        }
+//                    }
+//                }
+//                completion(arrModel)
             }
             catch let error as NSError{
                 print(error.localizedDescription)

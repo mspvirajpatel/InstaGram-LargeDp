@@ -77,7 +77,7 @@ class BaseAPICall: NSObject
                 print("Request URL :- \(requestURL)")
                 print("---------------------")
                 
-                Alamofire.request(requestURL, method:.post, parameters: param as? Parameters, encoding: URLEncoding(destination: .httpBody), headers: header).responseJSON(completionHandler: { (response) in
+                AF.request(requestURL, method:.post, parameters: param as? Parameters, encoding: URLEncoding(destination: .httpBody), headers: header).responseJSON(completionHandler: { (response) in
                     if let
                         headerFields = response.response?.allHeaderFields as? [String: String],
                         let URL = response.request?.url
@@ -178,12 +178,12 @@ class BaseAPICall: NSObject
 //                print("\(type.rawValue) request :- \(param .JSONString())")
 //                print("Request URL :- \(requestURL!)")
 //                print("---------------------")
-                let headers = [
+                let headers: HTTPHeaders = [
                     "Authorization": "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==",
                     "Accept": "application/json"
                 ]
                 
-                Alamofire.request(requestURL, method:.get, parameters: param as? Parameters, encoding: URLEncoding(destination: .httpBody), headers: headers).responseJSON(completionHandler: { (response) in
+                AF.request(requestURL, method:.get, parameters: param as? Parameters, encoding: URLEncoding(destination: .httpBody), headers: headers).responseJSON(completionHandler: { (response) in
                     if let
                         headerFields = response.response?.allHeaderFields as? [String: String],
                         let URL = response.request?.url
@@ -277,7 +277,7 @@ class BaseAPICall: NSObject
                 self.methodStart = Date()
                 print("Request Time : \(self.methodStart.timeIntervalSince(self.methodStart))")
                 
-                Alamofire.request(requestURL, method:.get, parameters: param as? Parameters, encoding: URLEncoding(destination: .httpBody), headers: header).responseJSON(completionHandler: { (response) in
+                AF.request(requestURL, method:.get, parameters: param as? Parameters, encoding: URLEncoding(destination: .httpBody), headers: header).responseJSON(completionHandler: { (response) in
                     
                     if let
                         headerFields = response.response?.allHeaderFields as? [String: String],
@@ -369,7 +369,7 @@ class BaseAPICall: NSObject
                 self.methodStart = Date()
                 print("Request Time : \(self.methodStart.timeIntervalSince(self.methodStart))")
                 
-                Alamofire.request(requestURL, method:.post, parameters: param as? Parameters, encoding: URLEncoding(destination: .httpBody), headers: header).responseJSON(completionHandler: { (response) in
+                AF.request(requestURL, method:.post, parameters: param as? Parameters, encoding: URLEncoding(destination: .httpBody), headers: header).responseJSON(completionHandler: { (response) in
                   
                     switch response.result
                     {
@@ -429,61 +429,61 @@ class BaseAPICall: NSObject
                 self.methodStart = Date()
                 print("Request Time : \(self.methodStart.timeIntervalSince(self.methodStart))")
                 
-                Alamofire.upload(multipartFormData: { (data) in
-                    
-                    for (key, value) in param {
-                        data.append((value as! String).data(using: .utf8)!, withName: key as! String)
-                    }
-                    
-                    for imageInfo in arrImage
-                    {
-                        var dicInfo : NSDictionary! = imageInfo as! NSDictionary
-                        data.append(dicInfo["data"] as! Data, withName: dicInfo["name"] as! String, fileName: dicInfo["fileName"] as! String, mimeType: dicInfo["type"] as! String)
-                        dicInfo = nil
-                    }
-                    
-                }, to: requestURL, method: .post , headers:header, encodingCompletion: { (encodeResult) in
-                    switch encodeResult {
-                    case .success(let upload, _, _):
-                        
-                        upload.responseJSON(completionHandler: { (response) in
-                            
-                            switch response.result
-                            {
-                            case .success(let responseJSON):
-                                guard let dicResponse = responseJSON as? NSDictionary else{
-                                    return
-                                }
-                                let methodFinish = Date()
-                                let executionTime: TimeInterval = methodFinish.timeIntervalSince(self.methodStart)
-                                print("JSON Complete Time : \(executionTime)")
-                               //print("Response : \((dicResponse) .JSONString())")
-                                
-                                var handledResopnse : (BaseError? , AnyObject?)! = self.handleResponse(response: dicResponse, task: type)
-                                
-                                if handledResopnse.1 != nil{
-                                    completionHandler(Result.Success(response: handledResopnse.1, error: handledResopnse.0))
-                                }
-                                else{
-                                    completionHandler(Result.Error(error: handledResopnse.0))
-                                }
-                                
-                                defer{
-                                    handledResopnse = nil
-                                }
-                                
-                            case .failure(let error):
-                                
-                                print(error)
-                                completionHandler(Result.Error(error: self.handleFailure(error: error)))
-                                break
-                            }
-                        })
-                    case .failure(let error):
-                        completionHandler(Result.Error(error: self.handleFailure(error: error)))
-                        break
-                    }
-                })
+//                AF.upload(multipartFormData: { (data) in
+//                    
+//                    for (key, value) in param {
+//                        data.append((value as! String).data(using: .utf8)!, withName: key as! String)
+//                    }
+//                    
+//                    for imageInfo in arrImage
+//                    {
+//                        var dicInfo : NSDictionary! = imageInfo as! NSDictionary
+//                        data.append(dicInfo["data"] as! Data, withName: dicInfo["name"] as! String, fileName: dicInfo["fileName"] as! String, mimeType: dicInfo["type"] as! String)
+//                        dicInfo = nil
+//                    }
+//                    
+//                }, to: requestURL, method: .post , headers:header, encodingCompletion: { (encodeResult) in
+//                    switch encodeResult {
+//                    case .success(let upload, _, _):
+//                        
+//                        upload.responseJSON(completionHandler: { (response) in
+//                            
+//                            switch response.result
+//                            {
+//                            case .success(let responseJSON):
+//                                guard let dicResponse = responseJSON as? NSDictionary else{
+//                                    return
+//                                }
+//                                let methodFinish = Date()
+//                                let executionTime: TimeInterval = methodFinish.timeIntervalSince(self.methodStart)
+//                                print("JSON Complete Time : \(executionTime)")
+//                               //print("Response : \((dicResponse) .JSONString())")
+//                                
+//                                var handledResopnse : (BaseError? , AnyObject?)! = self.handleResponse(response: dicResponse, task: type)
+//                                
+//                                if handledResopnse.1 != nil{
+//                                    completionHandler(Result.Success(response: handledResopnse.1, error: handledResopnse.0))
+//                                }
+//                                else{
+//                                    completionHandler(Result.Error(error: handledResopnse.0))
+//                                }
+//                                
+//                                defer{
+//                                    handledResopnse = nil
+//                                }
+//                                
+//                            case .failure(let error):
+//                                
+//                                print(error)
+//                                completionHandler(Result.Error(error: self.handleFailure(error: error)))
+//                                break
+//                            }
+//                        })
+//                    case .failure(let error):
+//                        completionHandler(Result.Error(error: self.handleFailure(error: error)))
+//                        break
+//                    }
+//                })
             }
             else{
                 completionHandler(Result.Internet(isOn: false))

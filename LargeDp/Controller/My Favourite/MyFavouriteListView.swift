@@ -66,7 +66,7 @@ class MyFavouriteListView: BaseView {
        
         refreshControlSent = UIRefreshControl()
         refreshControlSent.attributedTitle = NSAttributedString(string: "pullToRefresh".localize())
-        refreshControlSent.addTarget(self, action: #selector(refreshList), for: UIControlEvents.valueChanged)
+        refreshControlSent.addTarget(self, action: #selector(refreshList), for: UIControl.Event.valueChanged)
         
         tableView = UITableView(frame: .zero)
         tableView.backgroundColor = .clear
@@ -117,16 +117,16 @@ class MyFavouriteListView: BaseView {
         
         self.baseLayout.metrics = [:]
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options: NSLayoutFormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableView]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_V)
         
         self.layoutIfNeeded()
         self.layoutSubviews()
         
-        defer {
+        do {
             baseLayout.releaseObject()
         }
         
@@ -136,7 +136,7 @@ class MyFavouriteListView: BaseView {
     
     
     // MARK: - User Interaction -
-    func refreshList()
+    @objc func refreshList()
     {
         self.refreshControlSent.endRefreshing()
     }
@@ -161,7 +161,7 @@ extension MyFavouriteListView : UITableViewDataSource {
             let image1String = NSAttributedString(attachment: image1Attachment)
             fullString.append(image1String)
             self.displayErrorAttributeMessageLabel(fullString)
-            self.bringSubview(toFront: (self.errorMessageLabel)!)
+            self.bringSubviewToFront((self.errorMessageLabel)!)
             self.errorMessageLabel.isHidden = false
             self.errorMessageLabel.alpha = 1
             
@@ -197,7 +197,7 @@ extension MyFavouriteListView : UITableViewDataSource {
                 var cell : PeopleTableViewCell!
                 cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.people) as? PeopleTableViewCell
                 if cell == nil {
-                    cell = PeopleTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: CellIdentifire.people)
+                    cell = PeopleTableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: CellIdentifire.people)
                 }
                 
                 cell.selectionStyle = .none
@@ -379,7 +379,7 @@ extension MyFavouriteListView : UITableViewDelegate {
             return isAdLoaded == true ? adViewHeight : 0
         }
         
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {

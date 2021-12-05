@@ -142,7 +142,7 @@ class InstagramLoginView: BaseView,UIWebViewDelegate {
     
     // MARK: - UIWebView Delegate -
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         let storage : HTTPCookieStorage = HTTPCookieStorage.shared
         
         if storage.cookies != nil
@@ -189,9 +189,9 @@ class InstagramLoginView: BaseView,UIWebViewDelegate {
                 var end = 0
                 let string = sessionid.removingPercentEncoding!
                 let needle: Character = "{"
-                if let idx = string.characters.index(of: needle)
+                if let idx = string.index(of: needle)
                 {
-                    pos =  string.characters.distance(from: string.startIndex, to: idx)
+                    pos =  string.distance(from: string.startIndex, to: idx)
                 }
                 else
                 {
@@ -199,9 +199,9 @@ class InstagramLoginView: BaseView,UIWebViewDelegate {
                 }
                 
                 let needle1: Character = "}"
-                if let idx = string.characters.index(of: needle1)
+                if let idx = string.index(of: needle1)
                 {
-                    end =  string.characters.distance(from: string.startIndex, to: idx)
+                    end =  string.distance(from: string.startIndex, to: idx)
                     print("Found \(needle1) at position \(end)")
                 }
                 else
@@ -209,7 +209,7 @@ class InstagramLoginView: BaseView,UIWebViewDelegate {
                     print("Not found")
                 }
                 
-                let new: String = string.substring(pos, length: string.characters.count-pos)
+                let new: String = string.substring(pos, length: string.count-pos)
                 
                 UserDefaults.standard.synchronize()
                 
@@ -231,9 +231,9 @@ class InstagramLoginView: BaseView,UIWebViewDelegate {
                 
                 let string = urlString.removingPercentEncoding!
                 let needle: Character = "?"
-                if let idx = string.characters.index(of: needle)
+                if let idx = string.index(of: needle)
                 {
-                    pos =  string.characters.distance(from: string.startIndex, to: idx)
+                    pos =  string.distance(from: string.startIndex, to: idx)
                 }
                 else
                 {

@@ -80,7 +80,7 @@ class BaseBarButtonItem: UIBarButtonItem {
         
         baseButton.backgroundColor = UIColor.clear
         baseButton.titleLabel?.textColor = Color.activeBarButtonText.value
-        baseButton.titleEdgeInsets = UIEdgeInsetsMake(3, 0, 0, 0)
+        baseButton.titleEdgeInsets = UIEdgeInsets(top: 3, left: 0, bottom: 0, right: 0)
         
         var iconFontSize : CGFloat!
         iconFontSize = 23.0
@@ -103,18 +103,18 @@ class BaseBarButtonItem: UIBarButtonItem {
             
         case .select:
             
-            baseButton .setFAIcon(icon: FAType.FAICursor, iconSize: iconFontSize, forState: UIControlState.normal)
+            baseButton .setFAIcon(icon: FAType.FAICursor, iconSize: iconFontSize, forState: UIControl.State.normal)
             break
             
         case .copy:
             
-            baseButton.setFAIcon(icon: FAType.FACopy, iconSize: iconFontSize - 3, forState: UIControlState.normal)
+            baseButton.setFAIcon(icon: FAType.FACopy, iconSize: iconFontSize - 3, forState: UIControl.State.normal)
             break
             
         case .paste:
             
             icon = FAType.FAPaste
-            baseButton.setFAIcon(icon: FAType.FAPaste, iconSize: iconFontSize - 3, forState: UIControlState.normal)
+            baseButton.setFAIcon(icon: FAType.FAPaste, iconSize: iconFontSize - 3, forState: UIControl.State.normal)
             
             break
             
@@ -122,8 +122,8 @@ class BaseBarButtonItem: UIBarButtonItem {
             
             baseButton.titleLabel?.font = UIFont(name: FontStyle.bold, size: 14.0)!
             baseButton.backgroundColor = Color.activeBarButtonText.value
-            baseButton.setTitleColor(Color.buttonPrimaryTitle.value, for: UIControlState())
-            baseButton.setTitle("done".localize(), for: UIControlState())
+            baseButton.setTitleColor(Color.buttonPrimaryTitle.value, for: UIControl.State())
+            baseButton.setTitle("done".localize(), for: UIControl.State())
             baseButton.setBorder(Color.barButtonBorder.value, width: ControlLayout.txtBorderWidth, radius: 8.0)
             
             break
