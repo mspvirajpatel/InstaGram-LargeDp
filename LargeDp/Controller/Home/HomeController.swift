@@ -45,7 +45,7 @@ class HomeController: BaseViewController {
             self?.navigationController?.pushViewController(searchViewController, animated: true)
         }
         AppUtility.executeTaskInMainThreadAfterDelay(0.5, completion: {
-            self.homeView.viewAdd.requestBannerAd(rootController: self)
+//            self.homeView.viewAdd.requestBannerAd(rootController: self)
         })
         
         // Do any additional setup after loading the view.

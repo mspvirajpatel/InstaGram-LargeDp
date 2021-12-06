@@ -6,9 +6,9 @@ target ‘LargeDp' do
  
  use_frameworks!
 
-    pod 'Crashlytics'
-    pod 'Fabric'
-    pod 'Firebase/AdMob'
+#    pod 'Crashlytics'
+#    pod 'Fabric'
+#    pod 'Firebase/AdMob'
     pod 'Firebase/Core'
 
     pod 'IQKeyboardManagerSwift'

@@ -121,7 +121,7 @@ class MyFavouriteViewController: BaseViewController {
                             {
                                 if !isPremium
                                 {
-                                   self!.myFavouriteListView.addNativeExpressAds()
+//                                   self!.myFavouriteListView.addNativeExpressAds()
                                 }
                             }
                             

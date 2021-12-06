@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftEventBus
-import GoogleMobileAds
+//import GoogleMobileAds
 
 class SearchView: BaseView {
     

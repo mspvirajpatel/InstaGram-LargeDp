@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import GoogleMobileAds
+//import GoogleMobileAds
 import SwiftEventBus
 import Firebase
-import Fabric
-import Crashlytics
+//import Fabric
+//import Crashlytics
 import IQKeyboardManagerSwift
 import SideMenu
 
@@ -29,9 +29,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        GADMobileAds.configure(withApplicationID: ThiredPartyKey.adMob)
         LocationManager.shared.authorize()
-        Crashlytics().debugMode = true
-        Fabric.with([Crashlytics.self,Answers.self])
-        
+//        Crashlytics().debugMode = true
+//        Fabric.with([Crashlytics.self,Answers.self])
+//
         #if DEBUG
             let isPremium = AppUtility.getUserDefaultsObjectForKey(UserDefaultKey.isPremiumUser)
             if isPremium == nil

@@ -9,12 +9,12 @@
 import UIKit
 import Alamofire
 import SwiftEventBus
-import GoogleMobileAds
+//import GoogleMobileAds
 
 class FeedbackView: BaseView {
     
     // MARK: - Attributes -
-    var viewAdd : BaseAddBannerView!
+//    var viewAdd : BaseAddBannerView!
     var txtname : BaseTextField!
     var txtemail: BaseTextField!
     var txtdesc : BaseTextView!
@@ -47,10 +47,10 @@ class FeedbackView: BaseView {
         
         NotificationCenter.default.removeObserver(self)
         SwiftEventBus.unregister(self)
-        if viewAdd != nil && viewAdd.superview != nil {
-            viewAdd.removeFromSuperview()
-            //viewAdd = nil
-        }
+//        if viewAdd != nil && viewAdd.superview != nil {
+//            viewAdd.removeFromSuperview()
+//            //viewAdd = nil
+//        }
         if txtname != nil && txtname.superview != nil{
             txtname.removeFromSuperview()
             txtname = nil
@@ -93,9 +93,9 @@ class FeedbackView: BaseView {
         btnsubmit.setTitle(NSLocalizedString("fbsubmit", comment: ""), for: .normal)
         btnsubmit.addTarget(self, action: #selector(onSubmitClick), for: .touchUpInside)
        
-        viewAdd = BaseAddBannerView(adSize: kGADAdSizeBanner, bannerKey: InAddvertise.KAddBannerKey)
-        self.addSubview(viewAdd)
-        self.bringSubviewToFront(viewAdd)
+//        viewAdd = BaseAddBannerView(adSize: kGADAdSizeBanner, bannerKey: InAddvertise.KAddBannerKey)
+//        self.addSubview(viewAdd)
+//        self.bringSubviewToFront(viewAdd)
 
     }
     
@@ -146,15 +146,15 @@ class FeedbackView: BaseView {
         self.addConstraints([ baseLayout.position_Top, baseLayout.size_Width,baseLayout.position_Right])
         
         
-        self.baseLayout.viewDictionary = ["viewAdd" : viewAdd]
-        
-        self.baseLayout.metrics = [:]
-        
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewAdd]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
-        self.addConstraints(baseLayout.control_H)
-        
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[viewAdd]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
-        self.addConstraints(baseLayout.control_V)
+//        self.baseLayout.viewDictionary = ["viewAdd" : viewAdd]
+//
+//        self.baseLayout.metrics = [:]
+//
+//        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewAdd]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+//        self.addConstraints(baseLayout.control_H)
+//
+//        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:[viewAdd]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+//        self.addConstraints(baseLayout.control_V)
         
     }
     

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import GoogleMobileAds
+//import GoogleMobileAds
 import FirebaseAnalytics
 import SwiftEventBus
 
@@ -46,21 +46,21 @@ class BaseAddBannerView: GADBannerView {
     
     func requestBannerAd(rootController : UIViewController) {
         
-        if let isPremium : Bool = AppUtility.getUserDefaultsObjectForKey(UserDefaultKey.isPremiumUser) as? Bool {
-            if !isPremium {
-                self.rootViewController = rootController
-                let request : GADRequest = GADRequest()
-                //request.testDevices = [kGADSimulatorID]
-                self.load(request)
-            }
-        }
-        else
-        {
-            self.rootViewController = rootController
-            let request : GADRequest = GADRequest()
-            //request.testDevices = [kGADSimulatorID]
-            self.load(request)
-        }
+//        if let isPremium : Bool = AppUtility.getUserDefaultsObjectForKey(UserDefaultKey.isPremiumUser) as? Bool {
+//            if !isPremium {
+//                self.rootViewController = rootController
+//                let request : GADRequest = GADRequest()
+//                //request.testDevices = [kGADSimulatorID]
+//                self.load(request)
+//            }
+//        }
+//        else
+//        {
+//            self.rootViewController = rootController
+//            let request : GADRequest = GADRequest()
+//            //request.testDevices = [kGADSimulatorID]
+//            self.load(request)
+//        }
     }
     
     func userBecomePremium(){
@@ -87,20 +87,20 @@ class BaseAddBannerView: GADBannerView {
     
 }
 
-extension BaseAddBannerView : GADBannerViewDelegate {
-    func adViewWillPresentScreen(_ bannerView: GADBannerView) {
-        Analytics.logEvent("_click_home_add", parameters: [
-            "" :"" as NSObject
-            ])
-    }
-    
-    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
-        self.constrainBannerHeight.constant = bannerHeight
-        UIView.animate(withDuration: 0.5) { [weak self] in
-            if self == nil{
-                return
-            }
-            self?.layoutIfNeeded()
-        }
-    }
-}
+//extension BaseAddBannerView : GADBannerViewDelegate {
+//    func adViewWillPresentScreen(_ bannerView: GADBannerView) {
+//        Analytics.logEvent("_click_home_add", parameters: [
+//            "" :"" as NSObject
+//            ])
+//    }
+//    
+//    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+//        self.constrainBannerHeight.constant = bannerHeight
+//        UIView.animate(withDuration: 0.5) { [weak self] in
+//            if self == nil{
+//                return
+//            }
+//            self?.layoutIfNeeded()
+//        }
+//    }
+//}

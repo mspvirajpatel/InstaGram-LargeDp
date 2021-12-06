@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftEventBus
-import GoogleMobileAds
+//import GoogleMobileAds
 import GRDB
 
 class MyFollowersView: BaseView {
@@ -20,10 +20,10 @@ class MyFollowersView: BaseView {
     var btnTouchUpInside : ControlTouchUpInsideEvent!
     private var searchText : String = ""
     
-    var loadStateForAds : [GADNativeExpressAdView: Bool]! = [:]
-    var adsToLoad : [GADNativeExpressAdView]! = []
+//    var loadStateForAds : [GADNativeExpressAdView: Bool]! = [:]
+//    var adsToLoad : [GADNativeExpressAdView]! = []
     var adViewHeight : CGFloat = SystemConstants.IS_IPAD ? 110 : 90
-    var adView = GADNativeExpressAdView()
+//    var adView = GADNativeExpressAdView()
     var adInterval = UIDevice.current.userInterfaceIdiom == .pad ? 6 : 4
     
     var typeofFollowers : FolloweType! = FolloweType.followers
@@ -134,8 +134,8 @@ class MyFollowersView: BaseView {
         myFollowersModel = nil
         userprofile = nil
         btnTouchUpInside = nil
-        adsToLoad = nil
-        loadStateForAds = nil
+//        adsToLoad = nil
+//        loadStateForAds = nil
     }
     
     func loadAddViewControls() {
@@ -390,23 +390,23 @@ class MyFollowersView: BaseView {
     
     func addBigNativeExpressAds() {
         
-        let adSize = GADAdSizeFromCGSize(
-            CGSize(width: tableView.contentSize.width, height: adBigViewHeight))
-        self.adView = GADNativeExpressAdView(adSize: adSize)!
-        
-        adView.adUnitID = InAddvertise.kBigNativeadd
-        if let controller : UIViewController = self.getViewControllerFromSubView(){
-            adView.rootViewController = controller
-            adView.load(GADRequest())
-        }
-
-        anyobject.insert(adView, at: 0)
-        
-        adsToLoad.append(adView)
-        
-        self.loadStateForAds[adView] = true
-      
-        self.tableView.reloadData()
+//        let adSize = GADAdSizeFromCGSize(
+//            CGSize(width: tableView.contentSize.width, height: adBigViewHeight))
+//        self.adView = GADNativeExpressAdView(adSize: adSize)!
+//        
+//        adView.adUnitID = InAddvertise.kBigNativeadd
+//        if let controller : UIViewController = self.getViewControllerFromSubView(){
+//            adView.rootViewController = controller
+//            adView.load(GADRequest())
+//        }
+//
+//        anyobject.insert(adView, at: 0)
+//        
+//        adsToLoad.append(adView)
+//        
+//        self.loadStateForAds[adView] = true
+//      
+//        self.tableView.reloadData()
         
         
 //        let adSize = GADAdSizeFromCGSize(
@@ -432,39 +432,39 @@ class MyFollowersView: BaseView {
     
     func addNativeExpressAds() {
       
-        var index = adInterval
-
-        while index < anyobject.count {
-            let adSize = GADAdSizeFromCGSize(
-                CGSize(width: tableView.contentSize.width - 10, height: adViewHeight))
-            self.adView = GADNativeExpressAdView(adSize: adSize)!
-       
-            adView.adUnitID = InAddvertise.kNativeadd
-            if let controller : UIViewController = self.getViewControllerFromSubView(){
-                adView.rootViewController = controller
-                adView.load(GADRequest())
-            }
-            
-            anyobject.insert(adView, at: index)
-           
-            switch typeofFollowers.rawValue
-            {
-            case 0:
-                myFollowersModel.data.user.edgeFollowedBy.edges.insert(FollowersEdge.init(fromDictionary: [:]), at: index)
-                break
-            case 1:
-                myFollowersModel.data.user.edgeFollow.edges.insert(FollowersEdge.init(fromDictionary: [:]), at: index)
-                break
-            default:
-                break
-            }
-            
-            
-            index += adInterval
-            adsToLoad.append(adView)
-        
-            self.loadStateForAds[adView] = true
-        }
+//        var index = adInterval
+//
+//        while index < anyobject.count {
+//            let adSize = GADAdSizeFromCGSize(
+//                CGSize(width: tableView.contentSize.width - 10, height: adViewHeight))
+//            self.adView = GADNativeExpressAdView(adSize: adSize)!
+//
+//            adView.adUnitID = InAddvertise.kNativeadd
+//            if let controller : UIViewController = self.getViewControllerFromSubView(){
+//                adView.rootViewController = controller
+//                adView.load(GADRequest())
+//            }
+//
+//            anyobject.insert(adView, at: index)
+//
+//            switch typeofFollowers.rawValue
+//            {
+//            case 0:
+//                myFollowersModel.data.user.edgeFollowedBy.edges.insert(FollowersEdge.init(fromDictionary: [:]), at: index)
+//                break
+//            case 1:
+//                myFollowersModel.data.user.edgeFollow.edges.insert(FollowersEdge.init(fromDictionary: [:]), at: index)
+//                break
+//            default:
+//                break
+//            }
+//
+//
+//            index += adInterval
+//            adsToLoad.append(adView)
+//
+//            self.loadStateForAds[adView] = true
+//        }
      
     }
     
@@ -473,39 +473,39 @@ class MyFollowersView: BaseView {
         var temparrays :  [AnyObject] = temparray
         var index = adInterval
 
-        while index < temparrays.count {
-            let adSize = GADAdSizeFromCGSize(
-                CGSize(width: tableView.contentSize.width, height: adViewHeight))
-            self.adView = GADNativeExpressAdView(adSize: adSize)!
-       
-            adView.adUnitID = InAddvertise.kNativeadd
-            
-            temparrays.insert(adView, at: index)
-            
-            switch typeofFollowers.rawValue
-            {
-            case 0:
-                myFollowersModel.data.user.edgeFollowedBy.edges.insert(FollowersEdge.init(fromDictionary: [:]), at: index)
-                break
-            case 1:
-                myFollowersModel.data.user.edgeFollow.edges.insert(FollowersEdge.init(fromDictionary: [:]), at: index)
-                break
-            default:
-                break
-            }
-            
-            adsToLoad.append(adView)
-            
-            if let controller : UIViewController = self.getViewControllerFromSubView(){
-                adView.rootViewController = controller
-                adView.load(GADRequest())
-            }
-            index += adInterval
-            
-            self.loadStateForAds[adView] = true
-        }
-        
-        self.anyobject.addObjects(from: temparrays)
+//        while index < temparrays.count {
+//            let adSize = GADAdSizeFromCGSize(
+//                CGSize(width: tableView.contentSize.width, height: adViewHeight))
+//            self.adView = GADNativeExpressAdView(adSize: adSize)!
+//
+//            adView.adUnitID = InAddvertise.kNativeadd
+//
+//            temparrays.insert(adView, at: index)
+//
+//            switch typeofFollowers.rawValue
+//            {
+//            case 0:
+//                myFollowersModel.data.user.edgeFollowedBy.edges.insert(FollowersEdge.init(fromDictionary: [:]), at: index)
+//                break
+//            case 1:
+//                myFollowersModel.data.user.edgeFollow.edges.insert(FollowersEdge.init(fromDictionary: [:]), at: index)
+//                break
+//            default:
+//                break
+//            }
+//
+//            adsToLoad.append(adView)
+//
+//            if let controller : UIViewController = self.getViewControllerFromSubView(){
+//                adView.rootViewController = controller
+//                adView.load(GADRequest())
+//            }
+//            index += adInterval
+//
+//            self.loadStateForAds[adView] = true
+//        }
+//
+//        self.anyobject.addObjects(from: temparrays)
         
     }
     
@@ -1013,28 +1013,28 @@ extension MyFollowersView : UITableViewDataSource {
             {
             case 0:
                 
-                if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
-                {
-                    let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
-                    for subview in reusableAdCell.contentView.subviews {
-                        subview.removeFromSuperview()
-                    }
-                    reusableAdCell.contentView.addSubview(nativeExpressAdView)
-                    nativeExpressAdView.center = reusableAdCell.contentView.center
-                    
-                    reusableAdCell.selectionStyle = .none
-                    reusableAdCell.backgroundColor = .white
-                    reusableAdCell.layer.masksToBounds = false
-                    reusableAdCell.layer.cornerRadius = 2.0
-                    reusableAdCell.layer.shadowColor = UIColor.black.cgColor
-                    reusableAdCell.layer.shadowOffset = CGSize.init(width: 0, height: 1)
-                    reusableAdCell.layer.shadowRadius = 1.5
-                    reusableAdCell.layer.shadowOpacity = 0.75
-                    return reusableAdCell
-                }
-                else
-                {
-                    
+//                if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
+//                {
+//                    let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
+//                    for subview in reusableAdCell.contentView.subviews {
+//                        subview.removeFromSuperview()
+//                    }
+//                    reusableAdCell.contentView.addSubview(nativeExpressAdView)
+//                    nativeExpressAdView.center = reusableAdCell.contentView.center
+//
+//                    reusableAdCell.selectionStyle = .none
+//                    reusableAdCell.backgroundColor = .white
+//                    reusableAdCell.layer.masksToBounds = false
+//                    reusableAdCell.layer.cornerRadius = 2.0
+//                    reusableAdCell.layer.shadowColor = UIColor.black.cgColor
+//                    reusableAdCell.layer.shadowOffset = CGSize.init(width: 0, height: 1)
+//                    reusableAdCell.layer.shadowRadius = 1.5
+//                    reusableAdCell.layer.shadowOpacity = 0.75
+//                    return reusableAdCell
+//                }
+//                else
+//                {
+//
                     var cell : PeopleTableViewCell!
                     cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.people) as? PeopleTableViewCell
                     if cell == nil {
@@ -1107,31 +1107,31 @@ extension MyFollowersView : UITableViewDataSource {
                         }
                     }
                     return cell
-                }
+//                }
         
             case 1:
                 
-                if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
-                {
-                    let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
-                    for subview in reusableAdCell.contentView.subviews {
-                        subview.removeFromSuperview()
-                    }
-                    reusableAdCell.contentView.addSubview(nativeExpressAdView)
-                    nativeExpressAdView.center = reusableAdCell.contentView.center
-                    reusableAdCell.selectionStyle = .none
-                    reusableAdCell.backgroundColor = .white
-                    reusableAdCell.layer.masksToBounds = false
-                    reusableAdCell.layer.cornerRadius = 2.0
-                    reusableAdCell.layer.shadowColor = UIColor.black.cgColor
-                    reusableAdCell.layer.shadowOffset = CGSize.init(width: 0, height: 1)
-                    reusableAdCell.layer.shadowRadius = 1.5
-                    reusableAdCell.layer.shadowOpacity = 0.75
-                    
-                    return reusableAdCell
-                }
-                else
-                {
+//                if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
+//                {
+//                    let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
+//                    for subview in reusableAdCell.contentView.subviews {
+//                        subview.removeFromSuperview()
+//                    }
+//                    reusableAdCell.contentView.addSubview(nativeExpressAdView)
+//                    nativeExpressAdView.center = reusableAdCell.contentView.center
+//                    reusableAdCell.selectionStyle = .none
+//                    reusableAdCell.backgroundColor = .white
+//                    reusableAdCell.layer.masksToBounds = false
+//                    reusableAdCell.layer.cornerRadius = 2.0
+//                    reusableAdCell.layer.shadowColor = UIColor.black.cgColor
+//                    reusableAdCell.layer.shadowOffset = CGSize.init(width: 0, height: 1)
+//                    reusableAdCell.layer.shadowRadius = 1.5
+//                    reusableAdCell.layer.shadowOpacity = 0.75
+//
+//                    return reusableAdCell
+//                }
+//                else
+//                {
                     
                     var cell : PeopleTableViewCell!
                     cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.people) as? PeopleTableViewCell
@@ -1205,57 +1205,57 @@ extension MyFollowersView : UITableViewDataSource {
                     }
                     
                     return cell
-                }
+//                }
         
                 
             default:
-                if isSmall == false
-                {
-                    if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
-                    {
-                        let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
-                        for subview in reusableAdCell.contentView.subviews {
-                            subview.removeFromSuperview()
-                        }
-                        reusableAdCell.contentView.addSubview(nativeExpressAdView)
-                        nativeExpressAdView.center = reusableAdCell.contentView.center
-                        reusableAdCell.selectionStyle = .none
-                        reusableAdCell.backgroundColor = .white
-                        reusableAdCell.layer.masksToBounds = false
-                        reusableAdCell.layer.cornerRadius = 2.0
-                        reusableAdCell.layer.shadowColor = UIColor.black.cgColor
-                        reusableAdCell.layer.shadowOffset = CGSize.init(width: 0, height: 1)
-                        reusableAdCell.layer.shadowRadius = 1.5
-                        reusableAdCell.layer.shadowOpacity = 0.75
-                        
-                        return reusableAdCell
-                    }
-                }
-                
+//                if isSmall == false
+//                {
+//                    if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
+//                    {
+//                        let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
+//                        for subview in reusableAdCell.contentView.subviews {
+//                            subview.removeFromSuperview()
+//                        }
+//                        reusableAdCell.contentView.addSubview(nativeExpressAdView)
+//                        nativeExpressAdView.center = reusableAdCell.contentView.center
+//                        reusableAdCell.selectionStyle = .none
+//                        reusableAdCell.backgroundColor = .white
+//                        reusableAdCell.layer.masksToBounds = false
+//                        reusableAdCell.layer.cornerRadius = 2.0
+//                        reusableAdCell.layer.shadowColor = UIColor.black.cgColor
+//                        reusableAdCell.layer.shadowOffset = CGSize.init(width: 0, height: 1)
+//                        reusableAdCell.layer.shadowRadius = 1.5
+//                        reusableAdCell.layer.shadowOpacity = 0.75
+//
+//                        return reusableAdCell
+//                    }
+//                }
+//
                 break
             }
         }
         else if isSmall == false
         {
-            if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
-            {
-                let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
-                for subview in reusableAdCell.contentView.subviews {
-                    subview.removeFromSuperview()
-                }
-                reusableAdCell.contentView.addSubview(nativeExpressAdView)
-                nativeExpressAdView.center = reusableAdCell.contentView.center
-                reusableAdCell.selectionStyle = .none
-                reusableAdCell.backgroundColor = .white
-                reusableAdCell.layer.masksToBounds = false
-                reusableAdCell.layer.cornerRadius = 2.0
-                reusableAdCell.layer.shadowColor = UIColor.black.cgColor
-                reusableAdCell.layer.shadowOffset = CGSize.init(width: 0, height: 1)
-                reusableAdCell.layer.shadowRadius = 1.5
-                reusableAdCell.layer.shadowOpacity = 0.75
-                
-                return reusableAdCell
-            }
+//            if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
+//            {
+//                let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
+//                for subview in reusableAdCell.contentView.subviews {
+//                    subview.removeFromSuperview()
+//                }
+//                reusableAdCell.contentView.addSubview(nativeExpressAdView)
+//                nativeExpressAdView.center = reusableAdCell.contentView.center
+//                reusableAdCell.selectionStyle = .none
+//                reusableAdCell.backgroundColor = .white
+//                reusableAdCell.layer.masksToBounds = false
+//                reusableAdCell.layer.cornerRadius = 2.0
+//                reusableAdCell.layer.shadowColor = UIColor.black.cgColor
+//                reusableAdCell.layer.shadowOffset = CGSize.init(width: 0, height: 1)
+//                reusableAdCell.layer.shadowRadius = 1.5
+//                reusableAdCell.layer.shadowOpacity = 0.75
+//
+//                return reusableAdCell
+//            }
         }
         return UITableViewCell.init()
        
@@ -1270,11 +1270,11 @@ extension MyFollowersView : UITableViewDataSource {
                 switch typeofFollowers.rawValue
                 {
                 case 0:
-                    if anyobject[indexPath.row] is GADNativeExpressAdView{
-                        // Ad Clicked
-                    }
-                    else
-                    {
+//                    if anyobject[indexPath.row] is GADNativeExpressAdView{
+//                        // Ad Clicked
+//                    }
+//                    else
+//                    {
                         if let controller : MyFollowersViewController = self.getViewControllerFromSubView() as? MyFollowersViewController
                         {
                             switch typeofFollowers.rawValue
@@ -1294,16 +1294,16 @@ extension MyFollowersView : UITableViewDataSource {
                                 break
                             }
                         }
-                    }
+//                    }
                     
                     
                     break
                 case 1:
-                    if anyobject[indexPath.row] is GADNativeExpressAdView{
-                        // Ad Clicked
-                    }
-                    else
-                    {
+//                    if anyobject[indexPath.row] is GADNativeExpressAdView{
+//                        // Ad Clicked
+//                    }
+//                    else
+//                    {
                         if let controller : MyFollowersViewController = self.getViewControllerFromSubView() as? MyFollowersViewController
                         {
                             switch typeofFollowers.rawValue
@@ -1323,17 +1323,17 @@ extension MyFollowersView : UITableViewDataSource {
                                 break
                             }
                         }
-                    }
+//                    }
                     
                     break
                 default:
-                    if isSmall == false
-                    {
-                        if anyobject[indexPath.row] is GADNativeExpressAdView
-                        {
-                            
-                        }
-                    }
+//                    if isSmall == false
+//                    {
+//                        if anyobject[indexPath.row] is GADNativeExpressAdView
+//                        {
+//
+//                        }
+//                    }
                     break
                 }
             }
@@ -1344,57 +1344,57 @@ extension MyFollowersView : UITableViewDataSource {
 
 extension MyFollowersView : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch typeofFollowers.rawValue
-        {
-        case 0:
-            if isSmall == false
-            {
-                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
-                {
-                    let isAdLoaded = loadStateForAds[tableItem]
-                    return isAdLoaded == true ? adBigViewHeight : 0
-                }
-            }
-            else
-            {
-                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
-                {
-                    let isAdLoaded = loadStateForAds[tableItem]
-                    return isAdLoaded == true ? adViewHeight : 0
-                }
-            }
-            
-            
-        case 1:
-            if isSmall == false
-            {
-                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
-                {
-                    let isAdLoaded = loadStateForAds[tableItem]
-                    return isAdLoaded == true ? adBigViewHeight : 0
-                }
-            }
-            else
-            {
-                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
-                {
-                    let isAdLoaded = loadStateForAds[tableItem]
-                    return isAdLoaded == true ? adViewHeight : 0
-                }
-            }
-        
-        default:
-            if isSmall == false
-            {
-                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
-                {
-                    let isAdLoaded = loadStateForAds[tableItem]
-                    return isAdLoaded == true ? adBigViewHeight : 0
-                }
-            }
-            return UITableView.automaticDimension
-            
-        }
+//        switch typeofFollowers.rawValue
+//        {
+//        case 0:
+//            if isSmall == false
+//            {
+//                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
+//                {
+//                    let isAdLoaded = loadStateForAds[tableItem]
+//                    return isAdLoaded == true ? adBigViewHeight : 0
+//                }
+//            }
+//            else
+//            {
+//                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
+//                {
+//                    let isAdLoaded = loadStateForAds[tableItem]
+//                    return isAdLoaded == true ? adViewHeight : 0
+//                }
+//            }
+//            
+//            
+//        case 1:
+//            if isSmall == false
+//            {
+//                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
+//                {
+//                    let isAdLoaded = loadStateForAds[tableItem]
+//                    return isAdLoaded == true ? adBigViewHeight : 0
+//                }
+//            }
+//            else
+//            {
+//                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
+//                {
+//                    let isAdLoaded = loadStateForAds[tableItem]
+//                    return isAdLoaded == true ? adViewHeight : 0
+//                }
+//            }
+//        
+//        default:
+//            if isSmall == false
+//            {
+//                if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
+//                {
+//                    let isAdLoaded = loadStateForAds[tableItem]
+//                    return isAdLoaded == true ? adBigViewHeight : 0
+//                }
+//            }
+//            return UITableView.automaticDimension
+//            
+//        }
         
         return UITableView.automaticDimension
         

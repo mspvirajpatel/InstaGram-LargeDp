@@ -9,7 +9,7 @@
 import UIKit
 import SwiftEventBus
 import GRDB
-import GoogleMobileAds
+//import GoogleMobileAds
 
 class MyFavouriteListView: BaseView {
     
@@ -18,10 +18,10 @@ class MyFavouriteListView: BaseView {
     var refreshControlSent : UIRefreshControl!
     
     var adInterval = UIDevice.current.userInterfaceIdiom == .pad ? 6 : 4
-    var loadStateForAds : [GADNativeExpressAdView: Bool]! = [:]
-    var adsToLoad : [GADNativeExpressAdView]! = []
+//    var loadStateForAds : [GADNativeExpressAdView: Bool]! = [:]
+//    var adsToLoad : [GADNativeExpressAdView]! = []
     var adViewHeight : CGFloat = SystemConstants.IS_IPAD ? 110 : 90
-    var adView = GADNativeExpressAdView()
+//    var adView = GADNativeExpressAdView()
     var anyobject : NSMutableArray! = NSMutableArray()
     
     
@@ -89,24 +89,24 @@ class MyFavouriteListView: BaseView {
     
     func addNativeExpressAds() {
         
-        var index = adInterval
-        while index < anyobject.count {
-            let adSize = GADAdSizeFromCGSize(
-                CGSize(width: self.width - 10, height: adViewHeight))
-            self.adView = GADNativeExpressAdView(adSize: adSize)!
-            
-            adView.adUnitID = InAddvertise.kNativeadd
-            if let controller : UIViewController = self.getViewControllerFromSubView(){
-                adView.rootViewController = controller
-                adView.load(GADRequest())
-            }
-            
-            anyobject.insert(adView, at: index)
-            index += adInterval
-            adsToLoad.append(adView)
-            
-            self.loadStateForAds[adView] = true
-        }
+//        var index = adInterval
+//        while index < anyobject.count {
+//            let adSize = GADAdSizeFromCGSize(
+//                CGSize(width: self.width - 10, height: adViewHeight))
+//            self.adView = GADNativeExpressAdView(adSize: adSize)!
+//
+//            adView.adUnitID = InAddvertise.kNativeadd
+//            if let controller : UIViewController = self.getViewControllerFromSubView(){
+//                adView.rootViewController = controller
+//                adView.load(GADRequest())
+//            }
+//
+//            anyobject.insert(adView, at: index)
+//            index += adInterval
+//            adsToLoad.append(adView)
+//
+//            self.loadStateForAds[adView] = true
+//        }
 
     }
     
@@ -172,28 +172,28 @@ extension MyFavouriteListView : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if anyobject != nil {
             
-            if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
-            {
-                
-                let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
-                for subview in reusableAdCell.contentView.subviews {
-                    subview.removeFromSuperview()
-                }
-                reusableAdCell.contentView.addSubview(nativeExpressAdView)
-                nativeExpressAdView.center = reusableAdCell.contentView.center
-                
-                reusableAdCell.selectionStyle = .none
-                reusableAdCell.backgroundColor = .white
-                reusableAdCell.layer.masksToBounds = false
-                //innerView.layer.cornerRadius = 2.0
-                reusableAdCell.layer.shadowColor = UIColor.black.cgColor
-                reusableAdCell.layer.shadowOffset = CGSize.init(width: 0.5, height: 1)
-                reusableAdCell.layer.shadowRadius = 1.0
-                reusableAdCell.layer.shadowOpacity = 0.75
-                return reusableAdCell
-            }
-            else
-            {
+//            if let nativeExpressAdView = anyobject[indexPath.row] as? GADNativeExpressAdView
+//            {
+//                
+//                let reusableAdCell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.nativeCell,for: indexPath)
+//                for subview in reusableAdCell.contentView.subviews {
+//                    subview.removeFromSuperview()
+//                }
+//                reusableAdCell.contentView.addSubview(nativeExpressAdView)
+//                nativeExpressAdView.center = reusableAdCell.contentView.center
+//                
+//                reusableAdCell.selectionStyle = .none
+//                reusableAdCell.backgroundColor = .white
+//                reusableAdCell.layer.masksToBounds = false
+//                //innerView.layer.cornerRadius = 2.0
+//                reusableAdCell.layer.shadowColor = UIColor.black.cgColor
+//                reusableAdCell.layer.shadowOffset = CGSize.init(width: 0.5, height: 1)
+//                reusableAdCell.layer.shadowRadius = 1.0
+//                reusableAdCell.layer.shadowOpacity = 0.75
+//                return reusableAdCell
+//            }
+//            else
+//            {
                 var cell : PeopleTableViewCell!
                 cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifire.people) as? PeopleTableViewCell
                 if cell == nil {
@@ -300,7 +300,7 @@ extension MyFavouriteListView : UITableViewDataSource {
                     }
                 }
                 return cell
-            }
+//            }
         }
         return UITableViewCell.init()
         
@@ -373,11 +373,11 @@ extension MyFavouriteListView : UITableViewDataSource {
 
 extension MyFavouriteListView : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
-        {
-            let isAdLoaded = loadStateForAds[tableItem]
-            return isAdLoaded == true ? adViewHeight : 0
-        }
+//        if let tableItem = anyobject[indexPath.row] as? GADNativeExpressAdView
+//        {
+//            let isAdLoaded = loadStateForAds[tableItem]
+//            return isAdLoaded == true ? adViewHeight : 0
+//        }
         
         return UITableView.automaticDimension
     }

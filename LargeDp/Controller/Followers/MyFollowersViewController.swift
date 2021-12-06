@@ -8,7 +8,7 @@
 
 import UIKit
 import SwiftEventBus
-import GoogleMobileAds
+//import GoogleMobileAds
 
 class MyFollowersViewController: BaseViewController {
    
@@ -94,7 +94,7 @@ class MyFollowersViewController: BaseViewController {
         if isEmpty == true
         {
             AppUtility.executeTaskInMainThreadAfterDelay(0.5, completion: { 
-                self.myFollowersView.addBigNativeExpressAds()
+//                self.myFollowersView.addBigNativeExpressAds()
             })
             
                         

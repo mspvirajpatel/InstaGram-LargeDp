@@ -7,21 +7,21 @@
 //
 
 import UIKit
-import GoogleMobileAds
+//import GoogleMobileAds
 import Alamofire
 import SwiftEventBus
 
-class ProfileView: BaseView,GADInterstitialDelegate  {
+class ProfileView: BaseView  {
     
     // Mark: - Attributes -
-    var viewAdd : BaseAddBannerView!
+//    var viewAdd : BaseAddBannerView!
     var viewContant : UIView!
     var buttonsContant : UIView!
     var displayContant : UIView!
     
     var itemsToShare = [AnyObject]()
     
-    var interstitial : GADInterstitial!
+//    var interstitial : GADInterstitial!
     
     var lblUser : BaseLabel!
     var lblDetail : BaseLabel!
@@ -114,10 +114,10 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
             viewContant.removeFromSuperview()
             viewContant = nil
         }
-        if viewAdd != nil && viewAdd.superview != nil {
-            viewAdd.removeFromSuperview()
-            //viewAdd = nil
-        }
+//        if viewAdd != nil && viewAdd.superview != nil {
+//            viewAdd.removeFromSuperview()
+//            //viewAdd = nil
+//        }
         if isVarified != nil && isVarified.superview != nil {
             isVarified.removeFromSuperview()
             isVarified = nil
@@ -131,8 +131,8 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
         super.loadViewControls()
         
         self.backgroundColor = Color.appSecondaryBG.value
-        viewAdd = BaseAddBannerView(adSize: kGADAdSizeBanner, bannerKey: InAddvertise.KAddBannerKey)
-        self.addSubview(viewAdd)
+//        viewAdd = BaseAddBannerView(adSize: kGADAdSizeBanner, bannerKey: InAddvertise.KAddBannerKey)
+//        self.addSubview(viewAdd)
         
         viewContant = UIView(frame: .zero)
         viewContant.translatesAutoresizingMaskIntoConstraints = false
@@ -162,11 +162,11 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
             {
                 return
             }
-            if let controller : BaseViewController = self?.getViewControllerFromSubView() as? BaseViewController
-            {
-                self?.interstitial.present(fromRootViewController: controller)
-            }
-            
+//            if let controller : BaseViewController = self?.getViewControllerFromSubView() as? BaseViewController
+//            {
+//                self?.interstitial.present(fromRootViewController: controller)
+//            }
+//
             if self?.btnDownload.isSelected == true{
                 var modelid = ""
                 if self?.searchUser != nil
@@ -312,7 +312,7 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
     override func setViewlayout() {
         super.setViewlayout()
         
-        self.baseLayout.viewDictionary = ["viewAdd" : viewAdd,
+        self.baseLayout.viewDictionary = [
                                           "viewContant" : viewContant,
                                           "privacyView" : privacyView,
                                           "privacyIcon" : privacyIcon,
@@ -348,10 +348,10 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
                                    "segmentHeight" : segmentHeight
         ]
         
-        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewAdd]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|[viewContant]|", options: NSLayoutConstraint.FormatOptions(rawValue: 0), metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_H)
         
-        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[viewContant]-2-[buttonsContant]-2-[viewAdd]-5-[displayContant]-2-|", options: [.alignAllLeading, .alignAllTrailing], metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
+        baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[viewContant]-2-[buttonsContant]-5-[displayContant]-2-|", options: [.alignAllLeading, .alignAllTrailing], metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
         self.addConstraints(baseLayout.control_V)
         
         baseLayout.control_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|[imgProfile]|", options: [.alignAllLeading, .alignAllTrailing], metrics: baseLayout.metrics, views: baseLayout.viewDictionary)
@@ -600,52 +600,52 @@ class ProfileView: BaseView,GADInterstitialDelegate  {
     // MARK: - Internal Helpers -
    
     func createAndLoadInterstitial() {
-        interstitial = GADInterstitial(adUnitID:InAddvertise.KAddFullscreen)
+//        interstitial = GADInterstitial(adUnitID:InAddvertise.KAddFullscreen)
         
-        if let isPremium : Bool = AppUtility.getUserDefaultsObjectForKey(UserDefaultKey.isPremiumUser) as? Bool
-        {
-            if !isPremium
-            {
-                let request : GADRequest! = GADRequest()
-                //request.testDevices = [kGADSimulatorID]
-                interstitial.load(request)
-                interstitial.delegate = self
-            }
-        }
-        else{
-            let request : GADRequest! = GADRequest()
-            //request.testDevices = [kGADSimulatorID]
-            interstitial.load(request)
-            interstitial.delegate = self
-        }
+//        if let isPremium : Bool = AppUtility.getUserDefaultsObjectForKey(UserDefaultKey.isPremiumUser) as? Bool
+//        {
+//            if !isPremium
+//            {
+//                let request : GADRequest! = GADRequest()
+//                //request.testDevices = [kGADSimulatorID]
+//                interstitial.load(request)
+//                interstitial.delegate = self
+//            }
+//        }
+//        else{
+//            let request : GADRequest! = GADRequest()
+//            //request.testDevices = [kGADSimulatorID]
+//            interstitial.load(request)
+//            interstitial.delegate = self
+//        }
     }
     
     // MARK: - Server Request -
     
     // TODO: - Full screen Add Delegates -
     
-    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
-        print("Recieved ad : \(ad.adNetworkClassName!)")
-    }
-    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
-        print("Error : \(error.description)")
-    }
-    
-    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
-        
-    }
-    
-    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
-        
-    }
-    
-    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
-        
-        self.createAndLoadInterstitial()
-    }
-    
-    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
-        
-    }
+//    func interstitialDidReceiveAd(_ ad: GADInterstitial) {
+//        print("Recieved ad : \(ad.adNetworkClassName!)")
+//    }
+//    func interstitial(_ ad: GADInterstitial, didFailToReceiveAdWithError error: GADRequestError) {
+//        print("Error : \(error.description)")
+//    }
+//    
+//    func interstitialWillPresentScreen(_ ad: GADInterstitial) {
+//        
+//    }
+//    
+//    func interstitialWillDismissScreen(_ ad: GADInterstitial) {
+//        
+//    }
+//    
+//    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+//        
+//        self.createAndLoadInterstitial()
+//    }
+//    
+//    func interstitialWillLeaveApplication(_ ad: GADInterstitial) {
+//        
+//    }
 
 }

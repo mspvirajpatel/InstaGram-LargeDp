@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import GoogleMobileAds
+//import GoogleMobileAds
 import Alamofire
 import SwiftEventBus
 import GRDB
@@ -16,7 +16,7 @@ import Font_Awesome_Swift
 class HomeView: BaseView {
     
     // Mark: - Attributes -
-    var viewAdd : BaseAddBannerView!
+//    var viewAdd : BaseAddBannerView!
     var viewContant : UIView!
     var txtSearch : BaseTextField!
     var btnSearch : BaseButton!
@@ -47,10 +47,10 @@ class HomeView: BaseView {
         super.releaseObject()
         SwiftEventBus.unregister(self)
        
-        if viewAdd != nil && viewAdd.superview != nil {
-            viewAdd.removeFromSuperview()
-            //viewAdd = nil
-        }
+//        if viewAdd != nil && viewAdd.superview != nil {
+//            viewAdd.removeFromSuperview()
+//            //viewAdd = nil
+//        }
         if viewContant != nil && viewContant.superview != nil {
             viewContant.removeFromSuperview()
             viewContant = nil

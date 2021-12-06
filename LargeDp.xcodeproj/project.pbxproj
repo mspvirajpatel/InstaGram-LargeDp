@@ -113,7 +113,6 @@
 		7EB75B4D1EE19976004DDC2F /* PeopleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB75B4A1EE19976004DDC2F /* PeopleTableViewCell.swift */; };
 		7EE72E491EDD390F00396F04 /* SearchTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE72E481EDD390F00396F04 /* SearchTableView.swift */; };
 		7EF125581ED9AD75008A69B1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EF125571ED9AD75008A69B1 /* GoogleService-Info.plist */; };
-		7EF1255A1ED9AE9F008A69B1 /* BaseAddBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF125591ED9AE9F008A69B1 /* BaseAddBannerView.swift */; };
 		7EF1256D1ED9B4F1008A69B1 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF125691ED9B4F1008A69B1 /* FeedbackView.swift */; };
 		7EF1256E1ED9B4F1008A69B1 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF1256A1ED9B4F1008A69B1 /* FeedbackViewController.swift */; };
 		7EF125731ED9B57F008A69B1 /* BSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF125701ED9B57F008A69B1 /* BSApp.swift */; };
@@ -953,7 +952,6 @@
 				7E9973551ED950B900E273A6 /* LeftMenuCell.swift in Sources */,
 				7E9973B71ED950B900E273A6 /* LocationManager.swift in Sources */,
 				7E9973801ED950B900E273A6 /* MediaInfo.swift in Sources */,
-				7EF1255A1ED9AE9F008A69B1 /* BaseAddBannerView.swift in Sources */,
 				7E9973531ED950B900E273A6 /* SearchView.swift in Sources */,
 				7E99737B1ED950B900E273A6 /* EdgeMediaToSponsorUser.swift in Sources */,
 				7E9973AD1ED950B900E273A6 /* BaseAPICall.swift in Sources */,

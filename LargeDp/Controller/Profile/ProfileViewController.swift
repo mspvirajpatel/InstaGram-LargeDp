@@ -121,7 +121,7 @@ class ProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         AppUtility.executeTaskInMainThreadAfterDelay(0.5, completion: {
-            self.profileView.viewAdd.requestBannerAd(rootController: self)
+//            self.profileView.viewAdd.requestBannerAd(rootController: self)
         })
        
     }

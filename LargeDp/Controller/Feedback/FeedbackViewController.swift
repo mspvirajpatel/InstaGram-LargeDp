@@ -49,7 +49,7 @@ class FeedbackViewController: BaseViewController {
         super.viewDidLoad()
        
         AppUtility.executeTaskInMainThreadAfterDelay(0.5, completion: {
-            self.feedbackView.viewAdd.requestBannerAd(rootController: self)
+//            self.feedbackView.viewAdd.requestBannerAd(rootController: self)
         })
         
     }
